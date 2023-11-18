@@ -318,7 +318,7 @@ namespace GUI {
 			char inputChar = unmanaged[result.current.index];
 			ss  << "Встречена ошибка на этапе \"Лексический анализ\":\n\n"
 				<< "В строке: " << result.current.row << "; столбце: " << result.current.column << ";\n"
-				<< "Входной симол \'" << inputChar << " \'(ascii:" << (int)inputChar << "\n\n"
+				<< "Входной симол \'" << inputChar << " \'(ascii:" << (int)inputChar << ")\n\n"
 				<< "Сообщение: " << result.message() << ".";
 
 			String^ message = gcnew String(ss.str().c_str());
