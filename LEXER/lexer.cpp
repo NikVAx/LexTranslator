@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <iostream>
+#include <sstream>
 
 struct TransArgs {
 protected:
@@ -177,6 +178,9 @@ namespace LexAnalizer {
             for (int head = 0; head < text.length() && result.success(); head++) {
                 char ch = text[head];
                 
+                //std::stringstream ess;
+                //ess << _sm.currentState << " -> ";
+
                 result.move(ch);
                     
                 T_TransArg args = _sm.getTransit(ch);
@@ -186,6 +190,8 @@ namespace LexAnalizer {
                     result.setError(statusCode, _lexConfig.mapStatusMessage(statusCode));
                     break;
                 }
+
+                //std::cout << tokenString << "\n";
 
                 if (args.isSplit() && !tokenString.empty()) {
                     int tokenTypeCode = _lexConfig.mapTokenType(_sm.currentState);
@@ -205,6 +211,10 @@ namespace LexAnalizer {
                 }
 
                 _sm.currentState = args.getNextState();
+
+                //ess << _sm.currentState;
+
+                //std::cout << ess.str() << "\n";
             }
 
             if (result.success() && (_sm.currentState != 1 || 
