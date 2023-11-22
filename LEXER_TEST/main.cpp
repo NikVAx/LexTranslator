@@ -6,6 +6,8 @@
 #include <sstream>
 #include <iomanip>
 
+using namespace Shared;
+
 namespace LexAnalizer {
     class Test {
     public:
@@ -360,10 +362,10 @@ namespace LexAnalizer {
                 act.tokens[1].typeCode == 3 && act.tokens[1].value == ":=" &&
                 act.tokens[2].typeCode == 4 && act.tokens[2].value == "(" &&
                 act.tokens[3].typeCode == 2 && act.tokens[3].value == "IV" &&
-                act.tokens[4].typeCode == 6 && act.tokens[4].value == "*" &&
+                act.tokens[4].typeCode ==11 && act.tokens[4].value == "*" &&
                 act.tokens[5].typeCode == 2 && act.tokens[5].value == "MMMDCCXLIV" &&
                 act.tokens[6].typeCode == 5 && act.tokens[6].value == ")" &&
-                act.tokens[7].typeCode == 6 && act.tokens[7].value == "-" &&
+                act.tokens[7].typeCode ==10 && act.tokens[7].value == "-" &&
                 act.tokens[8].typeCode == 2 && act.tokens[8].value == "II" &&
                 act.tokens[9].typeCode == 7 && act.tokens[9].value == ";")
             {
@@ -396,15 +398,15 @@ namespace LexAnalizer {
                 act.tokens[4].typeCode == 1 && act.tokens[4].value == "y" &&
                 act.tokens[5].typeCode == 3 && act.tokens[5].value == ":=" &&
                 act.tokens[6].typeCode == 2 && act.tokens[6].value == "IV" &&
-                act.tokens[7].typeCode == 6 && act.tokens[7].value == "*" &&
+                act.tokens[7].typeCode ==11 && act.tokens[7].value == "*" &&
                 act.tokens[8].typeCode == 1 && act.tokens[8].value == "x" &&
-                act.tokens[9].typeCode == 6 && act.tokens[9].value == "-" &&
+                act.tokens[9].typeCode ==10 && act.tokens[9].value == "-" &&
                 act.tokens[10].typeCode == 2 && act.tokens[10].value == "II" &&
                 act.tokens[11].typeCode == 7 && act.tokens[11].value == ";" &&
                 act.tokens[12].typeCode == 1 && act.tokens[12].value == "z" &&
                 act.tokens[13].typeCode == 3 && act.tokens[13].value == ":=" &&
                 act.tokens[14].typeCode == 1 && act.tokens[14].value == "x" &&
-                act.tokens[15].typeCode == 6 && act.tokens[15].value == "*" &&
+                act.tokens[15].typeCode ==11 && act.tokens[15].value == "*" &&
                 act.tokens[16].typeCode == 1 && act.tokens[16].value == "y" &&
                 act.tokens[17].typeCode == 7 && act.tokens[17].value == ";")
             {
@@ -430,10 +432,10 @@ namespace LexAnalizer {
                 act.tokens[2].typeCode == 4 && act.tokens[2].value == "(" &&
                 act.tokens[3].typeCode == 4 && act.tokens[3].value == "(" &&
                 act.tokens[4].typeCode == 2 && act.tokens[4].value == "II" &&
-                act.tokens[5].typeCode == 6 && act.tokens[5].value == "*" &&
+                act.tokens[5].typeCode == 11 && act.tokens[5].value == "*" &&
                 act.tokens[6].typeCode == 2 && act.tokens[6].value == "MMM" &&
                 act.tokens[7].typeCode == 5 && act.tokens[7].value == ")" &&
-                act.tokens[8].typeCode == 6 && act.tokens[8].value == "/" &&
+                act.tokens[8].typeCode == 12 && act.tokens[8].value == "/" &&
                 act.tokens[9].typeCode == 2 && act.tokens[9].value == "VI" &&
                 act.tokens[10].typeCode == 5 && act.tokens[10].value == ")" &&
                 act.tokens[11].typeCode == 7 && act.tokens[11].value == ";")
@@ -496,7 +498,7 @@ namespace LexAnalizer {
             else
             {
                 ss << "tokens:\n";
-                for (Token& token : parseResult.tokens) {
+                for (Shared::Token& token : parseResult.tokens) {
                     ss << token.typeCode << " " << token.typeName << " " <<
                         token.value << "\n";
                 }
@@ -514,10 +516,10 @@ namespace LexAnalizer {
                 "3 Присваивание            :=\n"
                 "4 Открывающая скобка      (\n"
                 "2 Римское число           IV\n"
-                "6 Математический оператор *\n"
+                "11 Оператор \"*\"          *\n"
                 "2 Римское число           MMMDCCXLIV\n"
                 "5 Закрывающая скобка      )\n"
-                "6 Математический оператор -\n"
+                "10 Оператор \"-\"          -\n"
                 "2 Римское число           II\n"
                 "7 Разделитель             ;\n\n";
 
@@ -641,10 +643,10 @@ namespace LexAnalizer {
                 "1 Идентификатор           z\n"
                 "3 Присваивание            :=\n"
                 "1 Идентификатор           x\n"
-                "6 Математический оператор *\n"
+                "11 Оператор \"*\"          *\n"
                 "1 Идентификатор           y\n"
                 "7 Разделитель             ;\n\n";
-
+            std::cout << expected.length() << "\n";
             std::string source =
                 "x:=I;\n"
                 "y:=II;\n"
@@ -653,7 +655,7 @@ namespace LexAnalizer {
             ParseResult act = lexer.parse(source);
 
             std::string actual = toString(act);
-
+            std::cout << actual.length() << "\n";
             if (expected == actual)
             {
                 PASS();
@@ -676,7 +678,7 @@ namespace LexAnalizer {
                 "1 Идентификатор           y\n"
                 "3 Присваивание            :=\n"
                 "2 Римское число           II\n"
-                "6 Математический оператор *\n"
+                "11 Оператор \"*\"          *\n"
                 "1 Идентификатор           x\n"
                 "7 Разделитель             ;\n\n";
 
@@ -710,7 +712,7 @@ namespace LexAnalizer {
                 "1 Идентификатор           y\n"
                 "3 Присваивание            :=\n"
                 "2 Римское число           II\n"
-                "6 Математический оператор *\n"
+                "11 Оператор \"*\"          *\n"
                 "1 Идентификатор           x\n"
                 "7 Разделитель             ;\n\n";
 
@@ -1058,10 +1060,22 @@ namespace LexAnalizer {
 
 }
 
+//char OPER_MTX[11][11] = {
+//    
+//}
+//
+//class SyntaxScanner
+//{
+//
+//
+//
+//
+//};
+
 int main() {
     setlocale(LC_ALL, "");
 
     LexAnalizer::WhiteBox::s_run();
-
+    
     LexAnalizer::BlackBox::s_run();
 }

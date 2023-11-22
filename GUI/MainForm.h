@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../LEXER/lexer.cpp"
+#include "../LEXER/shared_types.h"
 
 #include <msclr/marshal_cppstd.h>
 
@@ -299,7 +300,7 @@ namespace GUI {
 
 		std::string unmanaged = msclr::interop::marshal_as<std::string>(SourceCodeTxt->Text);
 
-		LexAnalizer::ParseResult result = lexer.parse(unmanaged);
+		Shared::ParseResult result = lexer.parse(unmanaged);
 
 		TokensTable->Rows->Clear();
 
