@@ -1083,7 +1083,7 @@ std::map<int, std::string> MAP_INPUT_STRING = {
     { 1, "-"}, // -
     { 2, "*"}, // *
     { 3, "/"}, // /
-    { 4, "a"}, // идентификатор
+    { 4, "I"}, // идентификатор
     { 5, "R"}, // число
     { 6, "("}, // (
     { 7, ")"}, // )
@@ -1110,14 +1110,15 @@ char RELATION_MATRIX[RELATION_MTX_SIZE][RELATION_MTX_SIZE] = {
 };
 
 struct ReduceRule {
-    ReduceRule(std::string s, int n, std::function<void()> cmd = NULL) {
-        base = s;
-        number = n;
+    ReduceRule() {
+        number = -1;
     }
 
-    std::string base;
+    ReduceRule(int num) {
+        number = num;
+    }
+
     int number;
-    std::function<void()>* command;
 };
 
 /*
@@ -1130,14 +1131,14 @@ S -> (S)|-(S)|a|b (правило 7,8,9,10)
 */
 
 std::map<std::string, ReduceRule> REDUCE_RULES = {
-    {"I:=S;", ReduceRule("I:=S;", 1)},
-    {"S+S",   ReduceRule("S+S;",  2)},
-    {"S*S",   ReduceRule("S*S;",  4)},
-    {"S/S",   ReduceRule("S/S;",  5)},
-    {"(S)",   ReduceRule("(S);",  7)},
-    {"-(S)",  ReduceRule("-(S);", 8)},
-    {"a",     ReduceRule("a;",   9)},
-    {"b",     ReduceRule("b;",   10)},
+    {"I:=S;", ReduceRule(1) },
+    {"S+S",   ReduceRule(2) },
+    {"S*S",   ReduceRule(4) },
+    {"S/S",   ReduceRule(5) },
+    {"(S)",   ReduceRule(7) },
+    {"-(S)",  ReduceRule(8) },
+    {"I",     ReduceRule(9) },
+    {"R",     ReduceRule(10) },
 };
 
 
@@ -1151,16 +1152,13 @@ private:
 public:
     std::vector<int> rules;
     std::vector<int> store;
+    std::string baseString;
 
     void init(std::vector<Token> input) {
         for (auto& token : input) {
             tokens.push_back(token);
         }
         int head = 0;    
-    }
-
-    int getTopTerminalIndex() {
-        return getTerminalIndex(store.size() - 1);
     }
 
     int getTerminalIndex(int end) {
@@ -1176,32 +1174,6 @@ public:
         return ROW_COLUMN_MAP[tokenTypeCode];
     }
 
-    int tryFindBaseIndex(int inputTermIndex) {
-        for (int i = store.size() - 1; i >= 0; --i) {
-            if (store.at(i) == NOT_TERMINAL) {
-                continue;
-            }
-            
-            char relation = getRelation(store.at(i), inputTermIndex);
-
-            if (relation == '=') {
-                return i;
-            } 
-            else return NOT_FOUND;
-        }
-        return NOT_FOUND;
-    }
-    
-    // Получаем индекс "основы"
-    int getBaseIndex(int inputTermIndex) {
-        int baseIndex = tryFindBaseIndex(inputTermIndex);
-
-        if (baseIndex == NOT_FOUND) {
-            return getTopTerminalIndex();
-        }
-        return baseIndex;
-    }
-
     char getRelation(int leftTermIndex, int rightTermIndex) {
         if (leftTermIndex >= RELATION_MTX_SIZE || rightTermIndex >= RELATION_MTX_SIZE)
             throw std::exception("Relation matrix out of range");
@@ -1209,18 +1181,6 @@ public:
         return RELATION_MATRIX[leftTermIndex][rightTermIndex];
     }
 
-    void pack_8() {
-        pop(2);
-        store.push_back(NOT_TERMINAL);
-    }
-
-
-
-    void pop(int count) {
-        for (int i = 0; i < count && !store.empty(); ++i) {
-            store.pop_back();
-        }
-    }
 
     void reduce(int input) {
         int index1 = getTerminalIndex(store.size() - 1);
@@ -1230,8 +1190,7 @@ public:
 
         bool notFound = true;
         
-        do {
-        
+        do {     
             //std::cout << " > INDEX1 = " << MAP_INPUT_STRING[elAt1] << " (" << index1 << ")" << "\n";
             //std::cout << " > INDEX2 = " << MAP_INPUT_STRING[elAt2] << " (" << index2 << ")" << "\n";
             char innerRelation = getRelation(elAt2, elAt1);
@@ -1249,27 +1208,31 @@ public:
             }
         } while (true);
        
-        if (notFound) { // отношение = не найдено
-            int baseIndex = getBaseIndex(input);
-            popToBase(baseIndex);
-            store.push_back(NOT_TERMINAL);
-        }
-        else {
-            std::cout << "FOUND: ";
-            popToBase(index1);
-            store.push_back(NOT_TERMINAL);
-        }
-        
-        std::cout << "  СТЕК: " << stack_str(store) << "\n";
+        int baseIndex = notFound
+            ? getTerminalIndex(store.size() - 1)
+            : index1;
 
+        popIfLaterOrNotTerminal(baseIndex);
+
+        rules.push_back(REDUCE_RULES[baseString].number);
+       
+        store.push_back(NOT_TERMINAL);
     }
 
     // Удалить из стека все символы до переданного
-    void popToBase(int baseIndex) {
+    void popIfLaterOrNotTerminal(int baseIndex) {
+        baseString = "";
+        std::stack<std::string> revert;
+        
         for (int i = store.size() - 1; (i >= baseIndex || store.back() == NOT_TERMINAL); --i) {
+            revert.push(MAP_INPUT_STRING[store.back()]);
             store.pop_back();
+        } 
+            
+        while (!revert.empty()) {
+            baseString.append(revert.top());
+            revert.pop();
         }
-    
     }
 
     std::string stack_str(std::vector<int> st) {
@@ -1289,10 +1252,9 @@ public:
         int k = 1;
         
         do {
-            std::cout << "\n";
             Token currentToken = tokens[head];
             
-            int topStackTermIndex = getTopTerminalIndex();
+            int topStackTermIndex = getTerminalIndex(store.size() - 1);
 
             int top = store.at(topStackTermIndex);
             int input = getIndexInDictionary(currentToken.typeCode);
@@ -1302,31 +1264,29 @@ public:
 
 #pragma region  debug
             std::cout 
-                << (relation == '>' ? "#СВЕРТКА" : "#СДВИГ   ")
-                << " [ " << relation << " ] "
-                << std::setw(2) << top 
-                << ", " << std::setw(2) << MAP_INPUT_STRING[top] 
-                << "; " << std::setw(2) << input 
-                << ", " << std::setw(2) << MAP_INPUT_STRING[input] 
-                      
-                      << "\n  СТЕК: " << stack_str(store) << "\n";     
+                << (relation == '>' ? "#СВЕРТКА" : "#СДВИГ  ")
+                /* << " [ " << relation << " ] "
+                << "["<< std::setw(2) << top << ";"
+                << std::setw(2) << MAP_INPUT_STRING[top] << "]"
+                << "[ " << std::setw(2) << input << ";"
+                << std::setw(2) << MAP_INPUT_STRING[input] << "]"*/
+                << "\n  СТЕК: " << stack_str(store) << "\n";     
 #pragma endregion            
                      
             if (relation == '<' || relation == '=') { 
-                shift(input); 
+                shift(input); //сдвиг
                 continue;
             } 
             else if (relation == '>') {
-                reduce(input);
+                reduce(input); // свертка
                 continue;           
             }
             else if (relation == '-') {
-                end(input);
+                end(input); // конец алгоритма (успешный или ошибочный)
                 return;
             }
         } while (head < tokens.size());
     }
-
 
     void shift(int input) {
         store.push_back(input);
@@ -1354,7 +1314,7 @@ int main() {
 
     //std::string line = "x:=a+((IV+a)+b);";
     // std::string line = "x:=a*(a+b);";
-    std::string line = "a:=(a+(-(a+b*a+b)+a)+a);";
+    std::string line = "a:=(a+-(-(VIII+b*a+b)+a)+a);";
     auto parseResult = lexer.parse(line);
     
     parseResult.add(Token("К", 20, "К"));
