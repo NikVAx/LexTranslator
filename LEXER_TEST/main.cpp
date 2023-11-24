@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iomanip>
 #include <stack>
+#include <functional>
 
 using namespace Shared;
 
@@ -1077,7 +1078,7 @@ std::map<int, int> ROW_COLUMN_MAP = {
     { 20, 10}, // :=
 };
 
-std::map<int, std::string> MAP_ST = {
+std::map<int, std::string> MAP_INPUT_STRING = {
     { 0, "+" }, // +
     { 1, "-"}, // -
     { 2, "*"}, // *
@@ -1108,6 +1109,38 @@ char RELATION_MATRIX[RELATION_MTX_SIZE][RELATION_MTX_SIZE] = {
     { '-', '-', '-', '-', '<', '-', '-', '-', '<', '-', '-'} ,
 };
 
+struct ReduceRule {
+    ReduceRule(std::string s, int n, std::function<void()> cmd = NULL) {
+        base = s;
+        number = n;
+    }
+
+    std::string base;
+    int number;
+    std::function<void()>* command;
+};
+
+/*
+S -> a:=S; (правило 1)
+S -> S+S (правило 2)
+S -> S*S|S/S (правило 4,5)
+S -> (S)|-(S)|a|b (правило 7,8,9,10)
+
+
+*/
+
+std::map<std::string, ReduceRule> REDUCE_RULES = {
+    {"I:=S;", ReduceRule("I:=S;", 1)},
+    {"S+S",   ReduceRule("S+S;",  2)},
+    {"S*S",   ReduceRule("S*S;",  4)},
+    {"S/S",   ReduceRule("S/S;",  5)},
+    {"(S)",   ReduceRule("(S);",  7)},
+    {"-(S)",  ReduceRule("-(S);", 8)},
+    {"a",     ReduceRule("a;",   9)},
+    {"b",     ReduceRule("b;",   10)},
+};
+
+
 const int NOT_TERMINAL = 11;
 const int NOT_FOUND = -1;
 
@@ -1117,7 +1150,7 @@ private:
     std::vector<Token> tokens;
 public:
     std::vector<int> rules;
-    std::vector<int> store; // магазин автомата - хранит КОДЫ типов лексем
+    std::vector<int> store;
 
     void init(std::vector<Token> input) {
         for (auto& token : input) {
@@ -1127,13 +1160,16 @@ public:
     }
 
     int getTopTerminalIndex() {
-        for (int i = store.size() - 1; i >= 0; --i) {
+        return getTerminalIndex(store.size() - 1);
+    }
+
+    int getTerminalIndex(int end) {
+        for (int i = end; i >= 0; --i) {
             if (store.at(i) == NOT_TERMINAL) {
                 continue;
             }
             return i;
         }
-        throw std::exception("Terminal not found");
     }
 
     int getIndexInDictionary(int tokenTypeCode) {
@@ -1150,7 +1186,7 @@ public:
 
             if (relation == '=') {
                 return i;
-            }
+            } 
             else return NOT_FOUND;
         }
         return NOT_FOUND;
@@ -1161,10 +1197,8 @@ public:
         int baseIndex = tryFindBaseIndex(inputTermIndex);
 
         if (baseIndex == NOT_FOUND) {
-            std::cout << "ОСНОВА ПОСЛЕДНИЙ ТЕРМИНАЛ\n";
             return getTopTerminalIndex();
         }
-        std::cout << "ОСНОВА НАЙДЕНА\n";
         return baseIndex;
     }
 
@@ -1175,32 +1209,73 @@ public:
         return RELATION_MATRIX[leftTermIndex][rightTermIndex];
     }
 
-    // Выполнить сдвиг (шаг 3)
-    void shift(int inputTermCode) {
-        std::cout << "  ADD: " << MAP_ST[inputTermCode] << "\n";
-        store.push_back(inputTermCode);
-        head += 1;
+    void pack_8() {
+        pop(2);
+        store.push_back(NOT_TERMINAL);
     }
 
-    // выполнить свертку
-    void pack() {
+
+
+    void pop(int count) {
+        for (int i = 0; i < count && !store.empty(); ++i) {
+            store.pop_back();
+        }
+    }
+
+    void reduce(int input) {
+        int index1 = getTerminalIndex(store.size() - 1);
+        int index2 = getTerminalIndex(index1 - 1);
+        int elAt1 = store.at(index1);
+        int elAt2 = store.at(index2);
+
+        bool notFound = true;
+        
+        do {
+        
+            //std::cout << " > INDEX1 = " << MAP_INPUT_STRING[elAt1] << " (" << index1 << ")" << "\n";
+            //std::cout << " > INDEX2 = " << MAP_INPUT_STRING[elAt2] << " (" << index2 << ")" << "\n";
+            char innerRelation = getRelation(elAt2, elAt1);
+            //std::cout << "RELATION " << innerRelation << "\n";
+            
+            if (innerRelation == '=') {
+                notFound = false;       
+                index1 = index2;
+                index2 = getTerminalIndex(index1 - 1);
+                elAt1 = store.at(index1);
+                elAt2 = store.at(index2);
+            }
+            else {
+                break;
+            }
+        } while (true);
+       
+        if (notFound) { // отношение = не найдено
+            int baseIndex = getBaseIndex(input);
+            popToBase(baseIndex);
+            store.push_back(NOT_TERMINAL);
+        }
+        else {
+            std::cout << "FOUND: ";
+            popToBase(index1);
+            store.push_back(NOT_TERMINAL);
+        }
+        
+        std::cout << "  СТЕК: " << stack_str(store) << "\n";
 
     }
 
     // Удалить из стека все символы до переданного
     void popToBase(int baseIndex) {
-        std::vector<int> buf;
-        for (int i = store.size() - 1; i >= baseIndex; --i) {
-            buf.insert(buf.begin(), store.back());
+        for (int i = store.size() - 1; (i >= baseIndex || store.back() == NOT_TERMINAL); --i) {
             store.pop_back();
         }
-        std::cout << "  DEL: " << stack_str(buf) << "\n";
+    
     }
 
     std::string stack_str(std::vector<int> st) {
         std::stringstream ss;
         for (auto& el : st) {
-            ss << MAP_ST[el];
+            ss << MAP_INPUT_STRING[el];
         }
         return ss.str();
     }
@@ -1219,71 +1294,53 @@ public:
             
             int topStackTermIndex = getTopTerminalIndex();
 
-            int storeTableIndex = store.at(topStackTermIndex);
-            int inputTableIndex = getIndexInDictionary(currentToken.typeCode);
+            int top = store.at(topStackTermIndex);
+            int input = getIndexInDictionary(currentToken.typeCode);
 
             // Шаг 2: получения отношения по таблице
-            char relation = getRelation(storeTableIndex, inputTableIndex);
+            char relation = getRelation(top, input);
 
 #pragma region  debug
-            std::cout << " >>> " << std::setw(2) << storeTableIndex 
-                      << ", "    << std::setw(2) << MAP_ST[storeTableIndex] 
-                      << "; "    << std::setw(2) << inputTableIndex 
-                      << ", "    << std::setw(2) << MAP_ST[inputTableIndex] 
-                      << " | [ " << relation 
-                      << " ] " << (relation == '>' ? "#СВЕРТКА" : "#СДВИГ")
-                      << "\n  СТЕК: " << stack_str(store) << "\n";
-            
+            std::cout 
+                << (relation == '>' ? "#СВЕРТКА" : "#СДВИГ   ")
+                << " [ " << relation << " ] "
+                << std::setw(2) << top 
+                << ", " << std::setw(2) << MAP_INPUT_STRING[top] 
+                << "; " << std::setw(2) << input 
+                << ", " << std::setw(2) << MAP_INPUT_STRING[input] 
+                      
+                      << "\n  СТЕК: " << stack_str(store) << "\n";     
 #pragma endregion            
-           
-            if (relation == '-') {
-                std::cout << "ERROR\n";
-                return; // ошибка
-            }
-
-
-            if (relation == '<' || relation == '=') {
-                shift(inputTableIndex); // Сдвиг
-                std::cout << "  СТЕК: " << stack_str(store) << "\n";
+                     
+            if (relation == '<' || relation == '=') { 
+                shift(input); 
                 continue;
+            } 
+            else if (relation == '>') {
+                reduce(input);
+                continue;           
             }
-
-            if (relation == '>') {
-
-                // берем в качестве "основы" терминал на вершине стека
-                int baseIndex = getBaseIndex(inputTableIndex); 
-                
-                popToBase(baseIndex);
-
-                std::cout << "  ADD: " << MAP_ST[NOT_TERMINAL] << "\n";
-                store.push_back(NOT_TERMINAL);
-
-                if (limit++ >= 30)
-                    return;
-
-                std::cout << "  СТЕК: " << stack_str(store) << "\n";
-               
-                continue;
-                
+            else if (relation == '-') {
+                end(input);
+                return;
             }
-            
-
-            return;
         } while (head < tokens.size());
+    }
 
-        for (auto& el : store) {
-            std::cout << MAP_ST[el];
+
+    void shift(int input) {
+        store.push_back(input);
+        head += 1;
+    }
+
+    void end(int input) {
+        if (input == 10 && head != 0) {
+            std::cout << "РАЗБОР ЗАВЕРШЕН\n";
         }
-
-        std::cout << "\nКОНЕЦ\n";
+        else {
+            std::cout << "ОШИБКА\n";
+        }
     }
-
-    void move() {
-    
-    }
-
-
-
 };
 
 int main() {
@@ -1296,13 +1353,13 @@ int main() {
     SyntaxScanner syntax;
 
     //std::string line = "x:=a+((IV+a)+b);";
-    //std::string line = "x:=a*(a+b);";
-    std::string line = "x:=(a+a)*b;";
+    // std::string line = "x:=a*(a+b);";
+    std::string line = "a:=(a+(-(a+b*a+b)+a)+a);";
     auto parseResult = lexer.parse(line);
+    
     parseResult.add(Token("К", 20, "К"));
 
-    if (parseResult.success())
-    {
+    if (parseResult.success()) {
         syntax.init(parseResult.tokens);
         syntax.proccess();
     }
