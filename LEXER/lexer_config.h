@@ -249,32 +249,6 @@ static const int TOKEN_TYPE_MAP[COUNT_OF_STATES] =
 static const int IDENTIFIER_TYPE = 1;
 static const int KEYWORD_TYPE = 9;
 
-////Набросок для работы с ключевыми словами: 
-//
-//// Язык регистрозависимый => if != IF
-//std::map<std::string, int> keywords = {
-//    { "if", 1 },
-//    { "then", 2 },
-//    { "else", 3 },
-//};
-//
-//// TODO: Вынести базовые типы в библиотеку CORE
-//bool isKeyword(std::string tokenString) {    
-//    return keywords.count(tokenString); 
-//}
-//
-//
-//void overrideTokenTypeIfKeyword(/*Token token*/) {
-//    int tokenType = 1; // is token.type
-//    std::string tokenString = "then";
-//    if (tokenType == IDENTIFIER_TYPE) {
-//        if (isKeyword(tokenString)) {
-//            tokenType = KEYWORD_TYPE;
-//        }
-//    }
-//
-//}
-
 static bool inRange(int value, int first, int second) {
     return first <= value && value < second;
 }

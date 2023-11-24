@@ -34,7 +34,7 @@ namespace Shared {
         std::string _message = "";
     public:
         struct Location {
-            int index = 0;
+            int head = 0;
             int row = 1;
             int column = 1;
         };
@@ -69,7 +69,7 @@ namespace Shared {
         }
 
         void move(char ch) {
-            current.index += 1;
+            current.head += 1;
             current.column += 1;
             if (ch == '\n') {
                 current.row += 1;

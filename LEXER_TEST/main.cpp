@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <stack>
 
 using namespace Shared;
 
@@ -37,7 +38,7 @@ namespace LexAnalizer {
             std::cout << "success: " << act.success() << "\n";
             std::cout << "code: " << act.code() << "\n";
             std::cout << "message: " << act.message() << "\n";
-            std::cout << "location.index: " << act.current.index << "\n";
+            std::cout << "location.index: " << act.current.head << "\n";
             std::cout << "location.row: " << act.current.row << "\n";
             std::cout << "location.column: " << act.current.column << "\n";
             std::cout << "tokens.size: " << act.tokens.size() << "\n";
@@ -493,7 +494,7 @@ namespace LexAnalizer {
             if (!parseResult.success()) {
                 ss << "error_code: " << parseResult.code() << "\n";
                 ss << "message: " << parseResult.message() << "\n";
-                ss << "index: " << parseResult.current.index << "\n";
+                ss << "index: " << parseResult.current.head << "\n";
             }
             else
             {
@@ -1060,22 +1061,250 @@ namespace LexAnalizer {
 
 }
 
-//char OPER_MTX[11][11] = {
-//    
-//}
-//
-//class SyntaxScanner
-//{
-//
-//
-//
-//
-//};
+const int SHIFT_PACK_SIZE = 11;
+
+std::map<int, int> ROW_COLUMN_MAP = {
+    { 6,  0 }, // +
+    { 10, 1 }, // -
+    { 11, 2 }, // *
+    { 12, 3 }, // /
+    { 1,  4 }, // идентификатор
+    { 2,  5 }, // число
+    { 4,  6 }, // (
+    { 5,  7 }, // )
+    { 7,  8 }, // ;
+    { 3,  9 }, // :=
+    { 20, 10}, // :=
+};
+
+std::map<int, std::string> MAP_ST = {
+    { 0, "+" }, // +
+    { 1, "-"}, // -
+    { 2, "*"}, // *
+    { 3, "/"}, // /
+    { 4, "a"}, // идентификатор
+    { 5, "R"}, // число
+    { 6, "("}, // (
+    { 7, ")"}, // )
+    { 8, ";"}, // ;
+    { 9, ":="}, // :=
+    { 10, "#"}, // #
+    { 11, "S"}, // S
+};
+
+const int RELATION_MTX_SIZE = 11;
+
+char RELATION_MATRIX[RELATION_MTX_SIZE][RELATION_MTX_SIZE] = {
+    { '>', '<', '<', '<', '<', '<', '<', '>', '>', '-', '-'} ,
+    { '-', '-', '-', '-', '-', '-', '=', '-', '-', '-', '-'} ,
+    { '>', '<', '>', '>', '<', '<', '<', '>', '>', '-', '-'} ,
+    { '>', '<', '>', '>', '<', '<', '<', '>', '>', '-', '-'} ,
+    { '>', '-', '>', '>', '-', '-', '-', '>', '>', '=', '-'} ,
+    { '>', '-', '>', '>', '-', '-', '-', '>', '-', '-', '-'} ,
+    { '<', '<', '<', '<', '<', '<', '<', '=', '-', '-', '-'} ,
+    { '>', '-', '>', '>', '-', '-', '-', '>', '>', '-', '-'} ,
+    { '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '>'} ,
+    { '<', '<', '<', '<', '<', '<', '<', '-', '=', '-', '-'} ,
+    { '-', '-', '-', '-', '<', '-', '-', '-', '<', '-', '-'} ,
+};
+
+const int NOT_TERMINAL = 11;
+const int NOT_FOUND = -1;
+
+class SyntaxScanner {
+private:
+    int head = 0;
+    std::vector<Token> tokens;
+public:
+    std::vector<int> rules;
+    std::vector<int> store; // магазин автомата - хранит КОДЫ типов лексем
+
+    void init(std::vector<Token> input) {
+        for (auto& token : input) {
+            tokens.push_back(token);
+        }
+        int head = 0;    
+    }
+
+    int getTopTerminalIndex() {
+        for (int i = store.size() - 1; i >= 0; --i) {
+            if (store.at(i) == NOT_TERMINAL) {
+                continue;
+            }
+            return i;
+        }
+        throw std::exception("Terminal not found");
+    }
+
+    int getIndexInDictionary(int tokenTypeCode) {
+        return ROW_COLUMN_MAP[tokenTypeCode];
+    }
+
+    int tryFindBaseIndex(int inputTermIndex) {
+        for (int i = store.size() - 1; i >= 0; --i) {
+            if (store.at(i) == NOT_TERMINAL) {
+                continue;
+            }
+            
+            char relation = getRelation(store.at(i), inputTermIndex);
+
+            if (relation == '=') {
+                return i;
+            }
+            else return NOT_FOUND;
+        }
+        return NOT_FOUND;
+    }
+    
+    // Получаем индекс "основы"
+    int getBaseIndex(int inputTermIndex) {
+        int baseIndex = tryFindBaseIndex(inputTermIndex);
+
+        if (baseIndex == NOT_FOUND) {
+            std::cout << "ОСНОВА ПОСЛЕДНИЙ ТЕРМИНАЛ\n";
+            return getTopTerminalIndex();
+        }
+        std::cout << "ОСНОВА НАЙДЕНА\n";
+        return baseIndex;
+    }
+
+    char getRelation(int leftTermIndex, int rightTermIndex) {
+        if (leftTermIndex >= RELATION_MTX_SIZE || rightTermIndex >= RELATION_MTX_SIZE)
+            throw std::exception("Relation matrix out of range");
+        
+        return RELATION_MATRIX[leftTermIndex][rightTermIndex];
+    }
+
+    // Выполнить сдвиг (шаг 3)
+    void shift(int inputTermCode) {
+        std::cout << "  ADD: " << MAP_ST[inputTermCode] << "\n";
+        store.push_back(inputTermCode);
+        head += 1;
+    }
+
+    // выполнить свертку
+    void pack() {
+
+    }
+
+    // Удалить из стека все символы до переданного
+    void popToBase(int baseIndex) {
+        std::vector<int> buf;
+        for (int i = store.size() - 1; i >= baseIndex; --i) {
+            buf.insert(buf.begin(), store.back());
+            store.pop_back();
+        }
+        std::cout << "  DEL: " << stack_str(buf) << "\n";
+    }
+
+    std::string stack_str(std::vector<int> st) {
+        std::stringstream ss;
+        for (auto& el : st) {
+            ss << MAP_ST[el];
+        }
+        return ss.str();
+    }
+
+    // разбор одной команды
+    void proccess() {
+        std::cout << "НАЧАЛО\n";
+        store.push_back(10); // Шаг 2: помещения в стек символа #
+        
+        int limit = 0;
+        int k = 1;
+        
+        do {
+            std::cout << "\n";
+            Token currentToken = tokens[head];
+            
+            int topStackTermIndex = getTopTerminalIndex();
+
+            int storeTableIndex = store.at(topStackTermIndex);
+            int inputTableIndex = getIndexInDictionary(currentToken.typeCode);
+
+            // Шаг 2: получения отношения по таблице
+            char relation = getRelation(storeTableIndex, inputTableIndex);
+
+#pragma region  debug
+            std::cout << " >>> " << std::setw(2) << storeTableIndex 
+                      << ", "    << std::setw(2) << MAP_ST[storeTableIndex] 
+                      << "; "    << std::setw(2) << inputTableIndex 
+                      << ", "    << std::setw(2) << MAP_ST[inputTableIndex] 
+                      << " | [ " << relation 
+                      << " ] " << (relation == '>' ? "#СВЕРТКА" : "#СДВИГ")
+                      << "\n  СТЕК: " << stack_str(store) << "\n";
+            
+#pragma endregion            
+           
+            if (relation == '-') {
+                std::cout << "ERROR\n";
+                return; // ошибка
+            }
+
+
+            if (relation == '<' || relation == '=') {
+                shift(inputTableIndex); // Сдвиг
+                std::cout << "  СТЕК: " << stack_str(store) << "\n";
+                continue;
+            }
+
+            if (relation == '>') {
+
+                // берем в качестве "основы" терминал на вершине стека
+                int baseIndex = getBaseIndex(inputTableIndex); 
+                
+                popToBase(baseIndex);
+
+                std::cout << "  ADD: " << MAP_ST[NOT_TERMINAL] << "\n";
+                store.push_back(NOT_TERMINAL);
+
+                if (limit++ >= 30)
+                    return;
+
+                std::cout << "  СТЕК: " << stack_str(store) << "\n";
+               
+                continue;
+                
+            }
+            
+
+            return;
+        } while (head < tokens.size());
+
+        for (auto& el : store) {
+            std::cout << MAP_ST[el];
+        }
+
+        std::cout << "\nКОНЕЦ\n";
+    }
+
+    void move() {
+    
+    }
+
+
+
+};
 
 int main() {
     setlocale(LC_ALL, "");
 
-    LexAnalizer::WhiteBox::s_run();
-    
+    LexAnalizer::WhiteBox::s_run();   
     LexAnalizer::BlackBox::s_run();
+
+    LexAnalizer::Lexer lexer;
+    SyntaxScanner syntax;
+
+    //std::string line = "x:=a+((IV+a)+b);";
+    //std::string line = "x:=a*(a+b);";
+    std::string line = "x:=(a+a)*b;";
+    auto parseResult = lexer.parse(line);
+    parseResult.add(Token("К", 20, "К"));
+
+    if (parseResult.success())
+    {
+        syntax.init(parseResult.tokens);
+        syntax.proccess();
+    }
+
 }

@@ -316,7 +316,7 @@ namespace GUI {
 		}
 		else {
 			std::stringstream ss;
-			char inputChar = unmanaged[result.current.index];
+			char inputChar = unmanaged[result.current.head];
 			ss  << "Встречена ошибка на этапе \"Лексический анализ\":\n\n"
 				<< "В строке: " << result.current.row << "; столбце: " << result.current.column << ";\n"
 				<< "Входной симол \'" << inputChar << " \'(ascii:" << (int)inputChar << ")\n\n"
