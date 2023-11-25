@@ -1,5 +1,8 @@
 ﻿
-#include "../LEXER/lexer.cpp"
+#include "../LEXER/lexer.h"
+#include "../LEXER/shared_types.h"
+#include "../SYNTAX/syntax.cpp";
+
 
 #include <iostream>
 #include <fstream>
@@ -10,7 +13,7 @@
 
 using namespace Shared;
 
-namespace LexAnalizer {
+namespace LEX {
     class Test {
     public:
         int N = 1;
@@ -1062,266 +1065,123 @@ namespace LexAnalizer {
 
 }
 
-const int SHIFT_PACK_SIZE = 11;
-
-std::map<int, int> ROW_COLUMN_MAP = {
-    { 6,  0 }, // +
-    { 10, 1 }, // -
-    { 11, 2 }, // *
-    { 12, 3 }, // /
-    { 1,  4 }, // идентификатор
-    { 2,  5 }, // число
-    { 4,  6 }, // (
-    { 5,  7 }, // )
-    { 7,  8 }, // ;
-    { 3,  9 }, // :=
-    { 20, 10}, // :=
+struct TreeNode {
+    std::string value;
+    TreeNode* left;
+    TreeNode* right;
 };
 
-std::map<int, std::string> MAP_INPUT_STRING = {
-    { 0, "+" }, // +
-    { 1, "-"}, // -
-    { 2, "*"}, // *
-    { 3, "/"}, // /
-    { 4, "I"}, // идентификатор
-    { 5, "R"}, // число
-    { 6, "("}, // (
-    { 7, ")"}, // )
-    { 8, ";"}, // ;
-    { 9, ":="}, // :=
-    { 10, "#"}, // #
-    { 11, "S"}, // S
-};
-
-const int RELATION_MTX_SIZE = 11;
-
-char RELATION_MATRIX[RELATION_MTX_SIZE][RELATION_MTX_SIZE] = {
-    { '>', '<', '<', '<', '<', '<', '<', '>', '>', '-', '-'} ,
-    { '-', '-', '-', '-', '-', '-', '=', '-', '-', '-', '-'} ,
-    { '>', '<', '>', '>', '<', '<', '<', '>', '>', '-', '-'} ,
-    { '>', '<', '>', '>', '<', '<', '<', '>', '>', '-', '-'} ,
-    { '>', '-', '>', '>', '-', '-', '-', '>', '>', '=', '-'} ,
-    { '>', '-', '>', '>', '-', '-', '-', '>', '-', '-', '-'} ,
-    { '<', '<', '<', '<', '<', '<', '<', '=', '-', '-', '-'} ,
-    { '>', '-', '>', '>', '-', '-', '-', '>', '>', '-', '-'} ,
-    { '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '>'} ,
-    { '<', '<', '<', '<', '<', '<', '<', '-', '=', '-', '-'} ,
-    { '-', '-', '-', '-', '<', '-', '-', '-', '<', '-', '-'} ,
-};
-
-struct ReduceRule {
-    ReduceRule() {
-        number = -1;
-    }
-
-    ReduceRule(int num) {
-        number = num;
-    }
-
-    int number;
-};
-
-/*
-S -> a:=S; (правило 1)
-S -> S+S (правило 2)
-S -> S*S|S/S (правило 4,5)
-S -> (S)|-(S)|a|b (правило 7,8,9,10)
-
-
-*/
-
-std::map<std::string, ReduceRule> REDUCE_RULES = {
-    {"I:=S;", ReduceRule(1) },
-    {"S+S",   ReduceRule(2) },
-    {"S*S",   ReduceRule(4) },
-    {"S/S",   ReduceRule(5) },
-    {"(S)",   ReduceRule(7) },
-    {"-(S)",  ReduceRule(8) },
-    {"I",     ReduceRule(9) },
-    {"R",     ReduceRule(10) },
-};
-
-
-const int NOT_TERMINAL = 11;
-const int NOT_FOUND = -1;
-
-class SyntaxScanner {
-private:
-    int head = 0;
-    std::vector<Token> tokens;
+class SyntaxTree {
 public:
-    std::vector<int> rules;
-    std::vector<int> store;
-    std::string baseString;
+    TreeNode* root;
 
-    void init(std::vector<Token> input) {
-        for (auto& token : input) {
-            tokens.push_back(token);
+    SyntaxTree() {
+        root = NULL;
+    }
+
+    ~SyntaxTree() {
+        freeCascade(root);
+    }
+
+    static TreeNode* create(std::string value) {
+        TreeNode* node = new TreeNode;
+        node->value = value;
+        node->left = NULL;
+        node->right = NULL;
+        return node;
+    }
+
+    void print() {
+        printCascase(root, 0);
+    }
+
+private:
+    void printCascase(TreeNode* root, int depth) {
+        if (root == NULL) {
+            return;
         }
-        int head = 0;    
-    }
 
-    int getTerminalIndex(int end) {
-        for (int i = end; i >= 0; --i) {
-            if (store.at(i) == NOT_TERMINAL) {
-                continue;
-            }
-            return i;
+        for (int i = 0; i < depth; ++i) {
+            std::cout << "-";
         }
+
+        std::cout << root->value << "\n";
+
+        printCascase(root->left, depth + 1);
+        printCascase(root->right, depth + 1);
     }
 
-    int getIndexInDictionary(int tokenTypeCode) {
-        return ROW_COLUMN_MAP[tokenTypeCode];
-    }
-
-    char getRelation(int leftTermIndex, int rightTermIndex) {
-        if (leftTermIndex >= RELATION_MTX_SIZE || rightTermIndex >= RELATION_MTX_SIZE)
-            throw std::exception("Relation matrix out of range");
-        
-        return RELATION_MATRIX[leftTermIndex][rightTermIndex];
-    }
-
-
-    void reduce(int input) {
-        int index1 = getTerminalIndex(store.size() - 1);
-        int index2 = getTerminalIndex(index1 - 1);
-        int elAt1 = store.at(index1);
-        int elAt2 = store.at(index2);
-
-        bool notFound = true;
-        
-        do {     
-            //std::cout << " > INDEX1 = " << MAP_INPUT_STRING[elAt1] << " (" << index1 << ")" << "\n";
-            //std::cout << " > INDEX2 = " << MAP_INPUT_STRING[elAt2] << " (" << index2 << ")" << "\n";
-            char innerRelation = getRelation(elAt2, elAt1);
-            //std::cout << "RELATION " << innerRelation << "\n";
-            
-            if (innerRelation == '=') {
-                notFound = false;       
-                index1 = index2;
-                index2 = getTerminalIndex(index1 - 1);
-                elAt1 = store.at(index1);
-                elAt2 = store.at(index2);
-            }
-            else {
-                break;
-            }
-        } while (true);
-       
-        int baseIndex = notFound
-            ? getTerminalIndex(store.size() - 1)
-            : index1;
-
-        popIfLaterOrNotTerminal(baseIndex);
-
-        rules.push_back(REDUCE_RULES[baseString].number);
-       
-        store.push_back(NOT_TERMINAL);
-    }
-
-    // Удалить из стека все символы до переданного
-    void popIfLaterOrNotTerminal(int baseIndex) {
-        baseString = "";
-        std::stack<std::string> revert;
-        
-        for (int i = store.size() - 1; (i >= baseIndex || store.back() == NOT_TERMINAL); --i) {
-            revert.push(MAP_INPUT_STRING[store.back()]);
-            store.pop_back();
-        } 
-            
-        while (!revert.empty()) {
-            baseString.append(revert.top());
-            revert.pop();
+    void freeCascade(TreeNode* root) {
+        if (root == NULL) {
+            return;
         }
-    }
 
-    std::string stack_str(std::vector<int> st) {
-        std::stringstream ss;
-        for (auto& el : st) {
-            ss << MAP_INPUT_STRING[el];
-        }
-        return ss.str();
-    }
-
-    // разбор одной команды
-    void proccess() {
-        std::cout << "НАЧАЛО\n";
-        store.push_back(10); // Шаг 2: помещения в стек символа #
-        
-        int limit = 0;
-        int k = 1;
-        
-        do {
-            Token currentToken = tokens[head];
-            
-            int topStackTermIndex = getTerminalIndex(store.size() - 1);
-
-            int top = store.at(topStackTermIndex);
-            int input = getIndexInDictionary(currentToken.typeCode);
-
-            // Шаг 2: получения отношения по таблице
-            char relation = getRelation(top, input);
-
-#pragma region  debug
-            std::cout 
-                << (relation == '>' ? "#СВЕРТКА" : "#СДВИГ  ")
-                /* << " [ " << relation << " ] "
-                << "["<< std::setw(2) << top << ";"
-                << std::setw(2) << MAP_INPUT_STRING[top] << "]"
-                << "[ " << std::setw(2) << input << ";"
-                << std::setw(2) << MAP_INPUT_STRING[input] << "]"*/
-                << "\n  СТЕК: " << stack_str(store) << "\n";     
-#pragma endregion            
-                     
-            if (relation == '<' || relation == '=') { 
-                shift(input); //сдвиг
-                continue;
-            } 
-            else if (relation == '>') {
-                reduce(input); // свертка
-                continue;           
-            }
-            else if (relation == '-') {
-                end(input); // конец алгоритма (успешный или ошибочный)
-                return;
-            }
-        } while (head < tokens.size());
-    }
-
-    void shift(int input) {
-        store.push_back(input);
-        head += 1;
-    }
-
-    void end(int input) {
-        if (input == 10 && head != 0) {
-            std::cout << "РАЗБОР ЗАВЕРШЕН\n";
-        }
-        else {
-            std::cout << "ОШИБКА\n";
-        }
+        freeCascade(root->left);
+        freeCascade(root->right);
+        delete root;
     }
 };
+
 
 int main() {
     setlocale(LC_ALL, "");
 
-    LexAnalizer::WhiteBox::s_run();   
-    LexAnalizer::BlackBox::s_run();
+    LEX::WhiteBox::s_run();   
+    LEX::BlackBox::s_run();
 
-    LexAnalizer::Lexer lexer;
+    LEX::Lexer lexer;
     SyntaxScanner syntax;
-
+    
     //std::string line = "x:=a+((IV+a)+b);";
-    // std::string line = "x:=a*(a+b);";
-    std::string line = "a:=(a+-(-(VIII+b*a+b)+a)+a);";
+    std::string line = "a:=some+(value*XXIV);";
+    //std::string line = "a:=(a+-(-(VIII+b*a+b)+a)+a);";
     auto parseResult = lexer.parse(line);
     
     parseResult.add(Token("К", 20, "К"));
-
+    
     if (parseResult.success()) {
         syntax.init(parseResult.tokens);
         syntax.proccess();
     }
 
+
+
+    int index = 0;
+    for (int rule : syntax.rules) {
+        if (rule == 2) {
+            std::cout << "+";
+        }
+        
+        std::cout << rule << ":\t" << BUILD_RULES[rule];
+    
+        if (rule == 9 || rule == 10) {
+            std::cout << " : " << syntax.terms[index++];
+
+            // в этом случае в дереве просту нужно присвоить node->right = syntax.terms[index]
+        }
+    
+        std::cout << "\n";
+    }
+
+    SyntaxTree tree;
+
+    // Создание узлов дерева
+    tree.root = SyntaxTree::create(":=");
+    TreeNode* minusNode = SyntaxTree::create("-");
+    TreeNode* plusNode  = SyntaxTree::create("+");
+    TreeNode* multNode  = SyntaxTree::create("*");
+    TreeNode* someNode  = SyntaxTree::create("some");
+    TreeNode* valueNode = SyntaxTree::create("value");
+    TreeNode* xxivNode  = SyntaxTree::create("XXIV");
+
+    // Связывание узлов
+    tree.root->left = minusNode;
+    minusNode->left = plusNode;
+    plusNode->left = someNode;
+    plusNode->right = multNode;
+    multNode->left = valueNode;
+    multNode->right = xxivNode;
+
+    // Вывод синтаксического дерева
+    tree.print();
 }

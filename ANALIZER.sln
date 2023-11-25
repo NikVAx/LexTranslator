@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LEXER", "LEXER\LEXER.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GUI", "GUI\GUI.vcxproj", "{0A6B76FE-1ACA-45E8-90DD-A6E815CB324D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SYNTAX", "SYNTAX\SYNTAX.vcxproj", "{E0147B0A-0D9D-4E87-8405-374285C831E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -45,6 +47,14 @@ Global
 		{0A6B76FE-1ACA-45E8-90DD-A6E815CB324D}.Release|x64.Build.0 = Release|x64
 		{0A6B76FE-1ACA-45E8-90DD-A6E815CB324D}.Release|x86.ActiveCfg = Release|Win32
 		{0A6B76FE-1ACA-45E8-90DD-A6E815CB324D}.Release|x86.Build.0 = Release|Win32
+		{E0147B0A-0D9D-4E87-8405-374285C831E4}.Debug|x64.ActiveCfg = Debug|x64
+		{E0147B0A-0D9D-4E87-8405-374285C831E4}.Debug|x64.Build.0 = Debug|x64
+		{E0147B0A-0D9D-4E87-8405-374285C831E4}.Debug|x86.ActiveCfg = Debug|Win32
+		{E0147B0A-0D9D-4E87-8405-374285C831E4}.Debug|x86.Build.0 = Debug|Win32
+		{E0147B0A-0D9D-4E87-8405-374285C831E4}.Release|x64.ActiveCfg = Release|x64
+		{E0147B0A-0D9D-4E87-8405-374285C831E4}.Release|x64.Build.0 = Release|x64
+		{E0147B0A-0D9D-4E87-8405-374285C831E4}.Release|x86.ActiveCfg = Release|Win32
+		{E0147B0A-0D9D-4E87-8405-374285C831E4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +62,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{60AD564B-11AB-45EF-B79F-F8CD3BD4B77C} = {BDD6E556-D6B9-4192-86B6-D213B42652DC}
 		{11B0639D-FD36-49A8-9986-2A6F7B62F07A} = {9C9898D2-4782-4D9A-9A6E-F1C7A0810030}
+		{E0147B0A-0D9D-4E87-8405-374285C831E4} = {9C9898D2-4782-4D9A-9A6E-F1C7A0810030}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0E9389F0-5FC7-47E4-9933-858606C5C40E}

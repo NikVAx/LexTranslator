@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../LEXER/lexer.cpp"
+#include "../LEXER/lexer.h"
 #include "../LEXER/shared_types.h"
 
 #include <msclr/marshal_cppstd.h>
@@ -8,7 +8,7 @@
 #include <string>
 #include <sstream>
 
-LexAnalizer::Lexer lexer;
+LEX::Lexer lexer;
 
 namespace GUI {
 
