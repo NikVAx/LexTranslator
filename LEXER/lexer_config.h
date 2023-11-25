@@ -73,15 +73,12 @@ std::string getTermTypeName(TermTypes type) {
 
 
 static const int INITIAL_STATE = 53;
-static const int INPUT_ALPHABET_SIZE = 128;
-static const int COUNT_OF_STATES = 54;
-static const int COUNT_OF_INPUTS = 22;
-static const int ARGUMENTS_COUNT = 3;
-static const int COMMENT_TYPE = 8;
-static const int COUNT_OF_TYPES = 13;
-static const int COUNT_OF_ERRORS = 11;
 
-static const int INPUT_ALPHABET_MAP[INPUT_ALPHABET_SIZE] =
+static const int INPUT_ALPHABET_SIZE = 128;
+
+static const int ARGUMENTS_COUNT = 3;
+
+const std::vector<int> INPUT_ALPHABET_MAP =
 {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 21, 19, 0, 0, 20, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0,  0, 0, 0, 0, 0,
@@ -93,7 +90,7 @@ static const int INPUT_ALPHABET_MAP[INPUT_ALPHABET_SIZE] =
     8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 0, 0, 0
 };
 
-static const std::string TYPE_NAMES[COUNT_OF_TYPES] =
+static const std::vector <std::string> TYPE_NAMES =
 {
     "Ошибка                 ",
     "Идентификатор          ",
@@ -110,7 +107,7 @@ static const std::string TYPE_NAMES[COUNT_OF_TYPES] =
     "Оператор \"/\"         ",
 };
 
-static const std::string ERROR_NAMES[COUNT_OF_ERRORS] =
+const std::vector<std::string> ERROR_NAMES =
 {
     "Успешно",
     "Неизвестная ошибка",
@@ -126,7 +123,7 @@ static const std::string ERROR_NAMES[COUNT_OF_ERRORS] =
 };
 
 // Часть конфигурации, зависит от матрицы переходов
-static const TermTypes TOKEN_TYPE_MAP[COUNT_OF_STATES] =
+const std::vector<TermTypes> TOKEN_TYPE_MAP =
 {
     TermTypes::UNDEFINED,
     TermTypes::SEMICOLON,
@@ -183,9 +180,6 @@ static const TermTypes TOKEN_TYPE_MAP[COUNT_OF_STATES] =
     TermTypes::COMMENT
 };
 
-static const int IDENTIFIER_TYPE = 1;
-static const int KEYWORD_TYPE = 9;
-
 static bool inRange(int value, int first, int second) {
     return first <= value && value < second;
 }
@@ -203,7 +197,7 @@ public:
     }
 
     int getCountOfStates() {
-        return COUNT_OF_STATES;
+        return STATES_MATRIX.size();
     }
 
     int getArgumentsCount() {
@@ -211,7 +205,7 @@ public:
     }
 
     int getCountOfInputs() {
-        return COUNT_OF_INPUTS;
+        return STATES_MATRIX[0].size();
     }
 
     int getState(int state, int inputType) {
@@ -262,10 +256,6 @@ public:
         return _smConfig;
     }
 
-    static int getCommentTypeCode() {
-        return COMMENT_TYPE;
-    }
-
     int mapTokenType(int state) {
         int typeCode = inRange(state, 0, _smConfig.getCountOfStates())
             ? (int)TOKEN_TYPE_MAP[state]
@@ -278,7 +268,7 @@ public:
     }
 
     static std::string mapStatusMessage(int statusCode) {
-        std::string setError = inRange(statusCode, 0, COUNT_OF_ERRORS)
+        std::string setError = inRange(statusCode, 0, ERROR_NAMES.size())
             ? ERROR_NAMES[statusCode]
             : ERROR_NAMES[1]; // Неизвестная ошибка
         return setError;
