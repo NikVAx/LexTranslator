@@ -4,13 +4,13 @@
 #include "shared_types.h"
 #include "lexer_config.h"
 
-struct TransArgs {
+struct TransitionInfo {
 protected:
     std::vector<int> args;
     int code;
     char input;
 public:
-    TransArgs(char input, int code, std::vector<int> args);
+    TransitionInfo(char input, int code, std::vector<int> args);
 
     int getInputChar();
 
@@ -38,7 +38,7 @@ public:
 
     int currentState = 1;
 
-    TransArgs getTransit(char inputChar) {
+    TransitionInfo getTransition(char inputChar) {
         int inputType = _smConfig.mapInputAlpha(inputChar);
 
         std::vector<int> args;
@@ -47,7 +47,7 @@ public:
             args.push_back(_smConfig.mapMatrix(arg, currentState, inputType));
         }
 
-        return TransArgs(inputChar, inputType, args);
+        return TransitionInfo(inputChar, inputType, args);
     }
 
     int getInitialState() {

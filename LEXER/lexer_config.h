@@ -256,15 +256,15 @@ public:
         return _smConfig;
     }
 
-    int mapTokenType(int state) {
-        int typeCode = inRange(state, 0, _smConfig.getCountOfStates())
-            ? (int)TOKEN_TYPE_MAP[state]
-            : (int)TermTypes::UNDEFINED;
+    TermTypes mapTokenType(int state) {
+        TermTypes typeCode = inRange(state, 0, _smConfig.getCountOfStates())
+            ? TOKEN_TYPE_MAP[state]
+            : TermTypes::UNDEFINED;
         return typeCode;
     }
 
-    std::string mapTokenTypeName(int tokenTypeCode) {
-        return getTermTypeName( static_cast<TermTypes>(tokenTypeCode) );
+    std::string mapTokenTypeName(TermTypes termType) {
+        return getTermTypeName(termType);
     }
 
     static std::string mapStatusMessage(int statusCode) {

@@ -65,8 +65,8 @@ public:
         tokens.push_back(token);
     }
 
-    void add(std::string value, int typeCode, std::string typeName) {
-        tokens.push_back(Token(value, typeCode, typeName));
+    void add(std::string value, TermTypes typeCode, std::string typeName) {
+        tokens.push_back(Token(value, (int)typeCode, typeName));
     }
 
     void updateCurrentCharLocationData(char ch) {
