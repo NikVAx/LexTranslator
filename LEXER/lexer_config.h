@@ -42,7 +42,17 @@ enum class TermTypes {
 enum class StatusCodes {
     SUCCESS,
     BAD_IDENTIFIER,
-    INVALID_OPERATOR
+    INVALID_OPERATOR,
+    CODE3,
+    CODE4,
+    CODE5,
+    CODE6,
+    CODE7,
+    CODE8,
+    CODE9,
+    CODE10,
+    CODE11,
+    CODE12,
 };
 
 std::string getTermTypeName(TermTypes type) {
@@ -79,6 +89,9 @@ std::string getTermTypeName(TermTypes type) {
         ? NAMES[(int)TermTypes::UNDEFINED]
         : NAMES[(int)type];
 }
+
+
+static const int IS_BOUNDARY_CODE = 1;
 
 
 static const int INITIAL_STATE = 53;
@@ -217,28 +230,28 @@ public:
         return STATES_MATRIX[0].size();
     }
 
-    int getState(int state, int inputType) {
+    int getNextState(int state, int inputType) {
         return STATES_MATRIX[state][inputType];
     }
 
-    int getBound(int state, int inputType) {
+    int getBoundary(int state, int inputType) {
         return BOUNDS_MATRIX[state][inputType];
     }
 
-    int getError(int state, int inputType) {
+    int getStatusCode(int state, int inputType) {
         return ERRORS_MATRIX[state][inputType];
     }
 
     int mapMatrix(int arg, int state, int inputType) {
         switch (arg) {
         case 0:
-            return getState(state, inputType);
+            return getNextState(state, inputType);
      
         case 1: 
-            return getBound(state, inputType);
+            return getBoundary(state, inputType);
             
         case 2: 
-            return getError(state, inputType);
+            return getStatusCode(state, inputType);
      
         default:
             exit(-1);
@@ -272,14 +285,14 @@ public:
         return typeCode;
     }
 
-    std::string mapTokenTypeName(TermTypes termType) {
+    std::string getTokenTypeName(TermTypes termType) {
         return getTermTypeName(termType);
     }
 
-    static std::string mapStatusMessage(int statusCode) {
-        std::string setError = inRange(statusCode, 0, ERROR_NAMES.size())
-            ? ERROR_NAMES[statusCode]
+    static std::string mapStatusMessage(StatusCodes statusCode) {
+        std::string addError = inRange((int)statusCode, 0, ERROR_NAMES.size())
+            ? ERROR_NAMES[(int)statusCode]
             : ERROR_NAMES[1]; // Неизвестная ошибка
-        return setError;
+        return addError;
     }
 };

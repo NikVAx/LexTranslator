@@ -9,8 +9,13 @@ protected:
     std::vector<int> args;
     int code;
     char input;
+
+    int nextState;
+    bool isBoundary;
+    StatusCodes statusCode;
+
 public:
-    TransitionInfo(char input, int code, std::vector<int> args);
+    TransitionInfo(char input, int code, int nextState, bool isBoundary, StatusCodes statusCode);
 
     int getInputCode();
 
@@ -18,7 +23,7 @@ public:
 
     bool isTokenBoundary();
 
-    int getStatusCode();
+    StatusCodes getStatusCode();
 
     bool isNotSuccess();
 
@@ -38,14 +43,11 @@ public:
 
     TransitionInfo getTransition(char inputChar) {
         int inputType = _smConfig.mapInputAlpha(inputChar);
+        int nextState = _smConfig.getNextState(currentState, inputType);
+        bool isBoundary = _smConfig.getBoundary(currentState, inputType) == IS_BOUNDARY_CODE;
+        StatusCodes statusCode = (StatusCodes)_smConfig.getStatusCode(currentState, inputType);
 
-        std::vector<int> args;
-
-        for (int arg = 0; arg < _smConfig.getArgumentsCount(); ++arg) {
-            args.push_back(_smConfig.mapMatrix(arg, currentState, inputType));
-        }
-
-        return TransitionInfo(inputChar, inputType, args);
+        return TransitionInfo(inputChar, inputType, nextState, isBoundary, statusCode);
     }
 
     int getInitialState() {

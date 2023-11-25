@@ -300,14 +300,14 @@ namespace GUI {
 
 		std::string unmanaged = msclr::interop::marshal_as<std::string>(SourceCodeTxt->Text);
 
-		Shared::ParseResult result = lexer.parse(unmanaged);
+		ParseResult result = lexer.parse(unmanaged);
 
 		TokensTable->Rows->Clear();
 
 		if (result.success()) {
-			for (int i = 0; i < result.tokens.size(); ++i) {
-				String^ tokenString = gcnew String(result.tokens[i].value.c_str());
-				String^ typeNameString = gcnew String(result.tokens[i].typeName.c_str());
+			for (int i = 0; i < result.items.size(); ++i) {
+				String^ tokenString = gcnew String(result.items[i].value.c_str());
+				String^ typeNameString = gcnew String(result.items[i].typeName.c_str());
 
 				TokensTable->Rows->Add(System::Int32(i + 1), tokenString, typeNameString);
 			}
@@ -320,7 +320,8 @@ namespace GUI {
 			ss  << "Встречена ошибка на этапе \"Лексический анализ\":\n\n"
 				<< "В строке: " << result.current.row << "; столбце: " << result.current.column << ";\n"
 				<< "Входной симол \'" << inputChar << " \'(ascii:" << (int)inputChar << ")\n\n"
-				<< "Сообщение: " << result.message() << ".";
+				<< "Сообщение: " << "Not Implemented" << ".";
+			//TODO: Добавить обработку ошибок
 
 			String^ message = gcnew String(ss.str().c_str());
 

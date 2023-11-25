@@ -36,15 +36,18 @@ struct ParseItem {
     bool isValid() {
         return statusCode == StatusCodes::SUCCESS;
     }
+
+    ParseItem(Token token, StatusCodes statusCode = StatusCodes::SUCCESS) 
+        : token(token), statusCode(statusCode)
+    {
+    }
 };
 
 
 
 struct ParseResult {
 private:
-    bool _error = false;
-    int _code = 0;
-    std::string _message = "";
+    bool error = false;
 public:
     struct Location {
         int head = 0;
@@ -52,42 +55,29 @@ public:
         int column = 1;
     };
 
-    std::vector<Token> tokens;
+    std::vector<ParseItem> items;
     Location current;
 
-    void setError(int statusCode) {
-        _message = LexerConfiguration::mapStatusMessage(statusCode);
-        _error = true;
-        _code = statusCode;
-    }
-
-    std::string message() {
-        return _message;
+    void addError(std::string value, StatusCodes statusCode) {     
+        items.push_back(ParseItem(Token(value, TermTypes::UNDEFINED, 
+            getTermTypeName(TermTypes::UNDEFINED)), statusCode));
+        error = true;
     }
 
     bool success() {
-        return !_error;
-    }
-
-    int code() {
-        return _code;
+        return !error;
     }
 
     void add(Token token) {
-        tokens.push_back(token);
+        items.push_back(ParseItem(token));
     }
 
     void add(std::string value, TermTypes typeCode, std::string typeName) {
-        tokens.push_back(Token(value, typeCode, typeName));
+        items.push_back(ParseItem(Token(value, typeCode, typeName)));
     }
 
     void updateCurrentCharLocationData(char ch) {
-        current.head += 1;
-        current.column += 1;
-        if (ch == '\n') {
-            current.row += 1;
-            current.column = 1;
-        }
+
     }
 };
 

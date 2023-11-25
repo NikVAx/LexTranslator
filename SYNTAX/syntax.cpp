@@ -121,7 +121,7 @@ StackItem NOT_TERM = StackItem(NOT_TERMINAL, "S");
 class SyntaxScanner {
 private:
     int head = 0;
-    std::vector<Token> tokens;
+    std::vector<Token> items;
 public:
     std::vector<int> rules;
     std::vector<std::string> terms;
@@ -130,9 +130,12 @@ public:
 
     std::vector<StackItem> stack;
 
-    void init(std::vector<Token> input) {
-        for (auto& token : input) {
-            tokens.push_back(token);
+    void init(std::vector<ParseItem> input) {
+        for (auto& item : input) {
+            if (item.isValid()) {
+                items.push_back(item.token);
+            }
+            // TODO: Добавить иключение
         }
         int head = 0;
     }
@@ -232,7 +235,7 @@ public:
         int k = 1;
 
         do {
-            Token currentToken = tokens[head];
+            Token currentToken = items[head];
 
             int topStackTermIndex = getTerminalIndex(stack.size() - 1);
 
@@ -265,7 +268,7 @@ public:
                 end(input); // конец алгоритма (успешный или ошибочный)
                 return;
             }
-        } while (head < tokens.size());
+        } while (head < items.size());
     }
 
     void shift(int input, Token token) {

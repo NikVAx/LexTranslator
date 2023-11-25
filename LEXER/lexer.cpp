@@ -8,10 +8,12 @@
 #include <iostream>
 #include <sstream>
 
-TransitionInfo::TransitionInfo(char input, int code, std::vector<int> args)
+TransitionInfo::TransitionInfo(char input, int code, int nextState, bool isBoundary, StatusCodes statusCode)
     : input(input)
     , code(code)
-    , args(args)
+    , nextState(nextState)
+    , isBoundary(isBoundary)
+    , statusCode(statusCode)
 { }
 
 int TransitionInfo::getInputCode() {
@@ -19,27 +21,24 @@ int TransitionInfo::getInputCode() {
 }
 
 int TransitionInfo::getNextState() {
-    return args[0];
+    return nextState;
 }
 
 bool TransitionInfo::isTokenBoundary() {
-    return args[1] == 1; // 1 - split code
+    return isBoundary;
 }
 
-int TransitionInfo::getStatusCode() {
-    return args[2];
+StatusCodes TransitionInfo::getStatusCode() {
+    return statusCode;
 }
 
 bool TransitionInfo::isNotSuccess() {
-    return getStatusCode() != 0; // 0 - success code
+    return getStatusCode() != StatusCodes::SUCCESS;
 }
 
 bool TransitionInfo::isEmptyChar() {
     return input == '\n' || input == '\t' || input == ' ' || input == '\r';
 }
-
-
-#pragma region Lexer
 
 ParseResult LEX::Lexer::parse(std::string input) {
     ParseResult result;
@@ -52,21 +51,18 @@ ParseResult LEX::Lexer::parse(std::string input) {
     for (int head = 0; head < text.length() && result.success(); head++) {
         char ch = text[head];
 
-        result.updateCurrentCharLocationData(ch);
-
         TransitionInfo info = _sm.getTransition(ch);
 
         if (info.isNotSuccess()) {
-            int statusCode = info.getStatusCode();
-            result.setError(statusCode);
-            break;
+            result.addError(tokenString, (StatusCodes)info.getStatusCode());
+            continue;
         }
 
         if (info.isTokenBoundary() && !tokenString.empty()) {
             TermTypes tokenTypeCode = _lexConfig.mapTokenType(_sm.currentState);
 
             if (tokenTypeCode != TermTypes::COMMENT) {
-                std::string tokenTypeName = _lexConfig.mapTokenTypeName(tokenTypeCode);
+                std::string tokenTypeName = _lexConfig.getTokenTypeName(tokenTypeCode);
                 result.add(tokenString, tokenTypeCode, tokenTypeName);
             } // else ingore comment
 
@@ -78,11 +74,6 @@ ParseResult LEX::Lexer::parse(std::string input) {
         }
 
         _sm.currentState = info.getNextState();
-    }
-
-    if (result.success() && (_sm.currentState != 1 ||
-        _sm.currentState == _sm.getInitialState())) {
-        result.setError(3);
     }
 
     return result;
