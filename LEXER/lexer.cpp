@@ -26,40 +26,26 @@ int TransArgs::getInputCode() {
 int TransArgs::getNextState() {
     return args[0];
 }
-#pragma endregion
 
-#pragma region T_TransArg
-
-T_TransArg::T_TransArg(char input, int code, std::vector<int> args)
-    : TransArgs(input, code, args)
-{ }
-
-bool T_TransArg::isSplit() {
+bool TransArgs::isSplit() {
     return args[1] == 1; // 1 - split code
 }
 
-int T_TransArg::getStatusCode() {
+int TransArgs::getStatusCode() {
     return args[2];
 }
 
-bool T_TransArg::isNotSuccess() {
+bool TransArgs::isNotSuccess() {
     return getStatusCode() != 0; // 0 - success code
 }
 
-bool T_TransArg::isEmptyChar() {
+bool TransArgs::isEmptyChar() {
     return input == '\n' || input == '\t' || input == ' ' || input == '\r';
 }
 
 #pragma endregion
 
-
-
 #pragma region Lexer
-
-LEX::Lexer::Lexer()
-    : _lexConfig(LexerConfiguration())
-    , _sm(LexerConfiguration().getSmConfig())
-{ }
 
 Shared::ParseResult LEX::Lexer::parse(std::string input) {
     Shared::ParseResult result;
@@ -74,7 +60,7 @@ Shared::ParseResult LEX::Lexer::parse(std::string input) {
 
         result.move(ch);
 
-        T_TransArg args = _sm.getTransit(ch);
+        TransArgs args = _sm.getTransit(ch);
 
         if (args.isNotSuccess()) {
             int statusCode = args.getStatusCode();

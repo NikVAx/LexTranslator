@@ -1122,6 +1122,44 @@ private:
     }
 };
 
+struct TreeLine {
+    TreeLine(std::string not_term = "", std::string term = "") {
+        not_terminal = not_term;
+        terminal = terminal;
+    }
+
+    std::string not_terminal = "";
+    std::string terminal = "";
+};
+
+void build_line(SyntaxScanner& scanner) {
+    std::string line = "S"; 
+    for (int i = scanner.rules.size() - 1; i >= 0; --i) {
+        std::cout << line << "\n";
+        int rule = scanner.rules[i];
+        int location = line.find_last_of("S");
+        if (location != -1) {
+            line.erase(location, 1);
+            line.insert(location, BUILD_RULES[rule]);
+        }
+    }
+    std::cout << line << " \n";
+
+    int term_index = 0;
+
+    for (int i = 0; i <= line.size() - 1; ++i) {
+        if (line[i] == 'I' || line[i] == 'R') {
+            auto trm = scanner.terms[term_index++];
+            line.erase(i, 1);
+            line.insert(i, trm);
+            i += trm.size();
+            std::cout << line << "\n";
+        }
+    }
+    std::cout << line << "\n";
+}
+
+
 
 int main() {
     setlocale(LC_ALL, "");
@@ -1133,55 +1171,99 @@ int main() {
     SyntaxScanner syntax;
     
     //std::string line = "x:=a+((IV+a)+b);";
-    std::string line = "a:=some+(value*XXIV);";
     //std::string line = "a:=(a+-(-(VIII+b*a+b)+a)+a);";
+
+    std::string line = "a:=some+(value*XXIV);";
+    
+    std::cout << "ВВОД: " << line << "\n";
+
     auto parseResult = lexer.parse(line);
     
+    int index = 0;
+
+    std::vector<Token> command;
+    
+    for (int i = index; i < parseResult.tokens.size() - 1; ++i) {
+        if (parseResult.tokens[i].value == ";")
+            break;
+    
+    }
+
+
     parseResult.add(Token("К", 20, "К"));
     
     if (parseResult.success()) {
+        // TODO: тут нужно разделять токены на подсписки
+        // чтобы синтаксический анализатор принимал только конструктцию вида
+        // I:=S;
+        
         syntax.init(parseResult.tokens);
         syntax.proccess();
+        syntax.terms.insert(syntax.terms.cbegin(), parseResult.tokens[0].value);
+
+        build_line(syntax);
     }
 
 
 
-    int index = 0;
-    for (int rule : syntax.rules) {
-        if (rule == 2) {
-            std::cout << "+";
-        }
-        
-        std::cout << rule << ":\t" << BUILD_RULES[rule];
-    
-        if (rule == 9 || rule == 10) {
-            std::cout << " : " << syntax.terms[index++];
 
-            // в этом случае в дереве просту нужно присвоить node->right = syntax.terms[index]
-        }
+    //std::string proc = "S";
+    //
+    //for (int i = syntax.rules.size() - 1; i >= 0; --i) {
+    //    int rule = syntax.rules[i];
+    //    int location = proc.find_last_of("S");
+    //    if (location != -1) {
+    //        proc.erase(location, 1);
+    //        proc.insert(location, BUILD_RULES[rule]);
+    //    }
+    //
+       // std::cout  << " >> " << proc << "\n";
+       //
+       // std::cout << rule << ":\t" << BUILD_RULES[rule];
+       //
+       // if (rule == 9 || rule == 10) {
+       //     std::cout << " : " << syntax.terms[index++];
+       //
+       //
+       //
+       //     // в этом случае в дереве просту нужно присвоить node->right = syntax.terms[index]
+       // }
+       // else 
+       // {
+       //
+       // }
+       //
+       // std::cout << "\n";
+    //}
+    //if (proc[location] == 'I' || proc[location] == 'R') {
+    //    proc.insert(location, BUILD_RULES[rule]);
+    //}
+    //else {
+    //
+    //}
+
     
-        std::cout << "\n";
-    }
+
 
     SyntaxTree tree;
 
-    // Создание узлов дерева
-    tree.root = SyntaxTree::create(":=");
-    TreeNode* minusNode = SyntaxTree::create("-");
-    TreeNode* plusNode  = SyntaxTree::create("+");
-    TreeNode* multNode  = SyntaxTree::create("*");
-    TreeNode* someNode  = SyntaxTree::create("some");
-    TreeNode* valueNode = SyntaxTree::create("value");
-    TreeNode* xxivNode  = SyntaxTree::create("XXIV");
-
-    // Связывание узлов
-    tree.root->left = minusNode;
-    minusNode->left = plusNode;
-    plusNode->left = someNode;
-    plusNode->right = multNode;
-    multNode->left = valueNode;
-    multNode->right = xxivNode;
+    //// Создание узлов дерева
+    //tree.root = SyntaxTree::create(":=");
+    //TreeNode* minusNode = SyntaxTree::create("-");
+    //TreeNode* plusNode  = SyntaxTree::create("+");
+    //TreeNode* multNode  = SyntaxTree::create("*");
+    //TreeNode* someNode  = SyntaxTree::create("some");
+    //TreeNode* valueNode = SyntaxTree::create("value");
+    //TreeNode* xxivNode  = SyntaxTree::create("XXIV");
+    //
+    //// Связывание узлов
+    //tree.root->left = minusNode;
+    //minusNode->left = plusNode;
+    //plusNode->left = someNode;
+    //plusNode->right = multNode;
+    //multNode->left = valueNode;
+    //multNode->right = xxivNode;
 
     // Вывод синтаксического дерева
-    tree.print();
+    //tree.print();
 }

@@ -2,10 +2,10 @@
 //
 
 #include "../LEXER/lexer.cpp"
+#include "../LEXER/shared_types.h"
 
 #include "pch.h"
 #include "framework.h"
-
 
 #include <iostream>
 #include <fstream>
@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <stack>
 #include <functional>
+#include <vector>
 #include <map>
 
 using namespace Shared;

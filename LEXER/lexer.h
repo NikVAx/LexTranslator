@@ -17,10 +17,6 @@ public:
     int getInputCode();
 
     int getNextState();
-};
-
-struct T_TransArg : TransArgs {
-    T_TransArg(char input, int code, std::vector<int> args);
 
     bool isSplit();
 
@@ -31,7 +27,6 @@ struct T_TransArg : TransArgs {
     bool isEmptyChar();
 };
 
-template <class TArgs>
 class StateMachine {
 protected:
     StateMachineConfiguration _smConfig;
@@ -43,7 +38,7 @@ public:
 
     int currentState = 1;
 
-    TArgs getTransit(char inputChar) {
+    TransArgs getTransit(char inputChar) {
         int inputType = _smConfig.mapInputAlpha(inputChar);
 
         std::vector<int> args;
@@ -52,7 +47,7 @@ public:
             args.push_back(_smConfig.mapMatrix(arg, currentState, inputType));
         }
 
-        return TArgs(inputChar, inputType, args);
+        return TransArgs(inputChar, inputType, args);
     }
 
     int getInitialState() {
@@ -68,9 +63,9 @@ namespace LEX {
     class Lexer {
     private:
         LexerConfiguration _lexConfig;
-        StateMachine<T_TransArg>  _sm;
+        StateMachine _sm;
     public:
-        Lexer();
+        Lexer() : _lexConfig(LexerConfiguration()) , _sm(LexerConfiguration().getSmConfig()) { }
 
         Shared::ParseResult parse(std::string input);
     };
