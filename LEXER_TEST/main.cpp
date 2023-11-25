@@ -12,8 +12,6 @@
 #include <stack>
 #include <functional>
 
-using namespace Shared;
-
 namespace LEX {
     class Test {
     public:
@@ -504,7 +502,7 @@ namespace LEX {
             else
             {
                 ss << "tokens:\n";
-                for (Shared::Token& token : parseResult.tokens) {
+                for (Token& token : parseResult.tokens) {
                     ss << token.typeCode << " " << token.typeName << " " <<
                         token.value << "\n";
                 }

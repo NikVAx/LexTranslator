@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="lexer.h" />
+    <ClInclude Include="matrices.h" />
     <ClInclude Include="shared_types.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="lexer_config.h" />

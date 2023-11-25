@@ -67,6 +67,6 @@ namespace LEX {
     public:
         Lexer() : _lexConfig(LexerConfiguration()) , _sm(LexerConfiguration().getSmConfig()) { }
 
-        Shared::ParseResult parse(std::string input);
+        ParseResult parse(std::string input);
     };
 }

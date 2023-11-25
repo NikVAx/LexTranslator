@@ -8,7 +8,6 @@
 #include <iostream>
 #include <sstream>
 
-#pragma region TransArgs
 TransArgs::TransArgs(char input, int code, std::vector<int> args)
     : input(input)
     , code(code)
@@ -43,12 +42,11 @@ bool TransArgs::isEmptyChar() {
     return input == '\n' || input == '\t' || input == ' ' || input == '\r';
 }
 
-#pragma endregion
 
 #pragma region Lexer
 
-Shared::ParseResult LEX::Lexer::parse(std::string input) {
-    Shared::ParseResult result;
+ParseResult LEX::Lexer::parse(std::string input) {
+    ParseResult result;
 
     _sm.reset();
 
@@ -64,7 +62,7 @@ Shared::ParseResult LEX::Lexer::parse(std::string input) {
 
         if (args.isNotSuccess()) {
             int statusCode = args.getStatusCode();
-            result.setError(statusCode, _lexConfig.mapStatusMessage(statusCode));
+            result.setError(statusCode);
             break;
         }
 
@@ -88,10 +86,8 @@ Shared::ParseResult LEX::Lexer::parse(std::string input) {
 
     if (result.success() && (_sm.currentState != 1 ||
         _sm.currentState == _sm.getInitialState())) {
-        result.setError(3, _lexConfig.mapStatusMessage(3));
+        result.setError(3);
     }
 
     return result;
 }
-
-#pragma endregion

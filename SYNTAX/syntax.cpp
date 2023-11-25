@@ -4,6 +4,7 @@
 #include "../LEXER/lexer.cpp"
 #include "../LEXER/shared_types.h"
 #include "../Utils/utils.h"
+#include "utils.h"
 
 #include "pch.h"
 #include "framework.h"
@@ -17,23 +18,7 @@
 #include <vector>
 #include <map>
 
-using namespace Shared;
-
 const int SHIFT_PACK_SIZE = 11;
-
-std::map<int, int> ROW_COLUMN_MAP = {
-    { 6,  0 }, // +
-    { 10, 1 }, // -
-    { 11, 2 }, // *
-    { 12, 3 }, // /
-    { 1,  4 }, // идентификатор
-    { 2,  5 }, // число
-    { 4,  6 }, // (
-    { 5,  7 }, // )
-    { 7,  8 }, // ;
-    { 3,  9 }, // :=
-    { 20, 10}, // :=
-};
 
 std::map<int, std::string> MAP_INPUT_STRING = {
     { 0, "+" }, // +
@@ -49,22 +34,10 @@ std::map<int, std::string> MAP_INPUT_STRING = {
     { 10, "#"}, // #
     { 11, "S"}, // S
 };
+ 
 
-const int RELATION_MTX_SIZE = 11;
 
-char RELATION_MATRIX[RELATION_MTX_SIZE][RELATION_MTX_SIZE] = {
-    { '>', '<', '<', '<', '<', '<', '<', '>', '>', '-', '-'} ,
-    { '-', '-', '-', '-', '-', '-', '=', '-', '-', '-', '-'} ,
-    { '>', '<', '>', '>', '<', '<', '<', '>', '>', '-', '-'} ,
-    { '>', '<', '>', '>', '<', '<', '<', '>', '>', '-', '-'} ,
-    { '>', '-', '>', '>', '-', '-', '-', '>', '>', '=', '-'} ,
-    { '>', '-', '>', '>', '-', '-', '-', '>', '-', '-', '-'} ,
-    { '<', '<', '<', '<', '<', '<', '<', '=', '-', '-', '-'} ,
-    { '>', '-', '>', '>', '-', '-', '-', '>', '>', '-', '-'} ,
-    { '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '>'} ,
-    { '<', '<', '<', '<', '<', '<', '<', '-', '=', '-', '-'} ,
-    { '-', '-', '-', '-', '<', '-', '-', '-', '<', '-', '-'} ,
-};
+
 
 struct ReduceRule {
     ReduceRule() {
@@ -145,15 +118,6 @@ struct StackItem {
 
 StackItem NOT_TERM = StackItem(NOT_TERMINAL, "S");
 
-/*
-Лексема:
-  int: Тип: один из операторов | переменная | нетерминал
-  Значение: хранить если переменная
-
-
-
-*/
-
 class SyntaxScanner {
 private:
     int head = 0;
@@ -186,11 +150,11 @@ public:
         return ROW_COLUMN_MAP[tokenTypeCode];
     }
 
-    char getRelation(int leftTermIndex, int rightTermIndex) {
-        if (leftTermIndex >= RELATION_MTX_SIZE || rightTermIndex >= RELATION_MTX_SIZE)
+    Relations getRelation(int leftTermIndex, int rightTermIndex) {
+        if (leftTermIndex >= MATH_MATRIX.SIZE() || rightTermIndex >= MATH_MATRIX.SIZE())
             throw std::exception("Relation matrix out of range");
 
-        return RELATION_MATRIX[leftTermIndex][rightTermIndex];
+        return MATH_MATRIX.MATRIX[leftTermIndex][rightTermIndex];
     }
 
     void reduce(int input, Token token) {
@@ -204,10 +168,10 @@ public:
         do {
             //std::cout << " > INDEX1 = " << MAP_INPUT_STRING[elAt1] << " (" << index1 << ")" << "\n";
             //std::cout << " > INDEX2 = " << MAP_INPUT_STRING[elAt2] << " (" << index2 << ")" << "\n";
-            char innerRelation = getRelation(elAt2, elAt1);
+            Relations innerRelation = getRelation(elAt2, elAt1);
             //std::cout << "RELATION " << innerRelation << "\n";
 
-            if (innerRelation == '=') {
+            if (innerRelation == Relations::BASE) {
                 notFound = false;
                 index1 = index2;
                 index2 = getTerminalIndex(index1 - 1);
@@ -276,11 +240,11 @@ public:
             int input = getIndexInDictionary(currentToken.typeCode);
 
             // Шаг 2: получения отношения по таблице
-            char relation = getRelation(top, input);
+            Relations relation = getRelation(top, input);
 
 #pragma region  debug
             std::cout
-                << (relation == '>' ? "#СВЕРТКА" : "#СДВИГ  ")
+                << (relation == Relations::NEXT ? "#СВЕРТКА" : "#СДВИГ  ")
                 /* << " [ " << relation << " ] "
                 << "["<< std::setw(2) << top << ";"
                 << std::setw(2) << MAP_INPUT_STRING[top] << "]"
@@ -289,15 +253,15 @@ public:
                 << "\n  СТЕК: " << stack_str(stack) << "\n";
 #pragma endregion            
 
-            if (relation == '<' || relation == '=') {
+            if (relation == Relations::PREV || relation == Relations::BASE) {
                 shift(input, currentToken); //сдвиг
                 continue;
             }
-            else if (relation == '>') {
+            else if (relation == Relations::NEXT) {
                 reduce(input, currentToken); // свертка
                 continue;
             }
-            else if (relation == '-') {
+            else if (relation == Relations::NONE) {
                 end(input); // конец алгоритма (успешный или ошибочный)
                 return;
             }
