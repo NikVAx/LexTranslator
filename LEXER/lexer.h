@@ -12,8 +12,6 @@ protected:
 public:
     TransitionInfo(char input, int code, std::vector<int> args);
 
-    int getInputChar();
-
     int getInputCode();
 
     int getNextState();

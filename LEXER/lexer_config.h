@@ -12,7 +12,7 @@
 #include <string>
 
 enum class TermTypes {
-    UNDEFINED, INDENTIFIER,
+    UNDEFINED, IDENTIFIER,
     NUMBER,// Числовые литералы
     ASSIGNMENT,
     OPEN_BRACKET, CLOSE_BRACKET, // Скобки
@@ -28,6 +28,9 @@ enum class TermTypes {
     
     OR, XOR, AND, NOT, // Побитовые операторы
     IF, THEN, ELSE, // Условный оператор
+
+    END_TERMINAL,
+
     FOR, DO, // Оператор цикла
     LESS, GREATER, EQUAL, // Операторы сравнения
     
@@ -40,7 +43,7 @@ std::string getTermTypeName(TermTypes type) {
     static std::string NAMES[(int)TermTypes::COUNT_OF_TYPES];
 
     NAMES[(int)TermTypes::UNDEFINED] = "Неопределенный";
-    NAMES[(int)TermTypes::INDENTIFIER] = "Идентификатор";
+    NAMES[(int)TermTypes::IDENTIFIER] = "Идентификатор";
     NAMES[(int)TermTypes::COMMENT] = "Комментарий";
     NAMES[(int)TermTypes::ASSIGNMENT] = "Присваивание";
     NAMES[(int)TermTypes::SEMICOLON] = "Разделитель";
@@ -127,7 +130,7 @@ const std::vector<TermTypes> TOKEN_TYPE_MAP =
 {
     TermTypes::UNDEFINED,
     TermTypes::SEMICOLON,
-    TermTypes::INDENTIFIER,
+    TermTypes::IDENTIFIER,
     TermTypes::UNDEFINED,
     TermTypes::UNDEFINED,
     TermTypes::UNDEFINED,
@@ -146,7 +149,7 @@ const std::vector<TermTypes> TOKEN_TYPE_MAP =
     TermTypes::UNDEFINED,
     TermTypes::UNDEFINED,
     TermTypes::UNDEFINED,
-    TermTypes::INDENTIFIER,
+    TermTypes::IDENTIFIER,
     TermTypes::NUMBER,
     TermTypes::NUMBER,
     TermTypes::NUMBER,

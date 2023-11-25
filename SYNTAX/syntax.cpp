@@ -237,7 +237,7 @@ public:
             int topStackTermIndex = getTerminalIndex(stack.size() - 1);
 
             int top = stack.at(topStackTermIndex).code;
-            int input = getIndexInDictionary(currentToken.typeCode);
+            int input = getIndexInDictionary((int)currentToken.typeCode);
 
             // Шаг 2: получения отношения по таблице
             Relations relation = getRelation(top, input);

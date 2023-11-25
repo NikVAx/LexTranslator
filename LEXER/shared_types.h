@@ -7,7 +7,7 @@
 #include <sstream>
 
 struct Token {
-    Token(std::string value, int typeCode, std::string typeName) {
+    Token(std::string value, TermTypes typeCode, std::string typeName) {
         this->value = value;
         this->typeCode = typeCode;
         this->typeName = typeName;
@@ -15,7 +15,7 @@ struct Token {
 
     std::string value = "";
     std::string typeName = "";
-    int typeCode = 0;
+    TermTypes typeCode = TermTypes::UNDEFINED;
 
     friend bool operator==(const Token& t1, const Token& t2) {
         return t1.value == t2.value &&
@@ -66,7 +66,7 @@ public:
     }
 
     void add(std::string value, TermTypes typeCode, std::string typeName) {
-        tokens.push_back(Token(value, (int)typeCode, typeName));
+        tokens.push_back(Token(value, typeCode, typeName));
     }
 
     void updateCurrentCharLocationData(char ch) {

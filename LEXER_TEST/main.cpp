@@ -47,7 +47,7 @@ namespace LEX {
             std::cout << "location.column: " << act.current.column << "\n";
             std::cout << "tokens.size: " << act.tokens.size() << "\n";
             for (auto& token : act.tokens) {
-                std::cout << token.value << "\t" << token.typeCode << "\t" << token.typeName << "\n";
+                std::cout << token.value << "\t" << (int)token.typeCode << "\t" << token.typeName << "\n";
             }
             std::cout << std::string(32, '#') << "\n";
         }
@@ -184,11 +184,11 @@ namespace LEX {
             if (act.success() == true &&
                 act.code() == SUCCESS_CODE &&
                 act.tokens.size() == 8 &&
-                act.tokens[0].value == "x" && act.tokens[0].typeCode == 1 &&
+                act.tokens[0].value == "x" && act.tokens[0].typeCode == TermTypes::IDENTIFIER &&
                 act.tokens[1].value == ":=" &&
                 act.tokens[2].value == "X" &&
                 act.tokens[3].value == ";" &&
-                act.tokens[4].value == "y" && act.tokens[0].typeCode == 1 &&
+                act.tokens[4].value == "y" && act.tokens[0].typeCode == TermTypes::IDENTIFIER &&
                 act.tokens[5].value == ":=" &&
                 act.tokens[6].value == "X" &&
                 act.tokens[7].value == ";")
@@ -363,16 +363,16 @@ namespace LEX {
             if (act.success() &&
                 act.code() == SUCCESS_CODE &&
                 act.tokens.size() == 10 &&
-                act.tokens[0].typeCode == 1 && act.tokens[0].value == "x" &&
-                act.tokens[1].typeCode == 3 && act.tokens[1].value == ":=" &&
-                act.tokens[2].typeCode == 4 && act.tokens[2].value == "(" &&
-                act.tokens[3].typeCode == 2 && act.tokens[3].value == "IV" &&
-                act.tokens[4].typeCode ==11 && act.tokens[4].value == "*" &&
-                act.tokens[5].typeCode == 2 && act.tokens[5].value == "MMMDCCXLIV" &&
-                act.tokens[6].typeCode == 5 && act.tokens[6].value == ")" &&
-                act.tokens[7].typeCode ==10 && act.tokens[7].value == "-" &&
-                act.tokens[8].typeCode == 2 && act.tokens[8].value == "II" &&
-                act.tokens[9].typeCode == 7 && act.tokens[9].value == ";")
+                act.tokens[0].typeCode == TermTypes::IDENTIFIER && act.tokens[0].value == "x" &&
+                act.tokens[1].typeCode == TermTypes::ASSIGNMENT && act.tokens[1].value == ":=" &&
+                act.tokens[2].typeCode == TermTypes::OPEN_BRACKET && act.tokens[2].value == "(" &&
+                act.tokens[3].typeCode == TermTypes::NUMBER && act.tokens[3].value == "IV" &&
+                act.tokens[4].typeCode == TermTypes::MULTIPLY && act.tokens[4].value == "*" &&
+                act.tokens[5].typeCode == TermTypes::NUMBER && act.tokens[5].value == "MMMDCCXLIV" &&
+                act.tokens[6].typeCode == TermTypes::CLOSE_BRACKET && act.tokens[6].value == ")" &&
+                act.tokens[7].typeCode == TermTypes::MINUS && act.tokens[7].value == "-" &&
+                act.tokens[8].typeCode == TermTypes::NUMBER && act.tokens[8].value == "II" &&
+                act.tokens[9].typeCode == TermTypes::SEMICOLON && act.tokens[9].value == ";")
             {
                 PASS();
             }
@@ -396,24 +396,24 @@ namespace LEX {
             if (act.success() &&
                 act.code() == SUCCESS_CODE &&
                 act.tokens.size() == 18 &&
-                act.tokens[0].typeCode == 1 && act.tokens[0].value == "x" &&
-                act.tokens[1].typeCode == 3 && act.tokens[1].value == ":=" &&
-                act.tokens[2].typeCode == 2 && act.tokens[2].value == "II" &&
-                act.tokens[3].typeCode == 7 && act.tokens[3].value == ";" &&
-                act.tokens[4].typeCode == 1 && act.tokens[4].value == "y" &&
-                act.tokens[5].typeCode == 3 && act.tokens[5].value == ":=" &&
-                act.tokens[6].typeCode == 2 && act.tokens[6].value == "IV" &&
-                act.tokens[7].typeCode ==11 && act.tokens[7].value == "*" &&
-                act.tokens[8].typeCode == 1 && act.tokens[8].value == "x" &&
-                act.tokens[9].typeCode ==10 && act.tokens[9].value == "-" &&
-                act.tokens[10].typeCode == 2 && act.tokens[10].value == "II" &&
-                act.tokens[11].typeCode == 7 && act.tokens[11].value == ";" &&
-                act.tokens[12].typeCode == 1 && act.tokens[12].value == "z" &&
-                act.tokens[13].typeCode == 3 && act.tokens[13].value == ":=" &&
-                act.tokens[14].typeCode == 1 && act.tokens[14].value == "x" &&
-                act.tokens[15].typeCode ==11 && act.tokens[15].value == "*" &&
-                act.tokens[16].typeCode == 1 && act.tokens[16].value == "y" &&
-                act.tokens[17].typeCode == 7 && act.tokens[17].value == ";")
+                act.tokens[0].typeCode == TermTypes::IDENTIFIER && act.tokens[0].value == "x" &&
+                act.tokens[1].typeCode == TermTypes::ASSIGNMENT && act.tokens[1].value == ":=" &&
+                act.tokens[2].typeCode == TermTypes::NUMBER && act.tokens[2].value == "II" &&
+                act.tokens[3].typeCode == TermTypes::SEMICOLON && act.tokens[3].value == ";" &&
+                act.tokens[4].typeCode == TermTypes::IDENTIFIER && act.tokens[4].value == "y" &&
+                act.tokens[5].typeCode == TermTypes::ASSIGNMENT && act.tokens[5].value == ":=" &&
+                act.tokens[6].typeCode == TermTypes::NUMBER && act.tokens[6].value == "IV" &&
+                act.tokens[7].typeCode == TermTypes::MULTIPLY && act.tokens[7].value == "*" &&
+                act.tokens[8].typeCode == TermTypes::IDENTIFIER && act.tokens[8].value == "x" &&
+                act.tokens[9].typeCode == TermTypes::MINUS && act.tokens[9].value == "-" &&
+                act.tokens[10].typeCode == TermTypes::NUMBER && act.tokens[10].value == "II" &&
+                act.tokens[11].typeCode == TermTypes::SEMICOLON && act.tokens[11].value == ";" &&
+                act.tokens[12].typeCode == TermTypes::IDENTIFIER && act.tokens[12].value == "z" &&
+                act.tokens[13].typeCode == TermTypes::ASSIGNMENT && act.tokens[13].value == ":=" &&
+                act.tokens[14].typeCode == TermTypes::IDENTIFIER && act.tokens[14].value == "x" &&
+                act.tokens[15].typeCode ==  TermTypes::MULTIPLY && act.tokens[15].value == "*" &&
+                act.tokens[16].typeCode == TermTypes::IDENTIFIER && act.tokens[16].value == "y" &&
+                act.tokens[17].typeCode == TermTypes::SEMICOLON && act.tokens[17].value == ";")
             {
                 PASS();
             }
@@ -432,18 +432,18 @@ namespace LEX {
             if (act.success() &&
                 act.code() == SUCCESS_CODE &&
                 act.tokens.size() == 12 &&
-                act.tokens[0].typeCode == 1 && act.tokens[0].value == "x" &&
-                act.tokens[1].typeCode == 3 && act.tokens[1].value == ":=" &&
-                act.tokens[2].typeCode == 4 && act.tokens[2].value == "(" &&
-                act.tokens[3].typeCode == 4 && act.tokens[3].value == "(" &&
-                act.tokens[4].typeCode == 2 && act.tokens[4].value == "II" &&
-                act.tokens[5].typeCode == 11 && act.tokens[5].value == "*" &&
-                act.tokens[6].typeCode == 2 && act.tokens[6].value == "MMM" &&
-                act.tokens[7].typeCode == 5 && act.tokens[7].value == ")" &&
-                act.tokens[8].typeCode == 12 && act.tokens[8].value == "/" &&
-                act.tokens[9].typeCode == 2 && act.tokens[9].value == "VI" &&
-                act.tokens[10].typeCode == 5 && act.tokens[10].value == ")" &&
-                act.tokens[11].typeCode == 7 && act.tokens[11].value == ";")
+                act.tokens[0].typeCode == TermTypes::IDENTIFIER && act.tokens[0].value == "x" &&
+                act.tokens[1].typeCode == TermTypes::ASSIGNMENT && act.tokens[1].value == ":=" &&
+                act.tokens[2].typeCode == TermTypes::OPEN_BRACKET && act.tokens[2].value == "(" &&
+                act.tokens[3].typeCode == TermTypes::OPEN_BRACKET && act.tokens[3].value == "(" &&
+                act.tokens[4].typeCode == TermTypes::NUMBER && act.tokens[4].value == "II" &&
+                act.tokens[5].typeCode == TermTypes::MULTIPLY && act.tokens[5].value == "*" &&
+                act.tokens[6].typeCode == TermTypes::NUMBER && act.tokens[6].value == "MMM" &&
+                act.tokens[7].typeCode == TermTypes::CLOSE_BRACKET && act.tokens[7].value == ")" &&
+                act.tokens[8].typeCode == TermTypes::DIVIDE && act.tokens[8].value == "/" &&
+                act.tokens[9].typeCode == TermTypes::NUMBER && act.tokens[9].value == "VI" &&
+                act.tokens[10].typeCode == TermTypes::OPEN_BRACKET && act.tokens[10].value == ")" &&
+                act.tokens[11].typeCode == TermTypes::SEMICOLON && act.tokens[11].value == ";")
             {
                 PASS();
             }
@@ -504,7 +504,7 @@ namespace LEX {
             {
                 ss << "tokens:\n";
                 for (Token& token : parseResult.tokens) {
-                    ss << token.typeCode << " " << token.typeName << " " <<
+                    ss << (int)token.typeCode << " " << token.typeName << " " <<
                         token.value << "\n";
                 }
             }
@@ -1146,7 +1146,7 @@ int main() {
         while (index < parseResult.tokens.size()) {
             commands[page].push_back(parseResult.tokens[index]);           
             if (parseResult.tokens[index].value == ";") {
-                commands[page].push_back(Token("К", 20, "К"));
+                commands[page].push_back(Token("К", TermTypes::END_TERMINAL, "К"));
                 page += 1;
                 index += 1;
                 break;
@@ -1156,7 +1156,7 @@ int main() {
     }
    
 
-    parseResult.add(Token("К", 20, "К"));
+    parseResult.add(Token("К", TermTypes::END_TERMINAL, "К"));
     
     if (parseResult.success()) {
         // TODO: тут нужно разделять токены на подсписки

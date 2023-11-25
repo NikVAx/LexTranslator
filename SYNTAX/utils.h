@@ -66,7 +66,7 @@ public:
     static const TokenMeta MINUS;
     static const TokenMeta MULTIPLY;
     static const TokenMeta DIVIDE;
-    static const TokenMeta INDENTIFIER;
+    static const TokenMeta IDENTIFIER;
     static const TokenMeta NUMBER;
     static const TokenMeta OPEN_BRACKET;
     static const TokenMeta CLOSE_BRACKET;
@@ -79,7 +79,7 @@ const TokenMeta SYNTAX_CONSTANTS::PLUS = TokenMeta(0, "+", TOKEN_TYPE::TERMINAL)
 const TokenMeta SYNTAX_CONSTANTS::MINUS = TokenMeta(1, "-", TOKEN_TYPE::TERMINAL);
 const TokenMeta SYNTAX_CONSTANTS::MULTIPLY = TokenMeta(2, "*", TOKEN_TYPE::TERMINAL);
 const TokenMeta SYNTAX_CONSTANTS::DIVIDE = TokenMeta(3, "/", TOKEN_TYPE::TERMINAL);
-const TokenMeta SYNTAX_CONSTANTS::INDENTIFIER = TokenMeta(4, "I", TOKEN_TYPE::NONTERMINAL);
+const TokenMeta SYNTAX_CONSTANTS::IDENTIFIER = TokenMeta(4, "I", TOKEN_TYPE::NONTERMINAL);
 const TokenMeta SYNTAX_CONSTANTS::NUMBER = TokenMeta(5, "R", TOKEN_TYPE::NONTERMINAL);
 const TokenMeta SYNTAX_CONSTANTS::OPEN_BRACKET = TokenMeta(6, "(", TOKEN_TYPE::TERMINAL);
 const TokenMeta SYNTAX_CONSTANTS::CLOSE_BRACKET = TokenMeta(7, ")", TOKEN_TYPE::TERMINAL);
@@ -92,7 +92,7 @@ std::map<int, int> ROW_COLUMN_MAP = {
     { 10, SYNTAX_CONSTANTS::MINUS.code }, // -
     { 11, SYNTAX_CONSTANTS::MULTIPLY.code }, // *
     { 12, SYNTAX_CONSTANTS::DIVIDE.code }, // /
-    { 1,  SYNTAX_CONSTANTS::INDENTIFIER.code }, // идентификатор
+    { 1,  SYNTAX_CONSTANTS::IDENTIFIER.code }, // идентификатор
     { 2,  SYNTAX_CONSTANTS::NUMBER.code }, // число
     { 4,  SYNTAX_CONSTANTS::OPEN_BRACKET.code }, // (
     { 5,  SYNTAX_CONSTANTS::CLOSE_BRACKET.code }, // )

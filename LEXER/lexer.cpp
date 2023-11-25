@@ -14,10 +14,6 @@ TransitionInfo::TransitionInfo(char input, int code, std::vector<int> args)
     , args(args)
 { }
 
-int TransitionInfo::getInputChar() {
-    return input;
-}
-
 int TransitionInfo::getInputCode() {
     return code;
 }
