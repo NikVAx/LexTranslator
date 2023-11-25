@@ -1159,8 +1159,6 @@ void build_line(SyntaxScanner& scanner) {
     std::cout << line << "\n";
 }
 
-
-
 int main() {
     setlocale(LC_ALL, "");
 
@@ -1188,8 +1186,6 @@ int main() {
             break;
     
     }
-
-
     parseResult.add(Token("К", 20, "К"));
     
     if (parseResult.success()) {
@@ -1203,67 +1199,4 @@ int main() {
 
         build_line(syntax);
     }
-
-
-
-
-    //std::string proc = "S";
-    //
-    //for (int i = syntax.rules.size() - 1; i >= 0; --i) {
-    //    int rule = syntax.rules[i];
-    //    int location = proc.find_last_of("S");
-    //    if (location != -1) {
-    //        proc.erase(location, 1);
-    //        proc.insert(location, BUILD_RULES[rule]);
-    //    }
-    //
-       // std::cout  << " >> " << proc << "\n";
-       //
-       // std::cout << rule << ":\t" << BUILD_RULES[rule];
-       //
-       // if (rule == 9 || rule == 10) {
-       //     std::cout << " : " << syntax.terms[index++];
-       //
-       //
-       //
-       //     // в этом случае в дереве просту нужно присвоить node->right = syntax.terms[index]
-       // }
-       // else 
-       // {
-       //
-       // }
-       //
-       // std::cout << "\n";
-    //}
-    //if (proc[location] == 'I' || proc[location] == 'R') {
-    //    proc.insert(location, BUILD_RULES[rule]);
-    //}
-    //else {
-    //
-    //}
-
-    
-
-
-    SyntaxTree tree;
-
-    //// Создание узлов дерева
-    //tree.root = SyntaxTree::create(":=");
-    //TreeNode* minusNode = SyntaxTree::create("-");
-    //TreeNode* plusNode  = SyntaxTree::create("+");
-    //TreeNode* multNode  = SyntaxTree::create("*");
-    //TreeNode* someNode  = SyntaxTree::create("some");
-    //TreeNode* valueNode = SyntaxTree::create("value");
-    //TreeNode* xxivNode  = SyntaxTree::create("XXIV");
-    //
-    //// Связывание узлов
-    //tree.root->left = minusNode;
-    //minusNode->left = plusNode;
-    //plusNode->left = someNode;
-    //plusNode->right = multNode;
-    //multNode->left = valueNode;
-    //multNode->right = xxivNode;
-
-    // Вывод синтаксического дерева
-    //tree.print();
 }
