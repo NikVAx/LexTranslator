@@ -39,6 +39,12 @@ enum class TermTypes {
     COUNT_OF_TYPES
 };
 
+enum class StatusCodes {
+    SUCCESS,
+    BAD_IDENTIFIER,
+    INVALID_OPERATOR
+};
+
 std::string getTermTypeName(TermTypes type) {
     static std::string NAMES[(int)TermTypes::COUNT_OF_TYPES];
 

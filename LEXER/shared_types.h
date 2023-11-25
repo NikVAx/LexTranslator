@@ -28,6 +28,18 @@ struct Token {
     }
 };
 
+
+struct ParseItem {
+    Token token;
+    StatusCodes statusCode;
+
+    bool isValid() {
+        return statusCode == StatusCodes::SUCCESS;
+    }
+};
+
+
+
 struct ParseResult {
 private:
     bool _error = false;
