@@ -18,7 +18,7 @@ public:
 
     int getNextState();
 
-    bool isSplit();
+    bool isTokenBoundary();
 
     int getStatusCode();
 

@@ -26,7 +26,7 @@ int TransArgs::getNextState() {
     return args[0];
 }
 
-bool TransArgs::isSplit() {
+bool TransArgs::isTokenBoundary() {
     return args[1] == 1; // 1 - split code
 }
 
@@ -56,7 +56,7 @@ ParseResult LEX::Lexer::parse(std::string input) {
     for (int head = 0; head < text.length() && result.success(); head++) {
         char ch = text[head];
 
-        result.move(ch);
+        result.updateCurrentCharLocationData(ch);
 
         TransArgs args = _sm.getTransit(ch);
 
@@ -66,7 +66,7 @@ ParseResult LEX::Lexer::parse(std::string input) {
             break;
         }
 
-        if (args.isSplit() && !tokenString.empty()) {
+        if (args.isTokenBoundary() && !tokenString.empty()) {
             int tokenTypeCode = _lexConfig.mapTokenType(_sm.currentState);
 
             if (tokenTypeCode != _lexConfig.getCommentTypeCode()) {

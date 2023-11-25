@@ -69,7 +69,7 @@ public:
         tokens.push_back(Token(value, typeCode, typeName));
     }
 
-    void move(char ch) {
+    void updateCurrentCharLocationData(char ch) {
         current.head += 1;
         current.column += 1;
         if (ch == '\n') {

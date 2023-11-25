@@ -12,17 +12,26 @@
 #include <string>
 
 enum class TermTypes {
-    UNDEFINED, COMMENT, ID, ASSIGNMENT, SEMICOLON,
-    PLUS, MULTIPLY, DIVIDE, MINUS, // Математические операторы
+    UNDEFINED, INDENTIFIER,
+    NUMBER,// Числовые литералы
+    ASSIGNMENT,
+    OPEN_BRACKET, CLOSE_BRACKET, // Скобки
+    PLUS,
+    SEMICOLON,
+    COMMENT,
+
+    KEYWORD,
+    
+    MINUS,
+    MULTIPLY,
+    DIVIDE,  // Математические операторы
+    
     OR, XOR, AND, NOT, // Побитовые операторы
     IF, THEN, ELSE, // Условный оператор
     FOR, DO, // Оператор цикла
     LESS, GREATER, EQUAL, // Операторы сравнения
-    OPEN_BRACKET, CLOSE_BRACKET, // Скобки
+    
     TRUE, FALSE, // Логические константы (true-false, 1-0, 'T'-'F')
-    FLOAT, // Числа с правающей точкой
-    ROMAN,// Римские литералы
-    HEX, // Шестнадцитиричные литералы
 
     COUNT_OF_TYPES
 };
@@ -31,10 +40,10 @@ std::string getTermTypeName(TermTypes type) {
     static std::string NAMES[(int)TermTypes::COUNT_OF_TYPES];
 
     NAMES[(int)TermTypes::UNDEFINED] = "Неопределенный";
+    NAMES[(int)TermTypes::INDENTIFIER] = "Идентификатор";
     NAMES[(int)TermTypes::COMMENT] = "Комментарий";
-    NAMES[(int)TermTypes::ID] = "Идентификатор";
-    NAMES[(int)TermTypes::ASSIGNMENT] = "Оператор присваивания";
-    NAMES[(int)TermTypes::SEMICOLON] = "Точка с запятой";
+    NAMES[(int)TermTypes::ASSIGNMENT] = "Присваивание";
+    NAMES[(int)TermTypes::SEMICOLON] = "Разделитель";
     NAMES[(int)TermTypes::PLUS] = "Оператор \"+\"";
     NAMES[(int)TermTypes::MULTIPLY] = "Оператор \"*\"";
     NAMES[(int)TermTypes::DIVIDE] = "Оператор \"/\"";
@@ -55,9 +64,7 @@ std::string getTermTypeName(TermTypes type) {
     NAMES[(int)TermTypes::CLOSE_BRACKET] = "Закрывающая скобка";
     NAMES[(int)TermTypes::TRUE] = "ИСТИНА";
     NAMES[(int)TermTypes::FALSE] = "ЛОЖЬ";
-    NAMES[(int)TermTypes::FLOAT] = "Число с плавающей точкой";
-    NAMES[(int)TermTypes::ROMAN] = "Римское число";
-    NAMES[(int)TermTypes::HEX] = "Шестнадцатиричное число";
+    NAMES[(int)TermTypes::NUMBER] = "Римское число";
 
     return (int)type <= 0 || type >= TermTypes::COUNT_OF_TYPES
         ? NAMES[(int)TermTypes::UNDEFINED]
@@ -118,17 +125,62 @@ static const std::string ERROR_NAMES[COUNT_OF_ERRORS] =
     "Ожидался идентификатор"
 };
 
-
-static const int TOKEN_TYPE_MAP[COUNT_OF_STATES] =
+// Часть конфигурации, зависит от матрицы переходов
+static const TermTypes TOKEN_TYPE_MAP[COUNT_OF_STATES] =
 {
-    0,7,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,
-    2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
-    0,3,
-    6,10,11,12,
-    4,5,
-    0,8,0,0,8
+    TermTypes::UNDEFINED,
+    TermTypes::SEMICOLON,
+    TermTypes::INDENTIFIER,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::INDENTIFIER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::UNDEFINED,
+    TermTypes::ASSIGNMENT,
+    TermTypes::PLUS,
+    TermTypes::MINUS,
+    TermTypes::MULTIPLY,
+    TermTypes::DIVIDE,
+    TermTypes::OPEN_BRACKET,
+    TermTypes::CLOSE_BRACKET,
+    TermTypes::UNDEFINED,
+    TermTypes::COMMENT,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::COMMENT
 };
 
 static const int IDENTIFIER_TYPE = 1;
@@ -216,13 +268,13 @@ public:
 
     int mapTokenType(int state) {
         int typeCode = inRange(state, 0, _smConfig.getCountOfStates())
-            ? TOKEN_TYPE_MAP[state]
-            : 0; // Ошибка
+            ? (int)TOKEN_TYPE_MAP[state]
+            : (int)TermTypes::UNDEFINED;
         return typeCode;
     }
 
     std::string mapTokenTypeName(int tokenTypeCode) {
-        return TYPE_NAMES[tokenTypeCode];
+        return getTermTypeName( static_cast<TermTypes>(tokenTypeCode) );
     }
 
     static std::string mapStatusMessage(int statusCode) {

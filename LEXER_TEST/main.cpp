@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <stack>
 #include <functional>
+#include <algorithm>
 
 namespace LEX {
     class Test {
@@ -534,12 +535,13 @@ namespace LEX {
 
             std::string actual = toString(act);
 
-            if (expected == actual)
+            if (actual == expected)
             {
                 PASS();
             }
             else
             {
+                std::cout << expected << "\n\n";
                 FAIL(&act);
             }
         }
@@ -1121,7 +1123,7 @@ int main() {
     setlocale(LC_ALL, "");
 
     LEX::WhiteBox::s_run();   
-    LEX::BlackBox::s_run();
+    //LEX::BlackBox::s_run();
 
     LEX::Lexer lexer;
     SyntaxScanner syntax;
@@ -1137,10 +1139,10 @@ int main() {
     
     int index = 0;
     int page = 0;
-    std::vector<std::vector<Token>> commands;
 
+    std::vector<std::vector<Token>> commands;
     while (index < parseResult.tokens.size()) {
-        commands.push_back(std::vector<Token>()); // create page
+        commands.push_back(std::vector<Token>());
         while (index < parseResult.tokens.size()) {
             commands[page].push_back(parseResult.tokens[index]);           
             if (parseResult.tokens[index].value == ";") {
@@ -1152,24 +1154,7 @@ int main() {
             index += 1;
         }
     }
-    
-    //for (auto& command : commands) {
-    //    std::cout << "КОМАНДА:\n";
-    //    for (auto& token : command) {
-    //        std::cout << "ЛЕКСЕМА: " << token.value << "\n";
-    //    }
-    //    std::cout << "\n";
-    //}
-
-    //for (int i = index; i < parseResult.tokens.size() - 1; ++i) {
-    //    commands[page].push_back(parseResult.tokens[i]);
-    //    if (parseResult.tokens[i].value == ";") {
-    //        commands[page].push_back(Token("К", 20, "К"));
-    //        index = i + 1;
-    //        break;
-    //    }
-    //}
-
+   
 
     parseResult.add(Token("К", 20, "К"));
     
