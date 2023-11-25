@@ -3,6 +3,7 @@
 
 #include "../LEXER/lexer.cpp"
 #include "../LEXER/shared_types.h"
+#include "../Utils/utils.h"
 
 #include "pch.h"
 #include "framework.h"
@@ -91,18 +92,32 @@ std::map<std::string, ReduceRule> REDUCE_RULES = {
     {"R",     ReduceRule(10) },
 };
 
-std::vector<std::string> BUILD_RULES = {
-    "",
-    "I:=S;",
-    "S+S",
-    "",
-    "S*S",
-    "S/S",
-    "",
-    "(S)",
-    "-(S)",
-    "I",
-    "R"
+struct BuildRule {
+    std::vector<std::string> items;
+    std::string ruleString;
+
+    BuildRule() { }
+
+    BuildRule(std::vector<std::string> items) {
+        const char* const delim = "";
+
+        std::ostringstream imploded;
+        std::copy(items.begin(), items.end(),
+            std::ostream_iterator<std::string>(imploded, delim));
+
+        this->ruleString = imploded.str();
+    }
+};
+
+std::map<int, BuildRule> BUILD_RULES = {
+    { 1,  BuildRule({ "I", ":=", "S"}) },
+    { 2,  BuildRule({ "S", "+", "S" }) },
+    { 4,  BuildRule({ "S", "*", "S" }) },
+    { 5,  BuildRule({ "S", "/", "S" }) },
+    { 7,  BuildRule({ "S" }) },
+    { 8,  BuildRule({  "-", "S"})},
+    { 9,  BuildRule({  "I" }) },
+    { 10, BuildRule({  "R" }) },
 };
 
 const int NOT_TERMINAL = 11;
@@ -111,15 +126,15 @@ const int NOT_FOUND = -1;
 const int ROMAN_ID = 4;
 const int IDENT_ID = 5;
 
-struct store_item {
-    store_item(int code, std::string tag = "", std::string value = "") {
+struct StackItem {
+    StackItem(int code, std::string tag = "", std::string value = "") {
         this->code = code;
         this->value = value;
         this->tag = tag == "" ? MAP_INPUT_STRING[code] : tag;
     }
 
     int code;
-    std::string typeString;
+
     std::string value;
     std::string tag;
 
@@ -128,7 +143,16 @@ struct store_item {
     }
 };
 
-store_item NOT_TERM = store_item(NOT_TERMINAL, "S");
+StackItem NOT_TERM = StackItem(NOT_TERMINAL, "S");
+
+/*
+Лексема:
+  int: Тип: один из операторов | переменная | нетерминал
+  Значение: хранить если переменная
+
+
+
+*/
 
 class SyntaxScanner {
 private:
@@ -137,10 +161,10 @@ private:
 public:
     std::vector<int> rules;
     std::vector<std::string> terms;
+    Tree<int> rulesTree;
 
 
-    std::vector<store_item>  store;
-    std::string baseString;
+    std::vector<StackItem> stack;
 
     void init(std::vector<Token> input) {
         for (auto& token : input) {
@@ -151,7 +175,7 @@ public:
 
     int getTerminalIndex(int end) {
         for (int i = end; i >= 0; --i) {
-            if (store.at(i).isNotTerm()) {
+            if (stack.at(i).isNotTerm()) {
                 continue;
             }
             return i;
@@ -169,12 +193,11 @@ public:
         return RELATION_MATRIX[leftTermIndex][rightTermIndex];
     }
 
-
     void reduce(int input, Token token) {
-        int index1 = getTerminalIndex(store.size() - 1);
+        int index1 = getTerminalIndex(stack.size() - 1);
         int index2 = getTerminalIndex(index1 - 1);
-        int elAt1 = store.at(index1).code;
-        int elAt2 = store.at(index2).code;
+        int elAt1 = stack.at(index1).code;
+        int elAt2 = stack.at(index2).code;
 
         bool notFound = true;
 
@@ -188,8 +211,8 @@ public:
                 notFound = false;
                 index1 = index2;
                 index2 = getTerminalIndex(index1 - 1);
-                elAt1 = store.at(index1).code;
-                elAt2 = store.at(index2).code;
+                elAt1 = stack.at(index1).code;
+                elAt2 = stack.at(index2).code;
             }
             else {
                 break;
@@ -197,37 +220,38 @@ public:
         } while (true);
 
         int baseIndex = notFound
-            ? getTerminalIndex(store.size() - 1)
+            ? getTerminalIndex(stack.size() - 1)
             : index1;
 
 
-        if (store.back().code == ROMAN_ID || store.back().code == IDENT_ID)
-            terms.push_back(store.back().value);
+        if (stack.back().code == ROMAN_ID || stack.back().code == IDENT_ID)
+            terms.push_back(stack.back().value);
 
-        popIfLaterOrNotTerminal(baseIndex);
+        std::string baseString = popIfLaterOrNotTerminal(baseIndex);
 
         rules.push_back(REDUCE_RULES[baseString].number);
 
-        store.push_back(NOT_TERM);
+        stack.push_back(NOT_TERM);
     }
 
     // Удалить из стека все символы до переданного
-    void popIfLaterOrNotTerminal(int baseIndex) {
-        baseString = "";
+    std::string popIfLaterOrNotTerminal(int baseIndex) {
+        std::string baseString = "";
         std::stack<std::string> revert;
 
-        for (int i = store.size() - 1; (i >= baseIndex || store.back().isNotTerm()); --i) {
-            revert.push(MAP_INPUT_STRING[store.back().code]);
-            store.pop_back();
+        for (int i = stack.size() - 1; (i >= baseIndex || stack.back().isNotTerm()); --i) {
+            revert.push(MAP_INPUT_STRING[stack.back().code]);
+            stack.pop_back();
         }
 
         while (!revert.empty()) {
             baseString.append(revert.top());
             revert.pop();
         }
+        return baseString;
     }
 
-    std::string stack_str(std::vector<store_item> st) {
+    std::string stack_str(std::vector<StackItem> st) {
         std::stringstream ss;
         for (auto& el : st) {
             ss << MAP_INPUT_STRING[el.code];
@@ -238,9 +262,7 @@ public:
     // разбор одной команды
     void proccess() {
         std::cout << "НАЧАЛО\n";
-        //store.push_back(10); // Шаг 2: помещения в стек символа #
-
-        store.push_back(store_item(10, "Н"));
+        stack.push_back(StackItem(10, "Н"));
 
         int limit = 0;
         int k = 1;
@@ -248,9 +270,9 @@ public:
         do {
             Token currentToken = tokens[head];
 
-            int topStackTermIndex = getTerminalIndex(store.size() - 1);
+            int topStackTermIndex = getTerminalIndex(stack.size() - 1);
 
-            int top = store.at(topStackTermIndex).code;
+            int top = stack.at(topStackTermIndex).code;
             int input = getIndexInDictionary(currentToken.typeCode);
 
             // Шаг 2: получения отношения по таблице
@@ -264,7 +286,7 @@ public:
                 << std::setw(2) << MAP_INPUT_STRING[top] << "]"
                 << "[ " << std::setw(2) << input << ";"
                 << std::setw(2) << MAP_INPUT_STRING[input] << "]"*/
-                << "\n  СТЕК: " << stack_str(store) << "\n";
+                << "\n  СТЕК: " << stack_str(stack) << "\n";
 #pragma endregion            
 
             if (relation == '<' || relation == '=') {
@@ -283,7 +305,7 @@ public:
     }
 
     void shift(int input, Token token) {
-        store.push_back(store_item(input, "", token.value));
+        stack.push_back(StackItem(input, "", token.value));
         head += 1;
     }
 

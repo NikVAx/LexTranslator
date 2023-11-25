@@ -2,6 +2,7 @@
 #include "../LEXER/lexer.h"
 #include "../LEXER/shared_types.h"
 #include "../SYNTAX/syntax.cpp";
+#include "../Utils/utils.h"
 
 
 #include <iostream>
@@ -1065,83 +1066,40 @@ namespace LEX {
 
 }
 
-struct TreeNode {
-    std::string value;
-    TreeNode* left;
-    TreeNode* right;
-};
 
-class SyntaxTree {
-public:
-    TreeNode* root;
 
-    SyntaxTree() {
-        root = NULL;
-    }
+//SyntaxTree tree_e;
 
-    ~SyntaxTree() {
-        freeCascade(root);
-    }
-
-    static TreeNode* create(std::string value) {
-        TreeNode* node = new TreeNode;
-        node->value = value;
-        node->left = NULL;
-        node->right = NULL;
-        return node;
-    }
-
-    void print() {
-        printCascase(root, 0);
-    }
-
-private:
-    void printCascase(TreeNode* root, int depth) {
-        if (root == NULL) {
-            return;
-        }
-
-        for (int i = 0; i < depth; ++i) {
-            std::cout << "-";
-        }
-
-        std::cout << root->value << "\n";
-
-        printCascase(root->left, depth + 1);
-        printCascase(root->right, depth + 1);
-    }
-
-    void freeCascade(TreeNode* root) {
-        if (root == NULL) {
-            return;
-        }
-
-        freeCascade(root->left);
-        freeCascade(root->right);
-        delete root;
-    }
-};
-
-struct TreeLine {
-    TreeLine(std::string not_term = "", std::string term = "") {
-        not_terminal = not_term;
-        terminal = terminal;
-    }
-
-    std::string not_terminal = "";
-    std::string terminal = "";
-};
+//void buildTreeCascade(TreeNode* node) {
+//
+//}
 
 void build_line(SyntaxScanner& scanner) {
     std::string line = "S"; 
+    //tree_e.root = tree_e.create(line);
+    int term_index_2 = 0;
+    
+    std::cout << "ПРАВИЛА\n";
+    for (int r : scanner.rules) {
+        std::cout << r << "\n";
+    }
+    std::cout << "КОНЕЦ ПРАВИЛА\n";
+
     for (int i = scanner.rules.size() - 1; i >= 0; --i) {
         std::cout << line << "\n";
         int rule = scanner.rules[i];
-        int location = line.find_last_of("S");
-        if (location != -1) {
-            line.erase(location, 1);
-            line.insert(location, BUILD_RULES[rule]);
+        BuildRule buildRule = BUILD_RULES[rule];
+
+        for (auto& lexem : buildRule.items) {
+               
         }
+
+        
+        //int location = line.find_last_of("S");
+        //if (location != -1) {
+        //    line.erase(location, 1);
+        //    line.insert(location, stringRule);
+        //}
     }
     std::cout << line << " \n";
 
@@ -1157,6 +1115,8 @@ void build_line(SyntaxScanner& scanner) {
         }
     }
     std::cout << line << "\n";
+    
+    //tree_e.print();
 }
 
 int main() {
@@ -1169,23 +1129,50 @@ int main() {
     SyntaxScanner syntax;
     
     //std::string line = "x:=a+((IV+a)+b);";
-    //std::string line = "a:=(a+-(-(VIII+b*a+b)+a)+a);";
+    //std::string line = "abc:=(a+-(-(VIII+b*a+b)+a)+a);";
 
-    std::string line = "a:=some+(value*XXIV);";
+    std::string line = "a:=some+-(value*XXIV);";
     
     std::cout << "ВВОД: " << line << "\n";
 
     auto parseResult = lexer.parse(line);
     
     int index = 0;
+    int page = 0;
+    std::vector<std::vector<Token>> commands;
 
-    std::vector<Token> command;
-    
-    for (int i = index; i < parseResult.tokens.size() - 1; ++i) {
-        if (parseResult.tokens[i].value == ";")
-            break;
-    
+    while (index < parseResult.tokens.size()) {
+        commands.push_back(std::vector<Token>()); // create page
+        while (index < parseResult.tokens.size()) {
+            commands[page].push_back(parseResult.tokens[index]);           
+            if (parseResult.tokens[index].value == ";") {
+                commands[page].push_back(Token("К", 20, "К"));
+                page += 1;
+                index += 1;
+                break;
+            }
+            index += 1;
+        }
     }
+    
+    //for (auto& command : commands) {
+    //    std::cout << "КОМАНДА:\n";
+    //    for (auto& token : command) {
+    //        std::cout << "ЛЕКСЕМА: " << token.value << "\n";
+    //    }
+    //    std::cout << "\n";
+    //}
+
+    //for (int i = index; i < parseResult.tokens.size() - 1; ++i) {
+    //    commands[page].push_back(parseResult.tokens[i]);
+    //    if (parseResult.tokens[i].value == ";") {
+    //        commands[page].push_back(Token("К", 20, "К"));
+    //        index = i + 1;
+    //        break;
+    //    }
+    //}
+
+
     parseResult.add(Token("К", 20, "К"));
     
     if (parseResult.success()) {
@@ -1196,7 +1183,9 @@ int main() {
         syntax.init(parseResult.tokens);
         syntax.proccess();
         syntax.terms.insert(syntax.terms.cbegin(), parseResult.tokens[0].value);
-
+        
         build_line(syntax);
+
+        //std::string line = "a:=some+-(value*XXIV);";
     }
 }

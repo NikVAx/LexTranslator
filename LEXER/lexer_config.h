@@ -222,68 +222,7 @@ static const std::string TYPE_NAMES[COUNT_OF_TYPES] =
 // чтобы по коду состояния получать тип токена 
 // такой словарь будет зависеть от варианта
 
-// Данные и преобразователи, которые можно использовать независимо от варианта
-class SharedMetadata {
-public:
-    enum TokenTypes {
-        // Все варианты
-        UNDEFINED, COMMENT, ID, ASSIGNMENT, SEMICOLON,
 
-        // Блок подвариантов (ЛР3)
-        PLUS, MULTIPLY, DIVIDE, MINUS, // *-1 Вариант
-        OR, XOR, AND, NOT,             // *-2 Вариант
-        IF, THEN, ELSE,                // *-3 Вариант
-        FOR, DO,                       // *-4 Вариант
-        LESS, GREATER, EQUAL,          // *-3 и *-4 варианты
-
-        OPEN_PRT, CLOSE_PRT, // *-1, *-2, *-4
-
-        // Типы литералов
-        TRUE, FALSE, // 2, 6, 14
-        FLOAT,       // 3, 4
-        ROMAN,       // 5, 7
-        HEX,         // 10
-
-        COUNT_OF_TYPES
-    };
-
-    std::string getTokenTypeName(TokenTypes type) {
-        static std::string NAMES[COUNT_OF_TYPES];
-
-        NAMES[UNDEFINED]  = "Неопределенный";
-        NAMES[COMMENT]    = "Комментарий";
-        NAMES[ID]         = "Идентификатор";
-        NAMES[ASSIGNMENT] = "Оператор присваивания";
-        NAMES[SEMICOLON]  = "Точка с запятой";
-        NAMES[PLUS]       = "Оператор \"+\"";
-        NAMES[MULTIPLY]   = "Оператор \"*\"";
-        NAMES[DIVIDE]     = "Оператор \"/\"";
-        NAMES[MINUS]      = "Оператор \"-\"";
-        NAMES[OR]         = "Оператор OR";
-        NAMES[XOR]        = "Оператор XOR";
-        NAMES[AND]        = "Оператор AND";
-        NAMES[NOT]        = "Оператор NOT";
-        NAMES[IF]         = "Оператор IF";
-        NAMES[THEN]       = "Оператор THEN";
-        NAMES[ELSE]       = "Оператор ELSE";
-        NAMES[FOR]        = "Оператор FOR";
-        NAMES[DO]         = "Оператор DO";
-        NAMES[LESS]       = "Оператор \"<\"";
-        NAMES[GREATER]    = "Оператор \">\"";
-        NAMES[EQUAL]      = "Оператор \"=\"";
-        NAMES[OPEN_PRT]   = "Открывающая скобка";
-        NAMES[CLOSE_PRT]  = "Закрывающая скобка";
-        NAMES[TRUE]       = "ИСТИНА";
-        NAMES[FALSE]      = "ЛОЖЬ";
-        NAMES[FLOAT]      = "Число с плавающей точкой";
-        NAMES[ROMAN]      = "Римское число";
-        NAMES[HEX]        = "Шестнадцатиричное число";
-    
-        return type <= 0 || type >= COUNT_OF_TYPES
-            ? NAMES[UNDEFINED]
-            : NAMES[type];
-    }
-};
 
 
 
