@@ -45,6 +45,9 @@
     <ClInclude Include="lex_config_5.h">
       <Filter>Файлы заголовков\Lex Configs</Filter>
     </ClInclude>
+    <ClInclude Include="StatusCodes.h">
+      <Filter>Файлы заголовков\Enums Structs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lexer.cpp">

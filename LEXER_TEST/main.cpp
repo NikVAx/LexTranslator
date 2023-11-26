@@ -89,7 +89,7 @@ std::vector<Command> splitCommands(ParseResult& parseResult) {
                  
             command.tokens.push_back(parseResult.items[index].token);
             if (parseResult.items[index].token.value == ";") {
-                command.tokens.push_back(Token("К", TermTypes::END_TERMINAL, "К"));
+                command.tokens.push_back(Token("К", TermTypes::END_TERMINAL));
                 index += 1;
                 break;
             }

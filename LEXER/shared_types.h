@@ -7,14 +7,11 @@
 #include <sstream>
 
 struct Token {
-    Token(std::string value, TermTypes typeCode, std::string typeName)
+    Token(std::string value, TermTypes typeCode)
         : value(value)
         , typeCode(typeCode)
-        , typeName(typeName)
-    {
-        this->value = value;
-        this->typeName = typeName;
-    }
+        , typeName(typeCode.name)
+    { }
 
     std::string value = "";
     std::string typeName = "";
@@ -46,8 +43,6 @@ struct ParseItem {
     }
 };
 
-
-
 struct ParseResult {
 private:
     bool error = false;
@@ -62,8 +57,7 @@ public:
     Location current;
 
     void addError(std::string value, StatusCodes statusCode) {     
-        items.push_back(ParseItem(Token(value, TermTypes::UNDEFINED, 
-            TermTypes::UNDEFINED.name), statusCode));
+        items.push_back(ParseItem(Token(value, TermTypes::UNDEFINED), statusCode));
         error = true;
     }
 
@@ -75,8 +69,8 @@ public:
         items.push_back(ParseItem(token));
     }
 
-    void add(std::string value, TermTypes typeCode) {
-        items.push_back(ParseItem(Token(value, typeCode, typeCode.name)));
+    void add(std::string value, TermTypes tokenType) {
+        items.push_back(ParseItem(Token(value, tokenType)));
     }
 
     void updateCurrentCharLocationData(char ch) {
