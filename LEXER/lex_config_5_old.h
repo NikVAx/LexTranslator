@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include "TermTypes.h"
 
 const std::vector<std::vector<int>> STATES_MATRIX = {
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -116,7 +117,7 @@ const std::vector<std::vector<int>> BOUNDS_MATRIX = {
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1}
 };
 
-static const std::vector<std::vector<int>> ERRORS_MATRIX = {
+const std::vector<std::vector<int>> ERRORS_MATRIX = {
     { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
     { 2, 0, 0, 0, 0, 0, 0, 0, 0, 6, 10, 10, 10, 10, 10, 10, 10, 0, 10, 0, 0, 0},
     { 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0},
@@ -171,4 +172,61 @@ static const std::vector<std::vector<int>> ERRORS_MATRIX = {
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     { 2, 0, 0, 0, 0, 0, 0, 0, 0, 6,	10, 10, 10, 10, 10, 10, 10, 0, 10, 0, 0, 0},
     { 2, 0, 0, 0, 0, 0, 0, 0, 0, 6, 10, 10, 10, 10, 10, 10, 10, 0, 10, 0, 0, 0},
+};
+
+const std::vector<TermTypes> TOKEN_TYPE_MAP =
+{
+    TermTypes::UNDEFINED,
+    TermTypes::SEMICOLON,
+    TermTypes::IDENTIFIER,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::IDENTIFIER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::NUMBER,
+    TermTypes::UNDEFINED,
+    TermTypes::ASSIGNMENT,
+    TermTypes::PLUS,
+    TermTypes::MINUS,
+    TermTypes::MULTIPLY,
+    TermTypes::DIVIDE,
+    TermTypes::OPEN_BRACKET,
+    TermTypes::CLOSE_BRACKET,
+    TermTypes::UNDEFINED,
+    TermTypes::COMMENT,
+    TermTypes::UNDEFINED,
+    TermTypes::UNDEFINED,
+    TermTypes::COMMENT
 };

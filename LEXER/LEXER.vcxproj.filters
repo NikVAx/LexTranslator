@@ -16,6 +16,9 @@
     <Filter Include="Файлы заголовков\Enums Structs">
       <UniqueIdentifier>{dda41438-3114-445a-8a20-3da032b7d898}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Lex Configs">
+      <UniqueIdentifier>{9bd65541-2562-44a1-a017-5a1641e67e3e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -33,14 +36,14 @@
     <ClInclude Include="lexer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="matrices.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="TermTypes.h">
       <Filter>Файлы заголовков\Enums Structs</Filter>
     </ClInclude>
-    <ClInclude Include="StatusCode.h">
-      <Filter>Файлы заголовков\Enums Structs</Filter>
+    <ClInclude Include="lex_config_5_old.h">
+      <Filter>Файлы заголовков\Lex Configs</Filter>
+    </ClInclude>
+    <ClInclude Include="lex_config_5.h">
+      <Filter>Файлы заголовков\Lex Configs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

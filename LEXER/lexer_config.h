@@ -3,7 +3,7 @@
   Файл конфигурации конечного автомата лексического анализатора.
 */
 
-#include "matrices.h"
+#include "lex_config_5_old.h"
 
 #include <string>
 #include <map>
@@ -79,64 +79,6 @@ const std::vector<std::string> ERROR_NAMES =
     "Ожидалось выражение",
     "Ожидался оператор",
     "Ожидался идентификатор"
-};
-
-// Часть конфигурации, зависит от матрицы переходов
-const std::vector<TermTypes> TOKEN_TYPE_MAP =
-{
-    TermTypes::UNDEFINED,
-    TermTypes::SEMICOLON,
-    TermTypes::IDENTIFIER,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::IDENTIFIER,
-    TermTypes::NUMBER,
-    TermTypes::NUMBER,
-    TermTypes::NUMBER,
-    TermTypes::NUMBER,
-    TermTypes::NUMBER,
-    TermTypes::NUMBER,
-    TermTypes::NUMBER,
-    TermTypes::NUMBER,
-    TermTypes::NUMBER,
-    TermTypes::NUMBER,
-    TermTypes::NUMBER,
-    TermTypes::NUMBER,
-    TermTypes::NUMBER,
-    TermTypes::NUMBER,
-    TermTypes::NUMBER,
-    TermTypes::NUMBER,
-    TermTypes::NUMBER,
-    TermTypes::NUMBER,
-    TermTypes::UNDEFINED,
-    TermTypes::ASSIGNMENT,
-    TermTypes::PLUS,
-    TermTypes::MINUS,
-    TermTypes::MULTIPLY,
-    TermTypes::DIVIDE,
-    TermTypes::OPEN_BRACKET,
-    TermTypes::CLOSE_BRACKET,
-    TermTypes::UNDEFINED,
-    TermTypes::COMMENT,
-    TermTypes::UNDEFINED,
-    TermTypes::UNDEFINED,
-    TermTypes::COMMENT
 };
 
 static bool inRange(int value, int first, int second) {
