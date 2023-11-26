@@ -59,10 +59,10 @@ ParseResult LEX::Lexer::parse(std::string input) {
         }
 
         if (info.isTokenBoundary() && !tokenString.empty()) {
-            TermTypes tokenTypeCode = _lexConfig.mapTokenType(_sm.currentState);
+            TermTypes tokenType = _lexConfig.mapTokenType(_sm.currentState);
 
-            if (tokenTypeCode != TermTypes::COMMENT) {
-                result.add(tokenString, tokenTypeCode);
+            if (tokenType != TermTypes::COMMENT) {
+                result.add(tokenString, tokenType);
             } // else ingore comment
 
             tokenString.clear();
