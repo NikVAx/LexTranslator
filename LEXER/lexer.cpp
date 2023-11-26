@@ -33,7 +33,9 @@ StatusCodes TransitionInfo::getStatusCode() {
 }
 
 bool TransitionInfo::isNotSuccess() {
-    return getStatusCode() != StatusCodes::SUCCESS;
+    StatusCodes code = getStatusCode();
+
+    return code != StatusCodes::SUCCESS;
 }
 
 bool TransitionInfo::isEmptyChar() {
@@ -48,13 +50,13 @@ ParseResult LEX::Lexer::parse(std::string input) {
     std::string text = input + "\n";
     std::string tokenString = "";
 
-    for (int head = 0; head < text.length() && result.success(); head++) {
+    for (int head = 0; head < text.length(); head++) {
         char ch = text[head];
 
         TransitionInfo info = _sm.getTransition(ch);
 
         if (info.isNotSuccess()) {
-            result.addError(tokenString, (StatusCodes)info.getStatusCode());
+            result.addError(tokenString, info.getStatusCode());
             continue;
         }
 

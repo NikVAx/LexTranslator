@@ -4,7 +4,6 @@
 #include "../SYNTAX/syntax.cpp";
 #include "../Utils/utils.h"
 
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -12,13 +11,6 @@
 #include <stack>
 #include <functional>
 #include <algorithm>
-
-namespace LEX {
-    
-
-
-}
-
 
 
 //SyntaxTree tree_e;
@@ -120,14 +112,26 @@ int main() {
 
     auto commands = splitCommands(parseResult);
     
-    if (parseResult.success()) {        
-        for (auto& command : commands) {
+    for (auto& command : commands) {
+
+        std::cout << "СТАТУС КОМАНДЫ: " << (command.isValid ? "ВЕРНА" : "НЕ ВЕРНА") << "\n";
+
+        for (auto& item : command.tokens) {
+            std::cout
+                << item.value << "\t"
+                << item.typeCode << "\t"
+                << item.typeName << "\n"
+                ;
+        }
+
+        if (command.isValid) {
             SyntaxScanner syntax;
             syntax.init(command);
             syntax.proccess();
             syntax.terms.insert(syntax.terms.cbegin(), parseResult.items[0].token.value);
 
             build_line(syntax);
-        }
+        }     
+        std::cout << "\n\n";
     }
 }

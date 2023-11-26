@@ -3,6 +3,7 @@
 #include <vector>
 #include "shared_types.h"
 #include "lexer_config.h"
+#include "StatusCodes.h"
 
 struct TransitionInfo {
 protected:
@@ -45,7 +46,7 @@ public:
         int inputType = _smConfig.mapInputAlpha(inputChar);
         int nextState = _smConfig.getNextState(currentState, inputType);
         bool isBoundary = _smConfig.getBoundary(currentState, inputType) == IS_BOUNDARY_CODE;
-        StatusCodes statusCode = (StatusCodes)_smConfig.getStatusCode(currentState, inputType);
+        StatusCodes statusCode = _smConfig.getStatusCode(currentState, inputType);
 
         return TransitionInfo(inputChar, inputType, nextState, isBoundary, statusCode);
     }

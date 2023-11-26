@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include "StatusCodes.h"
 
 struct Token {
     Token(std::string value, TermTypes typeCode)

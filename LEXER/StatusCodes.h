@@ -5,16 +5,16 @@
 
 typedef struct StatusCodes {
     const int code;
-    const std::string string;
+    const std::string message;
 
     StatusCodes(const int code, const std::string string)
         : code(code)
-        , string(string)
+        , message(string)
     { }
 
     StatusCodes(const int code)
         : code(INSTANCES.at(code).code)
-        , string(INSTANCES.at(code).string)
+        , message(INSTANCES.at(code).message)
     { }
 
     operator int() const {
@@ -22,7 +22,11 @@ typedef struct StatusCodes {
     }
 
     operator std::string() const {
-        return string;
+        return message;
+    }
+
+    bool operator==(const StatusCodes& a) const {
+        return a.code == code;
     }
 
     static const StatusCodes SUCCESS;

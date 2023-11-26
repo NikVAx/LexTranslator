@@ -1,7 +1,4 @@
 #pragma once
-/*
-  Файл конфигурации конечного автомата лексического анализатора.
-*/
 
 #include "lex_config_5.h"
 
@@ -9,61 +6,12 @@
 #include <map>
 #include <exception>
 
-#include <string>
 #include "TermTypes.h"
-
-enum class StatusCodes {
-    SUCCESS,
-    BAD_IDENTIFIER,
-    INVALID_OPERATOR,
-    CODE3,
-    CODE4,
-    CODE5,
-    CODE6,
-    CODE7,
-    CODE8,
-    CODE9,
-    CODE10,
-    CODE11,
-    CODE12,
-};
+#include "StatusCodes.h"
 
 static const int IS_BOUNDARY_CODE = 1;
 
 static const int ARGUMENTS_COUNT = 3;
-
-
-static const std::vector <std::string> TYPE_NAMES =
-{
-    "Ошибка                 ",
-    "Идентификатор          ",
-    "Римское число          ",
-    "Присваивание           ",
-    "Открывающая скобка     ",
-    "Закрывающая скобка     ",
-    "Оператор \"+\"         ",
-    "Разделитель            ",
-    "Комментарий            ",
-    "Ключевое слово         ",
-    "Оператор \"-\"         ",
-    "Оператор \"*\"         ",
-    "Оператор \"/\"         ",
-};
-
-const std::vector<std::string> ERROR_NAMES =
-{
-    "Успешно",
-    "Неизвестная ошибка",
-    "Недопустимый входной символ",
-    "Неожиданный конец файла",
-    "Встречен незавершенный комментарий",
-    "Ожидалось присваивание",
-    "Недопустимый формат идентификатора",
-    "Незавершенный оператор присваивания",
-    "Ожидалось выражение",
-    "Ожидался оператор",
-    "Ожидался идентификатор"
-};
 
 static bool inRange(int value, int first, int second) {
     return first <= value && value < second;
@@ -150,12 +98,5 @@ public:
 
     std::string getTokenTypeName(TermTypes termType) {
         return termType.name;
-    }
-
-    static std::string mapStatusMessage(StatusCodes statusCode) {
-        std::string addError = inRange((int)statusCode, 0, ERROR_NAMES.size())
-            ? ERROR_NAMES[(int)statusCode]
-            : ERROR_NAMES[1]; // Неизвестная ошибка
-        return addError;
     }
 };
