@@ -1,13 +1,14 @@
 ﻿// SYNTAX.cpp : Определяет функции для статической библиотеки.
 //
 
-#include "../LEXER/lexer.cpp"
-#include "../LEXER/shared_types.h"
-#include "../Utils/utils.h"
-#include "utils.h"
-
 #include "pch.h"
 #include "framework.h"
+
+#include "syntax.h"
+
+#include "../LEXER/lexer.h"
+#include "../Utils/utils.h"
+#include "utils.h"
 
 #include <iostream>
 #include <fstream>
@@ -35,10 +36,6 @@ std::map<int, std::string> MAP_INPUT_STRING = {
     { 11, "S"}, // S
 };
  
-
-
-
-
 struct ReduceRule {
     ReduceRule() {
         number = -1;
@@ -192,7 +189,6 @@ public:
         std::string baseString = popIfLaterOrNotTerminal(baseIndex);
 
         rules.push_back(REDUCE_RULES[baseString].number);
-
         stack.push_back(NOT_TERM);
     }
 

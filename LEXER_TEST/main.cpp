@@ -1,8 +1,8 @@
 ﻿
 #include "../LEXER/lexer.h"
-#include "../LEXER/shared_types.h"
 #include "../SYNTAX/syntax.cpp";
 #include "../Utils/utils.h"
+#include "../LEXER/ParseResult.h"
 
 #include <iostream>
 #include <fstream>
@@ -13,15 +13,9 @@
 #include <algorithm>
 
 
-//SyntaxTree tree_e;
-
-//void buildTreeCascade(TreeNode* node) {
-//
-//}
 
 void build_line(SyntaxScanner& scanner) {
     std::string line = "S"; 
-    //tree_e.root = tree_e.create(line);
     int term_index_2 = 0;
     
     std::cout << "ПРАВИЛА\n";
@@ -31,8 +25,11 @@ void build_line(SyntaxScanner& scanner) {
     std::cout << "КОНЕЦ ПРАВИЛА\n";
 
     for (int i = scanner.rules.size() - 1; i >= 0; --i) {
-        std::cout << line << "\n";
+        
+        std::cout << line << " <--\n";
+        
         int rule = scanner.rules[i];
+        
         BuildRule buildRule = BUILD_RULES[rule];
 
         for (auto& lexem : buildRule.items) {
@@ -60,8 +57,6 @@ void build_line(SyntaxScanner& scanner) {
         }
     }
     std::cout << line << "\n";
-    
-    //tree_e.print();
 }
 
 
