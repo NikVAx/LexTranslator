@@ -1,8 +1,8 @@
 #pragma once
 
 #include <vector>
-#include "shared_types.h"
 #include "lexer_config.h"
+#include "parse.h"
 
 struct TransitionInfo {
 protected:
@@ -61,12 +61,12 @@ public:
 
 namespace LEX {
     class Lexer {
-    private:
-        LexerConfiguration _lexConfig;
-        StateMachine _sm;
-    public:
-        Lexer() : _lexConfig(LexerConfiguration()) , _sm(LexerConfiguration().getSmConfig()) { }
+        private:
+            LexerConfiguration _lexConfig;
+            StateMachine _sm;
+        public:
+            Lexer() : _lexConfig(LexerConfiguration()) , _sm(LexerConfiguration().getSmConfig()) { }
 
-        ParseResult parse(std::string input);
+            ParseResult parse(std::string input);
     };
 }

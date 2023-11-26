@@ -1,7 +1,8 @@
 ﻿#include "pch.h"
 #include "framework.h"
 #include "lexer_config.h"
-#include "shared_types.h"
+#include "token.h"
+#include "parse.h"
 #include "lexer.h"
 
 #include <vector>

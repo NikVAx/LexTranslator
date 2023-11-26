@@ -2,31 +2,11 @@
 
 #include "lexer_config.h"
 
+#include "token.h";
+
 #include <string>
 #include <vector>
 #include <sstream>
-
-struct Token {
-    Token(std::string value, TermTypes typeCode, std::string typeName) {
-        this->value = value;
-        this->typeCode = typeCode;
-        this->typeName = typeName;
-    }
-
-    std::string value = "";
-    std::string typeName = "";
-    TermTypes typeCode = TermTypes::UNDEFINED;
-
-    friend bool operator==(const Token& t1, const Token& t2) {
-        return t1.value == t2.value &&
-            t1.typeCode == t2.typeCode &&
-            t1.typeName == t2.typeName;
-    }
-
-    friend bool operator!=(const Token& t1, const Token& t2) {
-        return !(t1 == t2);
-    }
-};
 
 
 struct ParseItem {
@@ -37,7 +17,7 @@ struct ParseItem {
         return statusCode == StatusCodes::SUCCESS;
     }
 
-    ParseItem(Token token, StatusCodes statusCode = StatusCodes::SUCCESS) 
+    ParseItem(Token token, StatusCodes statusCode = StatusCodes::SUCCESS)
         : token(token), statusCode(statusCode)
     {
     }
@@ -58,8 +38,8 @@ public:
     std::vector<ParseItem> items;
     Location current;
 
-    void addError(std::string value, StatusCodes statusCode) {     
-        items.push_back(ParseItem(Token(value, TermTypes::UNDEFINED, 
+    void addError(std::string value, StatusCodes statusCode) {
+        items.push_back(ParseItem(Token(value, TermTypes::UNDEFINED,
             getTermTypeName(TermTypes::UNDEFINED)), statusCode));
         error = true;
     }

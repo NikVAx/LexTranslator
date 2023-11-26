@@ -2,9 +2,11 @@
 //
 
 #include "../LEXER/lexer.cpp"
-#include "../LEXER/shared_types.h"
+#include "../LEXER/lexer_config.h"
+
 #include "../Utils/utils.h"
-#include "utils.h"
+#include "constants.h"
+#include "command.h"
 
 #include "pch.h"
 #include "framework.h"
@@ -17,87 +19,6 @@
 #include <functional>
 #include <vector>
 #include <map>
-
-const int SHIFT_PACK_SIZE = 11;
-
-std::map<int, std::string> MAP_INPUT_STRING = {
-    { 0, "+" }, // +
-    { 1, "-"}, // -
-    { 2, "*"}, // *
-    { 3, "/"}, // /
-    { 4, "I"}, // идентификатор
-    { 5, "R"}, // число
-    { 6, "("}, // (
-    { 7, ")"}, // )
-    { 8, ";"}, // ;
-    { 9, ":="}, // :=
-    { 10, "#"}, // #
-    { 11, "S"}, // S
-};
- 
-
-
-
-
-struct ReduceRule {
-    ReduceRule() {
-        number = -1;
-        value = "";
-    }
-
-    ReduceRule(int num, std::string arg = "") {
-        number = num;
-        value = value;
-    }
-
-    int number;
-    std::string value;
-};
-
-std::map<std::string, ReduceRule> REDUCE_RULES = {
-    {"I:=S;", ReduceRule(1) },
-    {"S+S",   ReduceRule(2) },
-    {"S*S",   ReduceRule(4) },
-    {"S/S",   ReduceRule(5) },
-    {"(S)",   ReduceRule(7) },
-    {"-(S)",  ReduceRule(8) },
-    {"I",     ReduceRule(9) },
-    {"R",     ReduceRule(10) },
-};
-
-struct BuildRule {
-    std::vector<std::string> items;
-    std::string ruleString;
-
-    BuildRule() { }
-
-    BuildRule(std::vector<std::string> items) {
-        const char* const delim = "";
-
-        std::ostringstream imploded;
-        std::copy(items.begin(), items.end(),
-            std::ostream_iterator<std::string>(imploded, delim));
-
-        this->ruleString = imploded.str();
-    }
-};
-
-std::map<int, BuildRule> BUILD_RULES = {
-    { 1,  BuildRule({ "I", ":=", "S"}) },
-    { 2,  BuildRule({ "S", "+", "S" }) },
-    { 4,  BuildRule({ "S", "*", "S" }) },
-    { 5,  BuildRule({ "S", "/", "S" }) },
-    { 7,  BuildRule({ "S" }) },
-    { 8,  BuildRule({  "-", "S"})},
-    { 9,  BuildRule({  "I" }) },
-    { 10, BuildRule({  "R" }) },
-};
-
-const int NOT_TERMINAL = 11;
-const int NOT_FOUND = -1;
-
-const int ROMAN_ID = 4;
-const int IDENT_ID = 5;
 
 struct StackItem {
     StackItem(int code, std::string tag = "", std::string value = "") {
@@ -112,27 +33,24 @@ struct StackItem {
     std::string tag;
 
     bool isNotTerm() {
-        return code == NOT_TERMINAL;
+        return code == SYNTAX_TOKENS::NONTERMINAL.code;
     }
 };
 
-StackItem NOT_TERM = StackItem(NOT_TERMINAL, "S");
+StackItem START_LIMIT = StackItem(SYNTAX_TOKENS::LIMIT.code, "Н");
+StackItem NOT_TERM = StackItem(SYNTAX_TOKENS::NONTERMINAL.code, SYNTAX_TOKENS::NONTERMINAL.symbol);
 
 class SyntaxScanner {
 private:
     int head = 0;
     std::vector<Token> items;
 public:
-    std::vector<int> rules;
-    std::vector<std::string> terms;
-    
-    std::vector<Tree<int>> rulesTrees;
+    std::vector<SyntaxRule> rules;
 
     std::vector<StackItem> stack;
 
     void init(Command command) {
         items = command.tokens;
-        int head = 0;
     }
 
     int getTerminalIndex(int end) {
@@ -144,32 +62,29 @@ public:
         }
     }
 
-    int getIndexInDictionary(int tokenTypeCode) {
+    int getIndexInDictionary(TermTypes tokenTypeCode) {
         return ROW_COLUMN_MAP[tokenTypeCode];
     }
 
     Relations getRelation(int leftTermIndex, int rightTermIndex) {
         if (leftTermIndex >= MATH_MATRIX.SIZE() || rightTermIndex >= MATH_MATRIX.SIZE())
             throw std::exception("Relation matrix out of range");
-
         return MATH_MATRIX.MATRIX[leftTermIndex][rightTermIndex];
     }
 
     void reduce(int input, Token token) {
         int index1 = getTerminalIndex(stack.size() - 1);
         int index2 = getTerminalIndex(index1 - 1);
+
         int elAt1 = stack.at(index1).code;
         int elAt2 = stack.at(index2).code;
 
         bool notFound = true;
 
         do {
-            //std::cout << " > INDEX1 = " << MAP_INPUT_STRING[elAt1] << " (" << index1 << ")" << "\n";
-            //std::cout << " > INDEX2 = " << MAP_INPUT_STRING[elAt2] << " (" << index2 << ")" << "\n";
             Relations innerRelation = getRelation(elAt2, elAt1);
-            //std::cout << "RELATION " << innerRelation << "\n";
 
-            if (innerRelation == Relations::BASE) {
+            if (innerRelation == Relations::BASE && index2 > 0) {
                 notFound = false;
                 index1 = index2;
                 index2 = getTerminalIndex(index1 - 1);
@@ -185,13 +100,17 @@ public:
             ? getTerminalIndex(stack.size() - 1)
             : index1;
 
+        std::string nodeValue = "";
 
-        if (stack.back().code == ROMAN_ID || stack.back().code == IDENT_ID)
-            terms.push_back(stack.back().value);
+        if (stack.back().code == SYNTAX_TOKENS::IDENTIFIER.code) {
+            nodeValue = stack.back().value;
+        }
 
-        std::string baseString = popIfLaterOrNotTerminal(baseIndex);
+        std::string ruleString = popIfLaterOrNotTerminal(baseIndex);
 
-        rules.push_back(REDUCE_RULES[baseString].number);
+        SyntaxRule rule = REDUCE_RULES[ruleString];
+
+        rules.push_back(rule);
 
         stack.push_back(NOT_TERM);
     }
@@ -224,7 +143,7 @@ public:
     // разбор одной команды
     void proccess() {
         std::cout << "НАЧАЛО\n";
-        stack.push_back(StackItem(10, "Н"));
+        stack.push_back(START_LIMIT);
 
         int limit = 0;
         int k = 1;
@@ -235,31 +154,31 @@ public:
             int topStackTermIndex = getTerminalIndex(stack.size() - 1);
 
             int top = stack.at(topStackTermIndex).code;
-            int input = getIndexInDictionary((int)currentToken.typeCode);
+            int input = getIndexInDictionary(currentToken.typeCode);
 
             // Шаг 2: получения отношения по таблице
             Relations relation = getRelation(top, input);
 
-#pragma region  debug
+        #pragma region  debug
             std::cout
                 << (relation == Relations::NEXT ? "#СВЕРТКА" : "#СДВИГ  ")
-                /* << " [ " << relation << " ] "
+               /* << " [ " << as_integer(relation) << " ] "
                 << "["<< std::setw(2) << top << ";"
                 << std::setw(2) << MAP_INPUT_STRING[top] << "]"
                 << "[ " << std::setw(2) << input << ";"
                 << std::setw(2) << MAP_INPUT_STRING[input] << "]"*/
-                << "\n  СТЕК: " << stack_str(stack) << "\n";
-#pragma endregion            
+                << "\n  СТЕК: " << stack_str(stack) << " " << as_integer(relation) << "\n";
+        #pragma endregion         
 
             if (relation == Relations::PREV || relation == Relations::BASE) {
                 shift(input, currentToken); //сдвиг
                 continue;
             }
-            else if (relation == Relations::NEXT) {
-                reduce(input, currentToken); // свертка
+            if (relation == Relations::NEXT) {
+                reduce(input, currentToken); // свертка             
                 continue;
             }
-            else if (relation == Relations::NONE) {
+            if (relation == Relations::NONE) {
                 end(input); // конец алгоритма (успешный или ошибочный)
                 return;
             }
@@ -272,7 +191,7 @@ public:
     }
 
     void end(int input) {
-        if (input == 10 && head != 0) {
+        if (input == START_LIMIT.code && head != 0) {
             std::cout << "РАЗБОР ЗАВЕРШЕН\n";
         }
         else {

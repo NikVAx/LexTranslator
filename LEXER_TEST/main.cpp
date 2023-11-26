@@ -1,9 +1,9 @@
 ﻿
 #include "../LEXER/lexer.h"
-#include "../LEXER/shared_types.h"
+#include "../LEXER/token.h"
 #include "../SYNTAX/syntax.cpp";
 #include "../Utils/utils.h"
-
+#include "../SYNTAX/command.h"
 
 #include <iostream>
 #include <fstream>
@@ -15,8 +15,6 @@
 
 namespace LEX {
     
-
-
 }
 
 
@@ -33,15 +31,15 @@ void build_line(SyntaxScanner& scanner) {
     int term_index_2 = 0;
     
     std::cout << "ПРАВИЛА\n";
-    for (int r : scanner.rules) {
+    for (SyntaxRule r : scanner.rules) {
         std::cout << r << "\n";
     }
     std::cout << "КОНЕЦ ПРАВИЛА\n";
 
     for (int i = scanner.rules.size() - 1; i >= 0; --i) {
         std::cout << line << "\n";
-        int rule = scanner.rules[i];
-        BuildRule buildRule = BUILD_RULES[rule];
+        SyntaxRule rule = scanner.rules[i];
+        BuildRule buildRule = BUILD_RULES[rule.code];
 
         for (auto& lexem : buildRule.items) {
                
@@ -60,10 +58,10 @@ void build_line(SyntaxScanner& scanner) {
 
     for (int i = 0; i <= line.size() - 1; ++i) {
         if (line[i] == 'I' || line[i] == 'R') {
-            auto trm = scanner.terms[term_index++];
+            /*auto trm = scanner.terms[term_index++];
             line.erase(i, 1);
             line.insert(i, trm);
-            i += trm.size();
+            i += trm.size();*/
             std::cout << line << "\n";
         }
     }
@@ -112,7 +110,7 @@ int main() {
     //std::string line = "x:=a+((IV+a)+b);";
     //std::string line = "abc:=(a+-(-(VIII+b*a+b)+a)+a);";
 
-    std::string line = "a:=some+(value*XXIV);b:=c*(I*-(g+a));";
+    std::string line = "a:=some+((value*XXIV)+(value+XX)+(value+IV));b:=c*(I*-(g+a));";
     
     std::cout << "ВВОД: " << line << "\n";
 
@@ -125,9 +123,9 @@ int main() {
             SyntaxScanner syntax;
             syntax.init(command);
             syntax.proccess();
-            syntax.terms.insert(syntax.terms.cbegin(), parseResult.items[0].token.value);
+            // syntax.terms.insert(syntax.terms.cbegin(), parseResult.items[0].token.value);
 
-            build_line(syntax);
+           build_line(syntax);
         }
     }
 }

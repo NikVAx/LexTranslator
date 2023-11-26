@@ -7,14 +7,17 @@
 template <class T>
 struct TreeNode {
     T value;
-    std::vector<TreeNode*> children;
+    TreeNode<T>* parent;
+    std::vector<TreeNode<T>*> children;
 
     void addChild(TreeNode* node) {
+        node->parent = this;
         children.push_back(node);
     }
 
-    TreeNode(std::string value = "") {
+    TreeNode(T value) {
         this->value = value;
+        this->parent = NULL;
         this->children = {};
     }
 };
@@ -24,18 +27,10 @@ class Tree {
 public:
     TreeNode<T>* root;
 
-    Tree() {
-        root = NULL;
-    }
+    Tree() : root(NULL) {}
 
     ~Tree() {
         freeCascade(root);
-    }
-
-    static TreeNode<T>* create(std::string value) {
-        TreeNode<T>* node = new TreeNode<T>;
-        node->value = value;
-        return node;
     }
 
     void print() {
