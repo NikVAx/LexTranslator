@@ -100,3 +100,8 @@ std::map<int, int> ROW_COLUMN_MAP = {
     { 3,  SYNTAX_CONSTANTS::ASSIGNMENT.code }, // :=
     { 20, SYNTAX_CONSTANTS::LIMIT.code}, // #
 };
+
+typedef struct Command {
+    bool isValid = true;
+    std::vector<Token> tokens;
+};

@@ -125,18 +125,13 @@ private:
 public:
     std::vector<int> rules;
     std::vector<std::string> terms;
-    Tree<int> rulesTree;
-
+    
+    std::vector<Tree<int>> rulesTrees;
 
     std::vector<StackItem> stack;
 
-    void init(std::vector<ParseItem> input) {
-        for (auto& item : input) {
-            if (item.isValid()) {
-                items.push_back(item.token);
-            }
-            // TODO: Добавить иключение
-        }
+    void init(Command command) {
+        items = command.tokens;
         int head = 0;
     }
 

@@ -62,6 +62,8 @@ namespace GUI {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Index;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Token;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ TokenType;
+	private: System::Windows::Forms::TabPage^ tabPage1;
+	private: System::Windows::Forms::TreeView^ treeView1;
 
 
 
@@ -81,6 +83,14 @@ namespace GUI {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::Windows::Forms::TreeNode^ treeNode1 = (gcnew System::Windows::Forms::TreeNode(L"Узел1"));
+			System::Windows::Forms::TreeNode^ treeNode2 = (gcnew System::Windows::Forms::TreeNode(L"Узел2"));
+			System::Windows::Forms::TreeNode^ treeNode3 = (gcnew System::Windows::Forms::TreeNode(L"Узел0", gcnew cli::array< System::Windows::Forms::TreeNode^  >(2) {
+				treeNode1,
+					treeNode2
+			}));
+			System::Windows::Forms::TreeNode^ treeNode4 = (gcnew System::Windows::Forms::TreeNode(L"Узел3"));
+			System::Windows::Forms::TreeNode^ treeNode5 = (gcnew System::Windows::Forms::TreeNode(L"Узел4"));
 			this->Tabs = (gcnew System::Windows::Forms::TabControl());
 			this->PageSource = (gcnew System::Windows::Forms::TabPage());
 			this->ExecuteBtn = (gcnew System::Windows::Forms::Button());
@@ -93,10 +103,13 @@ namespace GUI {
 			this->Index = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->Token = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->TokenType = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->tabPage1 = (gcnew System::Windows::Forms::TabPage());
+			this->treeView1 = (gcnew System::Windows::Forms::TreeView());
 			this->Tabs->SuspendLayout();
 			this->PageSource->SuspendLayout();
 			this->PageLab1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TokensTable))->BeginInit();
+			this->tabPage1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// Tabs
@@ -106,6 +119,7 @@ namespace GUI {
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->Tabs->Controls->Add(this->PageSource);
 			this->Tabs->Controls->Add(this->PageLab1);
+			this->Tabs->Controls->Add(this->tabPage1);
 			this->Tabs->Location = System::Drawing::Point(22, 22);
 			this->Tabs->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->Tabs->Name = L"Tabs";
@@ -247,6 +261,35 @@ namespace GUI {
 			this->TokenType->ReadOnly = true;
 			this->TokenType->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
 			// 
+			// tabPage1
+			// 
+			this->tabPage1->Controls->Add(this->treeView1);
+			this->tabPage1->Location = System::Drawing::Point(4, 34);
+			this->tabPage1->Name = L"tabPage1";
+			this->tabPage1->Padding = System::Windows::Forms::Padding(3);
+			this->tabPage1->Size = System::Drawing::Size(816, 492);
+			this->tabPage1->TabIndex = 2;
+			this->tabPage1->Text = L"tabPage1";
+			this->tabPage1->UseVisualStyleBackColor = true;
+			// 
+			// treeView1
+			// 
+			this->treeView1->Location = System::Drawing::Point(6, 3);
+			this->treeView1->Name = L"treeView1";
+			treeNode1->Name = L"Узел1";
+			treeNode1->Text = L"Узел1";
+			treeNode2->Name = L"Узел2";
+			treeNode2->Text = L"Узел2";
+			treeNode3->Name = L"Узел0";
+			treeNode3->Text = L"Узел0";
+			treeNode4->Name = L"Узел3";
+			treeNode4->Text = L"Узел3";
+			treeNode5->Name = L"Узел4";
+			treeNode5->Text = L"Узел4";
+			this->treeView1->Nodes->AddRange(gcnew cli::array< System::Windows::Forms::TreeNode^  >(3) { treeNode3, treeNode4, treeNode5 });
+			this->treeView1->Size = System::Drawing::Size(804, 483);
+			this->treeView1->TabIndex = 0;
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(11, 25);
@@ -264,6 +307,7 @@ namespace GUI {
 			this->PageSource->PerformLayout();
 			this->PageLab1->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TokensTable))->EndInit();
+			this->tabPage1->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}

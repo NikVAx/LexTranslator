@@ -72,6 +72,34 @@ void build_line(SyntaxScanner& scanner) {
     //tree_e.print();
 }
 
+
+
+std::vector<Command> splitCommands(ParseResult& parseResult) {
+    int index = 0;
+
+    std::vector<Command> commands;
+    
+    
+    while (index < parseResult.items.size()) {
+        Command command;
+        while (index < parseResult.items.size()) {
+            if (!parseResult.items[index].isValid()) {
+                command.isValid = false;
+            }
+                 
+            command.tokens.push_back(parseResult.items[index].token);
+            if (parseResult.items[index].token.value == ";") {
+                command.tokens.push_back(Token("К", TermTypes::END_TERMINAL, "К"));
+                index += 1;
+                break;
+            }
+            index += 1;
+        }
+        commands.push_back(command);
+    }
+    return commands;
+}
+
 int main() {
     setlocale(LC_ALL, "");
 
@@ -79,51 +107,27 @@ int main() {
     //LEX::BlackBox::s_run();
 
     LEX::Lexer lexer;
-    SyntaxScanner syntax;
+    
     
     //std::string line = "x:=a+((IV+a)+b);";
     //std::string line = "abc:=(a+-(-(VIII+b*a+b)+a)+a);";
 
-    std::string line = "a:=some+-(value*XXIV);b:=c*(I-g);";
+    std::string line = "a:=some+(value*XXIV);b:=c*(I*-(g+a));";
     
     std::cout << "ВВОД: " << line << "\n";
 
-    auto parseResult = lexer.parse(line);
-    
-    int index = 0;
-    int page = 0;
+    auto parseResult = lexer.parse(line);  
 
-    std::vector<std::vector<Token>> commands;
-    while (index < parseResult.items.size()) {
-        commands.push_back(std::vector<Token>());
-        while (index < parseResult.items.size()) {
-            commands[page].push_back(parseResult.items[index].token);           
-            if (parseResult.items[index].token.value == ";") {
-                commands[page].push_back(Token("К", TermTypes::END_TERMINAL, "К"));
-                page += 1;
-                index += 1;
-                break;
-            }
-            index += 1;
+    auto commands = splitCommands(parseResult);
+    
+    if (parseResult.success()) {        
+        for (auto& command : commands) {
+            SyntaxScanner syntax;
+            syntax.init(command);
+            syntax.proccess();
+            syntax.terms.insert(syntax.terms.cbegin(), parseResult.items[0].token.value);
+
+            build_line(syntax);
         }
-    }
-
-    int lsm = 1;
-   
-
-    parseResult.add(Token("К", TermTypes::END_TERMINAL, "К"));
-    
-    if (parseResult.success()) {
-        // TODO: тут нужно разделять токены на подсписки
-        // чтобы синтаксический анализатор принимал только конструктцию вида
-        // I:=S;
-        
-        syntax.init(parseResult.items);
-        syntax.proccess();
-        syntax.terms.insert(syntax.terms.cbegin(), parseResult.items[0].token.value);
-        
-        build_line(syntax);
-
-        //std::string line = "a:=some+-(value*XXIV);";
     }
 }
