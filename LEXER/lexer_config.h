@@ -3,7 +3,7 @@
   Файл конфигурации конечного автомата лексического анализатора.
 */
 
-#include "lex_config_5_old.h"
+#include "lex_config_5.h"
 
 #include <string>
 #include <map>
@@ -30,24 +30,8 @@ enum class StatusCodes {
 
 static const int IS_BOUNDARY_CODE = 1;
 
-
-static const int INITIAL_STATE = 53;
-
-static const int INPUT_ALPHABET_SIZE = 128;
-
 static const int ARGUMENTS_COUNT = 3;
 
-const std::vector<int> INPUT_ALPHABET_MAP =
-{
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 21, 19, 0, 0, 20, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0,  0, 0, 0, 0, 0,
-    20, 0, 0, 0, 0, 0,  0, 0, 12, 13, 16, 14, 0, 15, 0, 17,
-    9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 18, 0, 11, 0, 0,
-    0, 8, 8, 5, 6, 8, 8, 8, 8, 1, 8, 8, 4, 7, 8, 8,
-    8, 8, 8, 8, 8, 8, 2, 8, 3, 8, 8, 0, 0, 0, 0, 8,
-    0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-    8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 0, 0, 0
-};
 
 static const std::vector <std::string> TYPE_NAMES =
 {
