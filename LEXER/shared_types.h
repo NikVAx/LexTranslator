@@ -63,7 +63,7 @@ public:
 
     void addError(std::string value, StatusCodes statusCode) {     
         items.push_back(ParseItem(Token(value, TermTypes::UNDEFINED, 
-            TermTypes::UNDEFINED.string), statusCode));
+            TermTypes::UNDEFINED.name), statusCode));
         error = true;
     }
 
@@ -75,8 +75,8 @@ public:
         items.push_back(ParseItem(token));
     }
 
-    void add(std::string value, TermTypes typeCode, std::string typeName) {
-        items.push_back(ParseItem(Token(value, typeCode, typeName)));
+    void add(std::string value, TermTypes typeCode) {
+        items.push_back(ParseItem(Token(value, typeCode, typeCode.name)));
     }
 
     void updateCurrentCharLocationData(char ch) {

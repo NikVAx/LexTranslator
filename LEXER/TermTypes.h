@@ -6,11 +6,11 @@
 
 typedef struct TermTypes {
     const int code;
-    const std::string string;
+    const std::string name;
 
     TermTypes(const int code, const std::string string)
         : code(code)
-        , string(string)
+        , name(string)
     { }
 
     operator int() const {
@@ -18,7 +18,7 @@ typedef struct TermTypes {
     }
 
     operator std::string() const {
-        return string;
+        return name;
     }
 
     TermTypes operator=(TermTypes& a) {

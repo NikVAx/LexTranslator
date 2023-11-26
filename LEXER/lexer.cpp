@@ -62,8 +62,7 @@ ParseResult LEX::Lexer::parse(std::string input) {
             TermTypes tokenTypeCode = _lexConfig.mapTokenType(_sm.currentState);
 
             if (tokenTypeCode != TermTypes::COMMENT) {
-                std::string tokenTypeName = _lexConfig.getTokenTypeName(tokenTypeCode);
-                result.add(tokenString, tokenTypeCode, tokenTypeName);
+                result.add(tokenString, tokenTypeCode);
             } // else ingore comment
 
             tokenString.clear();

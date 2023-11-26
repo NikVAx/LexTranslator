@@ -165,7 +165,7 @@ public:
     }
 
     std::string getTokenTypeName(TermTypes termType) {
-        return termType.string;
+        return termType.name;
     }
 
     static std::string mapStatusMessage(StatusCodes statusCode) {
