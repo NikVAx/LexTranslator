@@ -7,9 +7,12 @@
 #include <sstream>
 
 struct Token {
-    Token(std::string value, TermTypes typeCode, std::string typeName) {
+    Token(std::string value, TermTypes typeCode, std::string typeName)
+        : value(value)
+        , typeCode(typeCode)
+        , typeName(typeName)
+    {
         this->value = value;
-        this->typeCode = typeCode;
         this->typeName = typeName;
     }
 
@@ -60,7 +63,7 @@ public:
 
     void addError(std::string value, StatusCodes statusCode) {     
         items.push_back(ParseItem(Token(value, TermTypes::UNDEFINED, 
-            getTermTypeName(TermTypes::UNDEFINED)), statusCode));
+            TermTypes::UNDEFINED.string), statusCode));
         error = true;
     }
 

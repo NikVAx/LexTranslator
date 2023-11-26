@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Файлы заголовков\Enums Structs">
+      <UniqueIdentifier>{dda41438-3114-445a-8a20-3da032b7d898}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -32,6 +35,12 @@
     </ClInclude>
     <ClInclude Include="matrices.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="TermTypes.h">
+      <Filter>Файлы заголовков\Enums Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="StatusCode.h">
+      <Filter>Файлы заголовков\Enums Structs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

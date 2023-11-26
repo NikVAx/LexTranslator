@@ -10,34 +10,7 @@
 #include <exception>
 
 #include <string>
-
-enum class TermTypes {
-    UNDEFINED, IDENTIFIER,
-    NUMBER,// Числовые литералы
-    ASSIGNMENT,
-    OPEN_BRACKET, CLOSE_BRACKET, // Скобки
-    PLUS,
-    SEMICOLON,
-    COMMENT,
-
-    KEYWORD,
-    
-    MINUS,
-    MULTIPLY,
-    DIVIDE,  // Математические операторы
-    
-    OR, XOR, AND, NOT, // Побитовые операторы
-    IF, THEN, ELSE, // Условный оператор
-
-    END_TERMINAL,
-
-    FOR, DO, // Оператор цикла
-    LESS, GREATER, EQUAL, // Операторы сравнения
-    
-    TRUE, FALSE, // Логические константы (true-false, 1-0, 'T'-'F')
-
-    COUNT_OF_TYPES
-};
+#include "TermTypes.h"
 
 enum class StatusCodes {
     SUCCESS,
@@ -54,42 +27,6 @@ enum class StatusCodes {
     CODE11,
     CODE12,
 };
-
-std::string getTermTypeName(TermTypes type) {
-    static std::string NAMES[(int)TermTypes::COUNT_OF_TYPES];
-
-    NAMES[(int)TermTypes::UNDEFINED] = "Неопределенный";
-    NAMES[(int)TermTypes::IDENTIFIER] = "Идентификатор";
-    NAMES[(int)TermTypes::COMMENT] = "Комментарий";
-    NAMES[(int)TermTypes::ASSIGNMENT] = "Присваивание";
-    NAMES[(int)TermTypes::SEMICOLON] = "Разделитель";
-    NAMES[(int)TermTypes::PLUS] = "Оператор \"+\"";
-    NAMES[(int)TermTypes::MULTIPLY] = "Оператор \"*\"";
-    NAMES[(int)TermTypes::DIVIDE] = "Оператор \"/\"";
-    NAMES[(int)TermTypes::MINUS] = "Оператор \"-\"";
-    NAMES[(int)TermTypes::OR] = "Оператор OR";
-    NAMES[(int)TermTypes::XOR] = "Оператор XOR";
-    NAMES[(int)TermTypes::AND] = "Оператор AND";
-    NAMES[(int)TermTypes::NOT] = "Оператор NOT";
-    NAMES[(int)TermTypes::IF] = "Оператор IF";
-    NAMES[(int)TermTypes::THEN] = "Оператор THEN";
-    NAMES[(int)TermTypes::ELSE] = "Оператор ELSE";
-    NAMES[(int)TermTypes::FOR] = "Оператор FOR";
-    NAMES[(int)TermTypes::DO] = "Оператор DO";
-    NAMES[(int)TermTypes::LESS] = "Оператор \"<\"";
-    NAMES[(int)TermTypes::GREATER] = "Оператор \">\"";
-    NAMES[(int)TermTypes::EQUAL] = "Оператор \"=\"";
-    NAMES[(int)TermTypes::OPEN_BRACKET] = "Открывающая скобка";
-    NAMES[(int)TermTypes::CLOSE_BRACKET] = "Закрывающая скобка";
-    NAMES[(int)TermTypes::TRUE] = "ИСТИНА";
-    NAMES[(int)TermTypes::FALSE] = "ЛОЖЬ";
-    NAMES[(int)TermTypes::NUMBER] = "Римское число";
-
-    return (int)type <= 0 || type >= TermTypes::COUNT_OF_TYPES
-        ? NAMES[(int)TermTypes::UNDEFINED]
-        : NAMES[(int)type];
-}
-
 
 static const int IS_BOUNDARY_CODE = 1;
 
@@ -286,7 +223,7 @@ public:
     }
 
     std::string getTokenTypeName(TermTypes termType) {
-        return getTermTypeName(termType);
+        return termType.string;
     }
 
     static std::string mapStatusMessage(StatusCodes statusCode) {
