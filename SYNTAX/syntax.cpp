@@ -239,11 +239,6 @@ public:
 #pragma region  debug
             std::cout
                 << (relation == Relations::NEXT ? "#СВЕРТКА" : "#СДВИГ  ")
-                /* << " [ " << relation << " ] "
-                << "["<< std::setw(2) << top << ";"
-                << std::setw(2) << MAP_INPUT_STRING[top] << "]"
-                << "[ " << std::setw(2) << input << ";"
-                << std::setw(2) << MAP_INPUT_STRING[input] << "]"*/
                 << "\n  СТЕК: " << stack_str(stack) << "\n";
 #pragma endregion            
 

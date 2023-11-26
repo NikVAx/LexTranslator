@@ -11,8 +11,34 @@
 #include <stack>
 #include <functional>
 #include <algorithm>
+#include <string>
 
+void build_line_2(SyntaxScanner& scanner) {
+    std::string line = "S";
+    for (int i = scanner.rules.size() - 1; i >= 0; --i) {
+        std::cout << line << "\n";
+        int rule = scanner.rules[i];
+        int location = line.find_last_of("S");
+        if (location != -1) {
+            line.erase(location, 1);
+            line.insert(location, BUILD_RULES[rule].ruleString);
+        }
+    }
+    std::cout << line << " \n";
 
+    int term_index = 0;
+
+    for (int i = 0; i <= line.size() - 1; ++i) {
+        if (line[i] == 'I' || line[i] == 'R') {
+            auto trm = scanner.terms[term_index++];
+            line.erase(i, 1);
+            line.insert(i, trm);
+            i += trm.size();
+            std::cout << line << "\n";
+        }
+    }
+    std::cout << line << "\n";
+}
 
 void build_line(SyntaxScanner& scanner) {
     std::string line = "S"; 
@@ -90,9 +116,6 @@ std::vector<Command> splitCommands(ParseResult& parseResult) {
 int main() {
     setlocale(LC_ALL, "");
 
-    //LEX::WhiteBox::s_run();   
-    //LEX::BlackBox::s_run();
-
     LEX::Lexer lexer;
     
     
@@ -125,7 +148,7 @@ int main() {
             syntax.proccess();
             syntax.terms.insert(syntax.terms.cbegin(), parseResult.items[0].token.value);
 
-            build_line(syntax);
+            build_line_2(syntax);
         }     
         std::cout << "\n\n";
     }
