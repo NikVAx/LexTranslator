@@ -1,15 +1,13 @@
 #pragma once
 
-
-#include "lexer_config.h"
 #include "StatusCodes.h"
 #include "ParseResult.h"
 #include "Token.h"
+#include "lexer_config.h"
 
 #include <string>
 #include <sstream>
 #include <vector>
-
 
 struct TransitionInfo {
 protected:
@@ -88,11 +86,11 @@ public:
 
 namespace LEX {
     class Lexer {
-    private:
-        LexerConfiguration _lexConfig;
-        StateMachine _sm;
-    public:
-        Lexer() : _lexConfig(LexerConfiguration()) , _sm(LexerConfiguration().getSmConfig()) { }
+        private:
+            LexerConfiguration _lexConfig;
+            StateMachine _sm;
+        public:
+            Lexer() : _lexConfig(LexerConfiguration()) , _sm(LexerConfiguration().getSmConfig()) { }
 
         ParseResult parse(std::string input) {
             ParseResult result;

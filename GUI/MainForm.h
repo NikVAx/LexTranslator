@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../LEXER/lexer.h"
-#include "../LEXER/shared_types.h"
+#include "../LEXER/parse.h"
 
 #include <msclr/marshal_cppstd.h>
 
