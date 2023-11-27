@@ -4,61 +4,20 @@
 #include "../Core/parse_result.h"
 #include "../Core/token.h"
 
+#include "transition_info.h"
 #include "lexer_config.h"
 
 #include <string>
 #include <sstream>
 #include <vector>
 
-struct TransitionInfo {
-protected:
-    std::vector<int> args;
-    int code;
-    char input;
 
-    int nextState;
-    bool isBoundary;
-    StatusCodes statusCode;
-
-public:
-    TransitionInfo(char input, int code, int nextState, bool isBoundary, StatusCodes statusCode)
-        : input(input)
-        , code(code)
-        , nextState(nextState)
-        , isBoundary(isBoundary)
-        , statusCode(statusCode)
-    { }
-
-    int getInputCode() {
-        return code;
-    }
-
-    int getNextState() {
-        return nextState;
-    }
-
-    bool isTokenBoundary() {
-        return isBoundary;
-    }
-
-    StatusCodes getStatusCode() {
-        return statusCode;
-    }
-
-    bool isNotSuccess() {
-        StatusCodes code = getStatusCode();
-
-        return code != StatusCodes::SUCCESS;
-    }
-
-    bool isEmptyChar() {
-        return input == '\n' || input == '\t' || input == ' ' || input == '\r';
-    }
-};
 
 class StateMachine {
 protected:
     StateMachineConfiguration _smConfig;
+
+    static const int IS_BOUNDARY_CODE = 1;
 public:
     StateMachine(StateMachineConfiguration smConfig)
         : _smConfig(smConfig)

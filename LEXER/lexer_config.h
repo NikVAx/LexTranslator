@@ -8,16 +8,6 @@
 #include <map>
 #include <exception>
 
-
-
-static const int IS_BOUNDARY_CODE = 1;
-
-static const int ARGUMENTS_COUNT = 3;
-
-static bool inRange(int value, int first, int second) {
-    return first <= value && value < second;
-}
-
 class StateMachineConfiguration {
 public:
     int initialState;
@@ -32,10 +22,6 @@ public:
 
     int getCountOfStates() {
         return STATES_MATRIX.size();
-    }
-
-    int getArgumentsCount() {
-        return ARGUMENTS_COUNT;
     }
 
     int getCountOfInputs() {
@@ -71,7 +57,7 @@ public:
     }
 
     int mapInputAlpha(int inputChar) {
-        int inputType = inRange(inputChar, 0, getInputAlphabetSize())
+        int inputType = (0 <= inputChar && inputChar < getInputAlphabetSize())
             ? INPUT_ALPHABET_MAP[inputChar]
             : 0; // Любой символ не входящий в грамматику
         return inputType;
@@ -91,7 +77,7 @@ public:
     }
 
     TermTypes mapTokenType(int state) {
-        TermTypes typeCode = inRange(state, 0, _smConfig.getCountOfStates())
+        TermTypes typeCode = (0 <= state && state < _smConfig.getCountOfStates())
             ? TOKEN_TYPE_MAP[state]
             : TermTypes::UNDEFINED;
         return typeCode;

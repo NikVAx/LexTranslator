@@ -36,6 +36,9 @@
     <ClInclude Include="lex_config_5.h">
       <Filter>Файлы заголовков\Lex Configs</Filter>
     </ClInclude>
+    <ClInclude Include="transition_info.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lexer.cpp">

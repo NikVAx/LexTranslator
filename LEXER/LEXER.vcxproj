@@ -147,6 +147,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="lexer_config.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="transition_info.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lexer.cpp" />
