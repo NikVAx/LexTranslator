@@ -39,6 +39,9 @@
     <ClInclude Include="transition_info.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="state_machine.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lexer.cpp">
