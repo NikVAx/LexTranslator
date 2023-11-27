@@ -80,12 +80,12 @@ struct BuildRule {
 };
 
 std::map<int, BuildRule> BUILD_RULES = {
-    { 1,  BuildRule({ "I", ":=", "S"}) },
+    { 1,  BuildRule({ "I", ":=", "S", ";"})},
     { 2,  BuildRule({ "S", "+", "S" }) },
     { 4,  BuildRule({ "S", "*", "S" }) },
     { 5,  BuildRule({ "S", "/", "S" }) },
-    { 7,  BuildRule({ "S" }) },
-    { 8,  BuildRule({  "-", "S"})},
+    { 7,  BuildRule({ "(", "S", ")"})},
+    { 8,  BuildRule({  "-","(", "S", ")"})},
     { 9,  BuildRule({  "I" }) },
     { 10, BuildRule({  "R" }) },
 };
@@ -97,11 +97,11 @@ const int ROMAN_ID = 4;
 const int IDENT_ID = 5;
 
 struct StackItem {
-    StackItem(int code, std::string tag = "", std::string value = "") {
-        this->code = code;
-        this->value = value;
-        this->tag = tag == "" ? MAP_INPUT_STRING[code] : tag;
-    }
+    StackItem(int code, std::string tag = "", std::string value = "") 
+        : code(code)
+        , value(value)
+        , tag(tag == "" ? MAP_INPUT_STRING[code] : tag)
+    { }
 
     int code;
 

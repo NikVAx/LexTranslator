@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <functional>
 
 template <class T>
 struct TreeNode {
@@ -38,10 +39,26 @@ public:
         return node;
     }
 
+    void forEarch(std::function<void(TreeNode<T>*, int)> action) {
+    
+    }
+
     void print() {
         printCascase(root, 0);
     }
 private:
+
+    void forEachCascade(TreeNode<T>* root, int depth, std::function<void(TreeNode<T>*, int)> action) {
+        if (root == NULL) {
+            return;
+        }
+
+        for (int i = 0; i < root->children.size(); ++i) {
+            action(root, depth);
+            forEachCascade(root->children[i], depth + 1, action);
+        }
+    }
+
     void printCascase(TreeNode<T>* root, int depth) {
         if (root == NULL) {
             return;

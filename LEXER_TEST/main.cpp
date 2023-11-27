@@ -13,6 +13,83 @@
 #include <algorithm>
 #include <string>
 
+#include "../Utils/utils.h"
+
+class StringTreeBuilder {
+private:
+    SyntaxScanner& scanner;
+    int i = 0;
+    int termIndex = 0;
+public:
+    StringTreeBuilder(SyntaxScanner& scanner) 
+        : scanner(scanner)
+    { 
+    
+    }
+
+    Tree<std::string>* build() {
+        Tree<std::string>* tree = new Tree<std::string>();
+        tree->root = new TreeNode<std::string>("S");
+        i = scanner.rules.size() - 1;
+
+        addCascade(tree->root, 0);
+
+        return tree;
+    }
+
+    void addCascade(TreeNode<std::string>* root, int depth) {
+        if (root == NULL) {
+            return;
+        }
+        
+        int childIndex = 0;
+
+        std::cout << depth << ": " << root->value << "\n";
+
+        for (int j = root->value.size() - 1; j >= 0; --j) {
+            if (root->value[j] == 'S') {
+                int rule = scanner.rules[i];
+                BuildRule buildRule = BUILD_RULES[rule];
+
+                std::cout << "Using rule at " << i << " #" << rule << "\n";
+                i -= 1;
+               
+                std::string ruleString = buildRule.ruleString;
+
+
+
+                std::cout << "S at pos " << j << "\n";
+                TreeNode<std::string>* node = new TreeNode<std::string>(ruleString);
+                root->addChild(node);
+                addCascade(node, depth + 1);
+            }
+            if (root->value[j] == 'I') {
+                TreeNode<std::string>* node = new TreeNode<std::string>(scanner.terms[termIndex++]);
+                root->addChild(node);
+            }
+            if (root->value[j] == 'R') {
+                TreeNode<std::string>* node = new TreeNode<std::string>(scanner.terms[termIndex++]);
+                root->addChild(node);
+            }
+        
+        }
+
+        ///int rule = scanner.rules[i];
+    
+        //int location = line.find_last_of("S");
+    
+        //for (int i = 0; i < root->children.size(); ++i) {
+        //    addCascade(root->children[i], depth + 1);
+        //}
+    }
+
+    void add() {
+        int rule = scanner.rules[i];
+        std::string ruleString = BUILD_RULES[rule].ruleString;
+    }
+
+};
+
 void build_line_2(SyntaxScanner& scanner) {
     std::string line = "S";
     for (int i = scanner.rules.size() - 1; i >= 0; --i) {
@@ -122,7 +199,9 @@ int main() {
     //std::string line = "x:=a+((IV+a)+b);";
     //std::string line = "abc:=(a+-(-(VIII+b*a+b)+a)+a);";
 
-    std::string line = "a:=some+(value*XXIV);b:=c*(I*-(g+a));";
+    //std::string line = "a:=some+(value*XXIV);b:=c*(I*-(g+a));";
+
+    std::string line = "a:=some+((value*XXIV)+(value+XX)+(value+IV));";
     
     std::cout << "ВВОД: " << line << "\n";
 
@@ -149,6 +228,12 @@ int main() {
             syntax.terms.insert(syntax.terms.cbegin(), parseResult.items[0].token.value);
 
             build_line_2(syntax);
+
+            StringTreeBuilder builder(syntax);
+
+            Tree<std::string>* tree =  builder.build();
+            std::cout << "\nвывод:\n";
+            tree->print();
         }     
         std::cout << "\n\n";
     }
