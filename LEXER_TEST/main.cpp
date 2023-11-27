@@ -98,8 +98,7 @@ int main() {
         for (auto& item : command.tokens) {
             std::cout
                 << item.value << "\t"
-                << item.typeCode << "\t"
-                << item.typeName << "\n"
+                << item.typeCode << "\n"
                 ;
         }
 
