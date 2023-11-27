@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../LEXER/lexer_config.h"
 #include "../Utils/cast_enum.h"
 #include "../Utils/iterator.h"
 

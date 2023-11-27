@@ -1,10 +1,7 @@
 #pragma once
 
-#include "lex_config_5.h"
-#include "../Core/term_types.h"
-#include "../Core/status_codes.h"
+#include "current_configuration.h"
 
-#include <string>
 #include <map>
 #include <exception>
 
@@ -44,13 +41,13 @@ public:
         switch (arg) {
         case 0:
             return getNextState(state, inputType);
-     
-        case 1: 
+
+        case 1:
             return getBoundary(state, inputType);
-            
-        case 2: 
+
+        case 2:
             return getStatusCode(state, inputType);
-     
+
         default:
             exit(-1);
         }
@@ -61,29 +58,5 @@ public:
             ? INPUT_ALPHABET_MAP[inputChar]
             : 0; // Любой символ не входящий в грамматику
         return inputType;
-    }
-};
-
-class LexerConfiguration {
-private:
-    StateMachineConfiguration _smConfig;
-public:
-    LexerConfiguration() 
-        : _smConfig(StateMachineConfiguration())
-    { }
-
-    StateMachineConfiguration& getSmConfig() {
-        return _smConfig;
-    }
-
-    TermTypes mapTokenType(int state) {
-        TermTypes typeCode = (0 <= state && state < _smConfig.getCountOfStates())
-            ? TOKEN_TYPE_MAP[state]
-            : TermTypes::UNDEFINED;
-        return typeCode;
-    }
-
-    std::string getTokenTypeName(TermTypes termType) {
-        return termType.name;
     }
 };

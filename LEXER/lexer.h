@@ -5,8 +5,8 @@
 #include "../Core/token.h"
 
 #include "transition_info.h"
-#include "lexer_config.h"
 #include "state_machine.h"
+#include "lexer_configuration.h"
 
 #include <string>
 #include <sstream>

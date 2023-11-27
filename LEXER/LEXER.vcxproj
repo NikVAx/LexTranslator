@@ -141,13 +141,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="current_configuration.h" />
     <ClInclude Include="lexer.h" />
+    <ClInclude Include="lexer_configuration.h" />
     <ClInclude Include="lex_config_5.h" />
     <ClInclude Include="lex_config_5_old.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="lexer_config.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="state_machine.h" />
+    <ClInclude Include="state_machine_configuration.h" />
     <ClInclude Include="transition_info.h" />
   </ItemGroup>
   <ItemGroup>
