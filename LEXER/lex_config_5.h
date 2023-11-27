@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "TermTypes.h"
+#include "term_types.h"
 
 static const int INPUT_ALPHABET_SIZE = 128;
 const std::vector<int> INPUT_ALPHABET_MAP =

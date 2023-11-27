@@ -1,7 +1,7 @@
 #pragma once
 
-#include "StatusCodes.h"
-#include "Token.h"
+#include "status_codes.h"
+#include "token.h"
 
 struct ParseItem {
     Token token;

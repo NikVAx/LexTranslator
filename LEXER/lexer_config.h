@@ -6,8 +6,8 @@
 #include <map>
 #include <exception>
 
-#include "TermTypes.h"
-#include "StatusCodes.h"
+#include "term_types.h"
+#include "status_codes.h"
 
 static const int IS_BOUNDARY_CODE = 1;
 

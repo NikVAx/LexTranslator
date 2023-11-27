@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Token.h"
-#include "ParseItem.h"
+#include "token.h"
+#include "parse_item.h"
 
 #include <vector>
 

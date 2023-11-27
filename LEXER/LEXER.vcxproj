@@ -144,14 +144,14 @@
     <ClInclude Include="lexer.h" />
     <ClInclude Include="lex_config_5.h" />
     <ClInclude Include="lex_config_5_old.h" />
-    <ClInclude Include="ParseItem.h" />
-    <ClInclude Include="ParseResult.h" />
+    <ClInclude Include="parse_item.h" />
+    <ClInclude Include="parse_result.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="lexer_config.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="StatusCodes.h" />
-    <ClInclude Include="TermTypes.h" />
-    <ClInclude Include="Token.h" />
+    <ClInclude Include="status_codes.h" />
+    <ClInclude Include="term_types.h" />
+    <ClInclude Include="token.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lexer.cpp" />
