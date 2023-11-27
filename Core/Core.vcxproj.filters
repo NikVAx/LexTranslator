@@ -13,8 +13,20 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Файлы заголовков\Lex Configs">
-      <UniqueIdentifier>{9bd65541-2562-44a1-a017-5a1641e67e3e}</UniqueIdentifier>
+    <Filter Include="Файлы заголовков\enum_structs">
+      <UniqueIdentifier>{a42954fd-4b7b-4c31-b2e1-9ba35faf1840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\types">
+      <UniqueIdentifier>{8df6902b-deeb-45ab-9db6-f3c081cfd596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\types\lexer">
+      <UniqueIdentifier>{5b72bc0c-3368-4182-901f-3a086a415417}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\types\common">
+      <UniqueIdentifier>{6f17329c-37ff-4172-aacc-81926c19b2c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\types\syntax">
+      <UniqueIdentifier>{d0c9fad1-2f10-4564-9931-cd9c4f082c52}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -24,21 +36,24 @@
     <ClInclude Include="pch.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="lexer_config.h">
-      <Filter>Файлы заголовков</Filter>
+    <ClInclude Include="term_types.h">
+      <Filter>Файлы заголовков\enum_structs</Filter>
     </ClInclude>
-    <ClInclude Include="lexer.h">
-      <Filter>Файлы заголовков</Filter>
+    <ClInclude Include="status_codes.h">
+      <Filter>Файлы заголовков\enum_structs</Filter>
     </ClInclude>
-    <ClInclude Include="lex_config_5_old.h">
-      <Filter>Файлы заголовков\Lex Configs</Filter>
+    <ClInclude Include="parse_item.h">
+      <Filter>Файлы заголовков\types\lexer</Filter>
     </ClInclude>
-    <ClInclude Include="lex_config_5.h">
-      <Filter>Файлы заголовков\Lex Configs</Filter>
+    <ClInclude Include="parse_result.h">
+      <Filter>Файлы заголовков\types\lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="token.h">
+      <Filter>Файлы заголовков\types\common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lexer.cpp">
+    <ClCompile Include="Core.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">

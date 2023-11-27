@@ -1,8 +1,9 @@
 #pragma once
 
-#include "status_codes.h"
-#include "parse_result.h"
-#include "token.h"
+#include "../Core/status_codes.h"
+#include "../Core/parse_result.h"
+#include "../Core/token.h"
+
 #include "lexer_config.h"
 
 #include <string>

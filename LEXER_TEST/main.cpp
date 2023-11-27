@@ -1,10 +1,11 @@
 ﻿
 #include "../LEXER/lexer.h"
-#include "../LEXER/token.h"
+#include "../Core/token.h"
+
+
 #include "../SYNTAX/syntax.cpp"
 #include "../SYNTAX/tree_builder.h"
 #include "../Utils/utils.h"
-#include "../LEXER/parse_result.h"
 #include "../SYNTAX/command.h"
 
 #include <iostream>

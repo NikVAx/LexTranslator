@@ -1,19 +1,15 @@
 ﻿// SYNTAX.cpp : Определяет функции для статической библиотеки.
 //
 
-#include "../LEXER/lexer.cpp"
-
-#include "../Utils/cast_enum.h"
-#include "constants.h"
-#include "command.h"
-
 #include "pch.h"
 #include "framework.h"
-
 #include "syntax.h"
 
 #include "../LEXER/lexer.h"
 #include "../Utils/utils.h"
+#include "../Utils/cast_enum.h"
+#include "constants.h"
+#include "command.h"
 
 #include <iostream>
 #include <fstream>
@@ -23,6 +19,8 @@
 #include <functional>
 #include <vector>
 #include <map>
+
+
 
 struct StackItem {
     StackItem(int code, std::string tag = "", std::string value = "") 

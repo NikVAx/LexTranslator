@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>;
-#include "../LEXER/token.h"
+#include "../Core/token.h"
 
+#include <vector>;
 
 typedef struct Command {
     bool isValid = true;

@@ -1,13 +1,14 @@
 #pragma once
 
 #include "lex_config_5.h"
+#include "../Core/term_types.h"
+#include "../Core/status_codes.h"
 
 #include <string>
 #include <map>
 #include <exception>
 
-#include "term_types.h"
-#include "status_codes.h"
+
 
 static const int IS_BOUNDARY_CODE = 1;
 

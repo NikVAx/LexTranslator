@@ -21,10 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{11b0639d-fd36-49a8-9986-2a6f7b62f07a}</ProjectGuid>
-    <RootNamespace>LEXER</RootNamespace>
+    <ProjectGuid>{b170809f-9a85-45e0-966a-c1f4fbfdeb8d}</ProjectGuid>
+    <RootNamespace>Core</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>7.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -45,7 +44,6 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <CLRSupport>false</CLRSupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -141,15 +139,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="lexer.h" />
-    <ClInclude Include="lex_config_5.h" />
-    <ClInclude Include="lex_config_5_old.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="lexer_config.h" />
+    <ClInclude Include="parse_item.h" />
+    <ClInclude Include="parse_result.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="status_codes.h" />
+    <ClInclude Include="term_types.h" />
+    <ClInclude Include="token.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lexer.cpp" />
+    <ClCompile Include="Core.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
