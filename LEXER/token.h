@@ -1,6 +1,9 @@
 #pragma once
 
 #include <string>
+#include <iostream>
+
+#include "../Utils/cast_enum.h"
 #include "lexer_config.h"
 
 struct Token {
@@ -22,5 +25,11 @@ struct Token {
 
     friend bool operator!=(const Token& t1, const Token& t2) {
         return !(t1 == t2);
+    }
+
+    friend std::ostream& operator<<(std::ostream& s, const Token& token)
+    {
+        s << "code: " << cast_enum(token.typeCode) << " typeName: " << token.typeName << " value: " << token.value;
+        return s;
     }
 };

@@ -15,6 +15,15 @@ struct TreeNode {
         children.push_back(node);
     }
 
+    TreeNode* addChild(T value) {
+        TreeNode<T>* node = new TreeNode<T>(value);
+        node->parent = this;
+        children.push_back(node);
+        return node;
+    }
+
+    TreeNode() {};
+
     TreeNode(T value) {
         this->value = value;
         this->parent = NULL;

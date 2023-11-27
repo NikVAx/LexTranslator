@@ -5,6 +5,7 @@
 #include "../LEXER/lexer_config.h"
 
 #include "../Utils/utils.h"
+#include "../Utils/cast_enum.h"
 #include "constants.h"
 #include "command.h"
 
@@ -45,9 +46,10 @@ private:
     int head = 0;
     std::vector<Token> items;
 public:
-    std::vector<SyntaxRule> rules;
-
+    std::vector<SyntaxNode> rules;
     std::vector<StackItem> stack;
+
+    std::vector<SyntaxValue> values;
 
     void init(Command command) {
         items = command.tokens;
@@ -100,18 +102,20 @@ public:
             ? getTerminalIndex(stack.size() - 1)
             : index1;
 
-        std::string nodeValue = "";
-
-        if (stack.back().code == SYNTAX_TOKENS::IDENTIFIER.code) {
-            nodeValue = stack.back().value;
-        }
-
         std::string ruleString = popIfLaterOrNotTerminal(baseIndex);
 
         SyntaxRule rule = REDUCE_RULES[ruleString];
 
-        rules.push_back(rule);
+        //if (values.size() == 2) {
+        //    SyntaxNode lastNode = SyntaxNode(rule, values[0]);
+        //    rules.push_back(lastNode);
+        //}
 
+        SyntaxNode node = SyntaxNode(rule, values.size() != 0 ? values[values.size() - 1] : SyntaxValue());
+
+        values.clear();
+
+        rules.push_back(node);
         stack.push_back(NOT_TERM);
     }
 
@@ -159,6 +163,11 @@ public:
             // Шаг 2: получения отношения по таблице
             Relations relation = getRelation(top, input);
 
+            if (shouldAddValue(currentToken.typeCode)) {
+                SyntaxValue value = SyntaxValue(currentToken.typeCode, currentToken.value);
+                values.push_back(value);
+            }
+
         #pragma region  debug
             std::cout
                 << (relation == Relations::NEXT ? "#СВЕРТКА" : "#СДВИГ  ")
@@ -167,7 +176,7 @@ public:
                 << std::setw(2) << MAP_INPUT_STRING[top] << "]"
                 << "[ " << std::setw(2) << input << ";"
                 << std::setw(2) << MAP_INPUT_STRING[input] << "]"*/
-                << "\n  СТЕК: " << stack_str(stack) << " " << as_integer(relation) << "\n";
+                << "\n  СТЕК: " << stack_str(stack) << " " << cast_enum(relation) << "\n";
         #pragma endregion         
 
             if (relation == Relations::PREV || relation == Relations::BASE) {

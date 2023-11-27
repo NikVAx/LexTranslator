@@ -2,6 +2,7 @@
 #include "../LEXER/lexer.h"
 #include "../LEXER/token.h"
 #include "../SYNTAX/syntax.cpp";
+#include "../SYNTAX/tree_builder.h"
 #include "../Utils/utils.h"
 #include "../SYNTAX/command.h"
 
@@ -17,8 +18,6 @@ namespace LEX {
     
 }
 
-
-
 //SyntaxTree tree_e;
 
 //void buildTreeCascade(TreeNode* node) {
@@ -31,43 +30,10 @@ void build_line(SyntaxScanner& scanner) {
     int term_index_2 = 0;
     
     std::cout << "ПРАВИЛА\n";
-    for (SyntaxRule r : scanner.rules) {
+    for (SyntaxNode r : scanner.rules) {
         std::cout << r << "\n";
     }
     std::cout << "КОНЕЦ ПРАВИЛА\n";
-
-    for (int i = scanner.rules.size() - 1; i >= 0; --i) {
-        std::cout << line << "\n";
-        SyntaxRule rule = scanner.rules[i];
-        BuildRule buildRule = BUILD_RULES[rule.code];
-
-        for (auto& lexem : buildRule.items) {
-               
-        }
-
-        
-        //int location = line.find_last_of("S");
-        //if (location != -1) {
-        //    line.erase(location, 1);
-        //    line.insert(location, stringRule);
-        //}
-    }
-    std::cout << line << " \n";
-
-    int term_index = 0;
-
-    for (int i = 0; i <= line.size() - 1; ++i) {
-        if (line[i] == 'I' || line[i] == 'R') {
-            /*auto trm = scanner.terms[term_index++];
-            line.erase(i, 1);
-            line.insert(i, trm);
-            i += trm.size();*/
-            std::cout << line << "\n";
-        }
-    }
-    std::cout << line << "\n";
-    
-    //tree_e.print();
 }
 
 
@@ -123,9 +89,12 @@ int main() {
             SyntaxScanner syntax;
             syntax.init(command);
             syntax.proccess();
-            // syntax.terms.insert(syntax.terms.cbegin(), parseResult.items[0].token.value);
 
-           build_line(syntax);
+            build_line(syntax);
+
+            auto tree = TreeBuilder(syntax.rules).build();
+            std::cout << "TREE" << std::endl;
+            tree.print();
         }
     }
 }

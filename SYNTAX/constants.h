@@ -1,19 +1,14 @@
 #pragma once
 
 #include "../LEXER/lexer_config.h"
+#include "../Utils/cast_enum.h"
+#include "../Utils/iterator.h"
 
 #include <vector>
 #include <string>
 #include <map>
 #include <algorithm>
 #include <iostream>
-
-template <typename Enumeration>
-auto as_integer(Enumeration const value)
--> typename std::underlying_type<Enumeration>::type
-{
-    return static_cast<typename std::underlying_type<Enumeration>::type>(value);
-}
 
 /* ----------------- RELATION MATRIX ----------------- */
 
@@ -74,12 +69,12 @@ struct TokenMeta {
     TOKEN_TYPE type;
 
     bool operator ==(const TokenMeta& token) {
-        return this->code == token.code && this->symbol == token.symbol && this->type == token.type;
+        return this->code == token.code;
     }
 
     friend std::ostream& operator<<(std::ostream& s, const TokenMeta& token)
     {
-        s << "code: " << token.code << " symbol: " << token.symbol.c_str() << " type: " << as_integer(token.type) << std::endl;
+        s << "code: " << token.code << " symbol: " << token.symbol.c_str() << " type: " << cast_enum(token.type);
         return s;
     }
 };
@@ -112,7 +107,7 @@ const TokenMeta SYNTAX_TOKENS::ASSIGNMENT = TokenMeta(9, ":=", TOKEN_TYPE::TERMI
 const TokenMeta SYNTAX_TOKENS::NONTERMINAL = TokenMeta(10, "S", TOKEN_TYPE::NONTERMINAL);
 
 std::map<TermTypes, int> ROW_COLUMN_MAP = {
-    { TermTypes::PLUS,  SYNTAX_TOKENS::PLUS.code}, // +
+    { TermTypes::PLUS, SYNTAX_TOKENS::PLUS.code}, // +
     { TermTypes::MINUS, SYNTAX_TOKENS::MINUS.code }, // -
     { TermTypes::MULTIPLY, SYNTAX_TOKENS::MULTIPLY.code }, // *
     { TermTypes::DIVIDE, SYNTAX_TOKENS::DIVIDE.code }, // /
@@ -218,25 +213,23 @@ public:
 };
 
 struct SyntaxRule {
-    SyntaxRule() {}
-
-    SyntaxRule(int code, BuildRule rule) {
-        this->code = code;
-        this->rule = rule;
-    }
+    SyntaxRule() {};
+    SyntaxRule(int code, BuildRule rule) : code(code), rule(rule) {}
 
     int code;
     BuildRule rule;
 
     friend std::ostream& operator<<(std::ostream& s, const SyntaxRule& rule)
     {
-        s << "code: " << rule.code << " rule: " << rule.rule << std::endl;
+        s << "code: " << rule.code << " rule: " << rule.rule;
         return s;
     }
+
 };
 
 class SYNTAX_RULES {
 public:
+    static const SyntaxRule R0;
     static const SyntaxRule R1;
     static const SyntaxRule R2;
     static const SyntaxRule R4;
@@ -246,6 +239,7 @@ public:
     static const SyntaxRule R9;
 };
 
+const SyntaxRule SYNTAX_RULES::R0 = SyntaxRule(0, BuildRule({ SYNTAX_TOKENS::IDENTIFIER }));
 const SyntaxRule SYNTAX_RULES::R1 = SyntaxRule(1, BuildRule({ SYNTAX_TOKENS::IDENTIFIER, SYNTAX_TOKENS::ASSIGNMENT, SYNTAX_TOKENS::NONTERMINAL, SYNTAX_TOKENS::SEMICOLON }));
 const SyntaxRule SYNTAX_RULES::R2 = SyntaxRule(2, BuildRule({ SYNTAX_TOKENS::NONTERMINAL, SYNTAX_TOKENS::PLUS, SYNTAX_TOKENS::NONTERMINAL }));
 const SyntaxRule SYNTAX_RULES::R4 = SyntaxRule(3, BuildRule({ SYNTAX_TOKENS::NONTERMINAL, SYNTAX_TOKENS::MULTIPLY, SYNTAX_TOKENS::NONTERMINAL }));
@@ -255,6 +249,7 @@ const SyntaxRule SYNTAX_RULES::R8 = SyntaxRule(8, BuildRule({ SYNTAX_TOKENS::MIN
 const SyntaxRule SYNTAX_RULES::R9 = SyntaxRule(9, BuildRule({ SYNTAX_TOKENS::IDENTIFIER }));
 
 std::map<std::string, SyntaxRule> REDUCE_RULES = {
+    {SYNTAX_RULES::R0.rule.ruleString, SYNTAX_RULES::R0 },
     {SYNTAX_RULES::R1.rule.ruleString, SYNTAX_RULES::R1 },
     {SYNTAX_RULES::R2.rule.ruleString, SYNTAX_RULES::R2 },
     {SYNTAX_RULES::R4.rule.ruleString, SYNTAX_RULES::R4 },
@@ -265,6 +260,7 @@ std::map<std::string, SyntaxRule> REDUCE_RULES = {
 };
 
 std::map<int, BuildRule> BUILD_RULES = {
+       { SYNTAX_RULES::R0.code,  SYNTAX_RULES::R0.rule },
     { SYNTAX_RULES::R1.code,  SYNTAX_RULES::R1.rule },
     { SYNTAX_RULES::R2.code,  SYNTAX_RULES::R2.rule },
     { SYNTAX_RULES::R4.code,  SYNTAX_RULES::R4.rule },
@@ -275,3 +271,41 @@ std::map<int, BuildRule> BUILD_RULES = {
 };
 
 /* ----------------- RULES END ----------------- */
+
+struct SyntaxValue {
+    SyntaxValue(TermTypes type = TermTypes::UNDEFINED, std::string value = "") {
+        this->type = type;
+        this->value = value;
+    };
+
+    TermTypes type;
+    std::string value;
+
+    friend std::ostream& operator<<(std::ostream& s, const SyntaxValue& token)
+    {
+        s << "type: " << cast_enum(token.type) << " value: " << token.value;
+        return s;
+    }
+};
+
+struct SyntaxNode {
+    SyntaxNode() {};
+    SyntaxNode(SyntaxRule rule, SyntaxValue value) : rule(rule), value(value) {};
+
+    SyntaxRule rule;
+    SyntaxValue value;
+
+    friend std::ostream& operator<<(std::ostream& s, const SyntaxNode& token)
+    {
+        s << "[rule]: " << token.rule << "[value]: " << token.value << std::endl;
+        return s;
+    }
+};
+
+std::vector<TermTypes> SHOULD_ADD_VALUES = {
+    TermTypes::NUMBER, TermTypes::IDENTIFIER
+};
+
+bool shouldAddValue(TermTypes type) {
+    return std::find(SHOULD_ADD_VALUES.begin(), SHOULD_ADD_VALUES.end(), type) != SHOULD_ADD_VALUES.end();
+}
