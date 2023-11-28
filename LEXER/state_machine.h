@@ -20,7 +20,7 @@ public:
         int inputType = _smConfig.mapInputAlpha(inputChar);
         int nextState = _smConfig.getNextState(currentState, inputType);
         bool isBoundary = _smConfig.getBoundary(currentState, inputType) == IS_BOUNDARY_CODE;
-        StatusCodes statusCode = _smConfig.getStatusCode(currentState, inputType);
+        StatusCode statusCode = _smConfig.getStatusCode(currentState, inputType);
 
         return TransitionInfo(inputChar, inputType, nextState, isBoundary, statusCode);
     }

@@ -2,6 +2,7 @@
 
 #include "../Utils/cast_enum.h"
 #include "../Utils/iterator.h"
+#include "../Core/term_types.h"
 
 #include <vector>
 #include <string>
@@ -51,13 +52,13 @@ RelationMatrix MATH_MATRIX({
 
 /* ----------------- TOKENS ----------------- */
 
-enum class TOKEN_TYPE {
+enum class TokenType {
     TERMINAL,
     NONTERMINAL
 };
 
 struct TokenMeta {
-    TokenMeta(int code, std::string symbol, TOKEN_TYPE type) {
+    TokenMeta(int code, std::string symbol, TokenType type) {
         this->code = code;
         this->symbol = symbol;
         this->type = type;
@@ -65,9 +66,9 @@ struct TokenMeta {
 
     int code;
     std::string symbol;
-    TOKEN_TYPE type;
+    TokenType type;
 
-    bool operator ==(const TokenMeta& token) {
+    bool operator ==(const TokenMeta& token) const {
         return this->code == token.code;
     }
 
@@ -93,19 +94,19 @@ public:
     static const TokenMeta NONTERMINAL;
 };
 
-const TokenMeta SYNTAX_TOKENS::LIMIT = TokenMeta(0, "#", TOKEN_TYPE::TERMINAL);
-const TokenMeta SYNTAX_TOKENS::PLUS = TokenMeta(1, "+", TOKEN_TYPE::TERMINAL);
-const TokenMeta SYNTAX_TOKENS::MINUS = TokenMeta(2, "-", TOKEN_TYPE::TERMINAL);
-const TokenMeta SYNTAX_TOKENS::MULTIPLY = TokenMeta(3, "*", TOKEN_TYPE::TERMINAL);
-const TokenMeta SYNTAX_TOKENS::DIVIDE = TokenMeta(4, "/", TOKEN_TYPE::TERMINAL);
-const TokenMeta SYNTAX_TOKENS::IDENTIFIER = TokenMeta(5, "I", TOKEN_TYPE::NONTERMINAL);
-const TokenMeta SYNTAX_TOKENS::OPEN_BRACKET = TokenMeta(6, "(", TOKEN_TYPE::TERMINAL);
-const TokenMeta SYNTAX_TOKENS::CLOSE_BRACKET = TokenMeta(7, ")", TOKEN_TYPE::TERMINAL);
-const TokenMeta SYNTAX_TOKENS::SEMICOLON = TokenMeta(8, ";", TOKEN_TYPE::TERMINAL);
-const TokenMeta SYNTAX_TOKENS::ASSIGNMENT = TokenMeta(9, ":=", TOKEN_TYPE::TERMINAL);
-const TokenMeta SYNTAX_TOKENS::NONTERMINAL = TokenMeta(10, "S", TOKEN_TYPE::NONTERMINAL);
+const TokenMeta SYNTAX_TOKENS::LIMIT = TokenMeta(0, "#", TokenType::TERMINAL);
+const TokenMeta SYNTAX_TOKENS::PLUS = TokenMeta(1, "+", TokenType::TERMINAL);
+const TokenMeta SYNTAX_TOKENS::MINUS = TokenMeta(2, "-", TokenType::TERMINAL);
+const TokenMeta SYNTAX_TOKENS::MULTIPLY = TokenMeta(3, "*", TokenType::TERMINAL);
+const TokenMeta SYNTAX_TOKENS::DIVIDE = TokenMeta(4, "/", TokenType::TERMINAL);
+const TokenMeta SYNTAX_TOKENS::IDENTIFIER = TokenMeta(5, "I", TokenType::NONTERMINAL);
+const TokenMeta SYNTAX_TOKENS::OPEN_BRACKET = TokenMeta(6, "(", TokenType::TERMINAL);
+const TokenMeta SYNTAX_TOKENS::CLOSE_BRACKET = TokenMeta(7, ")", TokenType::TERMINAL);
+const TokenMeta SYNTAX_TOKENS::SEMICOLON = TokenMeta(8, ";", TokenType::TERMINAL);
+const TokenMeta SYNTAX_TOKENS::ASSIGNMENT = TokenMeta(9, ":=", TokenType::TERMINAL);
+const TokenMeta SYNTAX_TOKENS::NONTERMINAL = TokenMeta(10, "S", TokenType::NONTERMINAL);
 
-std::map<TermTypes, int> ROW_COLUMN_MAP = {
+std::map<TermType, int> ROW_COLUMN_MAP = {
     { TermTypes::PLUS, SYNTAX_TOKENS::PLUS.code}, // +
     { TermTypes::MINUS, SYNTAX_TOKENS::MINUS.code }, // -
     { TermTypes::MULTIPLY, SYNTAX_TOKENS::MULTIPLY.code }, // *
@@ -168,7 +169,7 @@ private:
     std::vector<TokenMeta> _getTerminalItems(std::vector<TokenMeta> items) {
         std::vector<TokenMeta> filteredItems;
         std::copy_if(items.begin(), items.end(), std::back_inserter(filteredItems), [&](TokenMeta item) {
-            return item.type == TOKEN_TYPE::TERMINAL;
+            return item.type == TokenType::TERMINAL;
         });
         return filteredItems;
     }
@@ -176,7 +177,7 @@ private:
     std::vector<TokenMeta> _getNonterminalItems(std::vector<TokenMeta> items) {
         std::vector<TokenMeta> filteredItems;
         std::copy_if(items.begin(), items.end(), std::back_inserter(filteredItems), [&](TokenMeta item) {
-            return item.type == TOKEN_TYPE::NONTERMINAL;
+            return item.type == TokenType::NONTERMINAL;
         });
         return filteredItems;
     }
@@ -212,7 +213,7 @@ public:
 };
 
 struct SyntaxRule {
-    SyntaxRule() {};
+    SyntaxRule() : rule(), code(-1) {};
     SyntaxRule(int code, BuildRule rule) : code(code), rule(rule) {}
 
     int code;
@@ -259,7 +260,7 @@ std::map<std::string, SyntaxRule> REDUCE_RULES = {
 };
 
 std::map<int, BuildRule> BUILD_RULES = {
-       { SYNTAX_RULES::R0.code,  SYNTAX_RULES::R0.rule },
+    { SYNTAX_RULES::R0.code,  SYNTAX_RULES::R0.rule },
     { SYNTAX_RULES::R1.code,  SYNTAX_RULES::R1.rule },
     { SYNTAX_RULES::R2.code,  SYNTAX_RULES::R2.rule },
     { SYNTAX_RULES::R4.code,  SYNTAX_RULES::R4.rule },
@@ -272,15 +273,17 @@ std::map<int, BuildRule> BUILD_RULES = {
 /* ----------------- RULES END ----------------- */
 
 struct SyntaxValue {
-    SyntaxValue(TermTypes type = TermTypes::UNDEFINED, std::string value = "") : 
-        type(type), value(value) {};
+    SyntaxValue(TermType type = TermTypes::UNDEFINED, std::string value = "") 
+        : type(type)
+        , value(value) 
+    { };
 
-    TermTypes type;
+    TermType type;
     std::string value;
 
     friend std::ostream& operator<<(std::ostream& s, const SyntaxValue& token)
     {
-        s << "type: " << token.type.name << " value: " << token.value;
+        s << "type: " << token.type.toString() << " value: " << token.value;
         return s;
     }
 };
@@ -299,10 +302,10 @@ struct SyntaxNode {
     }
 };
 
-std::vector<TermTypes> SHOULD_ADD_VALUES = {
+std::vector<TermType> SHOULD_ADD_VALUES = {
     TermTypes::NUMBER, TermTypes::IDENTIFIER
 };
 
-bool shouldAddValue(TermTypes type) {
+bool shouldAddValue(TermType type) {
     return std::find(SHOULD_ADD_VALUES.begin(), SHOULD_ADD_VALUES.end(), type) != SHOULD_ADD_VALUES.end();
 }

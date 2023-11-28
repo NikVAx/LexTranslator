@@ -51,6 +51,9 @@
     <ClInclude Include="token.h">
       <Filter>Файлы заголовков\types\common</Filter>
     </ClInclude>
+    <ClInclude Include="enum_struct.h">
+      <Filter>Файлы заголовков\enum_structs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core.cpp">

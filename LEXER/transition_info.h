@@ -12,10 +12,10 @@ protected:
 
     int nextState;
     bool isBoundary;
-    StatusCodes statusCode;
+    StatusCode statusCode;
 
 public:
-    TransitionInfo(char input, int code, int nextState, bool isBoundary, StatusCodes statusCode)
+    TransitionInfo(char input, int code, int nextState, bool isBoundary, StatusCode statusCode)
         : input(input)
         , code(code)
         , nextState(nextState)
@@ -35,12 +35,12 @@ public:
         return isBoundary;
     }
 
-    StatusCodes getStatusCode() {
+    StatusCode getStatusCode() {
         return statusCode;
     }
 
     bool isNotSuccess() {
-        StatusCodes code = getStatusCode();
+        StatusCode code = getStatusCode();
 
         return code != StatusCodes::SUCCESS;
     }

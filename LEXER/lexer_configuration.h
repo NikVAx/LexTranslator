@@ -15,14 +15,14 @@ public:
         return _smConfig;
     }
 
-    TermTypes mapTokenType(int state) {
-        TermTypes typeCode = (0 <= state && state < _smConfig.getCountOfStates())
+    TermType mapTokenType(int state) {
+        TermType typeCode = (0 <= state && state < _smConfig.getCountOfStates())
             ? TOKEN_TYPE_MAP[state]
             : TermTypes::UNDEFINED;
         return typeCode;
     }
 
-    std::string getTokenTypeName(TermTypes termType) {
-        return termType.name;
+    std::string getTokenTypeName(TermType termType) {
+        return termType.toString();
     }
 };

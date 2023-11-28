@@ -8,7 +8,7 @@
 #include <string>
 #include <sstream>
 
-LEX::Lexer lexer;
+Lexer lexer;
 
 namespace GUI {
 

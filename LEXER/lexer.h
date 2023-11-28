@@ -12,50 +12,48 @@
 #include <sstream>
 #include <vector>
 
-namespace LEX {
-    class Lexer {
-        private:
-            LexerConfiguration _lexConfig;
-            StateMachine _sm;
-        public:
-            Lexer() : _lexConfig(LexerConfiguration()) , _sm(LexerConfiguration().getSmConfig()) { }
+class Lexer {
+private:
+    LexerConfiguration _lexConfig;
+    StateMachine _sm;
+public:
+    Lexer() : _lexConfig(LexerConfiguration()), _sm(LexerConfiguration().getSmConfig()) { }
 
-        ParseResult parse(std::string input) {
-            ParseResult result;
+    ParseResult parse(std::string input) {
+        ParseResult result;
 
-            _sm.reset();
+        _sm.reset();
 
-            std::string text = input + "\n";
-            std::string tokenString = "";
+        std::string text = input + "\n";
+        std::string tokenString = "";
 
-            for (int head = 0; head < text.length(); head++) {
-                char ch = text[head];
+        for (int head = 0; head < text.length(); head++) {
+            char ch = text[head];
 
-                TransitionInfo info = _sm.getTransition(ch);
+            TransitionInfo info = _sm.getTransition(ch);
 
-                if (info.isNotSuccess()) {
-                    result.addError(tokenString, info.getStatusCode());
-                    continue;
-                }
-
-                if (info.isTokenBoundary() && !tokenString.empty()) {
-                    TermTypes tokenType = _lexConfig.mapTokenType(_sm.currentState);
-
-                    if (tokenType != TermTypes::COMMENT) {
-                        result.add(tokenString, tokenType);
-                    } // else ingore comment
-
-                    tokenString.clear();
-                }
-
-                if (!info.isEmptyChar()) {
-                    tokenString.append(1, ch);
-                }
-
-                _sm.currentState = info.getNextState();
+            if (info.isNotSuccess()) {
+                result.addError(tokenString, info.getStatusCode());
+                continue;
             }
 
-            return result;
+            if (info.isTokenBoundary() && !tokenString.empty()) {
+                TermType tokenType = _lexConfig.mapTokenType(_sm.currentState);
+
+                if (tokenType != TermTypes::COMMENT) {
+                    result.add(tokenString, tokenType);
+                } // else ingore comment
+
+                tokenString.clear();
+            }
+
+            if (!info.isEmptyChar()) {
+                tokenString.append(1, ch);
+            }
+
+            _sm.currentState = info.getNextState();
         }
-    };
-}
+
+        return result;
+    }
+};

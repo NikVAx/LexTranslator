@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="enum_struct.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="parse_item.h" />
     <ClInclude Include="parse_result.h" />

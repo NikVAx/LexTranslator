@@ -1,49 +1,44 @@
 #pragma once
 
+#include "enum_struct.h"
+
 #include <string>
 #include <map>
 
-typedef struct StatusCodes {
-    const int code;
-    const std::string message;
-
-    StatusCodes(const int code, const std::string string)
-        : code(code)
-        , message(string)
+typedef struct StatusCode : EnumStruct {    
+    StatusCode(const int code, const std::string string)
+        : EnumStruct(code, string)
     { }
 
-    StatusCodes(const int code)
-        : code(INSTANCES.at(code).code)
-        , message(INSTANCES.at(code).message)
+    StatusCode(const int code)
+        : EnumStruct(INSTANCES.at(code)._code, INSTANCES.at(code).toString())
     { }
-
-    operator int() const {
-        return code;
-    }
 
     operator std::string() const {
-        return message;
+        return toString();
     }
 
-    bool operator==(const StatusCodes& a) const {
-        return a.code == code;
+    bool operator==(const StatusCode& a) const {
+        return a._code == _code;
     }
-
-    static const StatusCodes SUCCESS;
-    static const StatusCodes INVALID_INPUT_CHAR;
-    static const StatusCodes INVALID_OPERATOR;
-    static const StatusCodes INVALID_IDENTIFIER;
 
 private:
-    static const std::map<int, StatusCodes> INSTANCES;
+    static const std::map<int, StatusCode> INSTANCES;
 };
 
-const StatusCodes StatusCodes::SUCCESS(0, "Успешно");
-const StatusCodes StatusCodes::INVALID_INPUT_CHAR(1, "Недопустимый входной символ");
-const StatusCodes StatusCodes::INVALID_OPERATOR(2, "Неизвестный оператор");
-const StatusCodes StatusCodes::INVALID_IDENTIFIER(3, "Недопустимый формат идентификатора");
+struct StatusCodes {
+    static const StatusCode SUCCESS;
+    static const StatusCode INVALID_INPUT_CHAR;
+    static const StatusCode INVALID_OPERATOR;
+    static const StatusCode INVALID_IDENTIFIER;
+};
 
-const std::map<int, StatusCodes> StatusCodes::INSTANCES = {
+const StatusCode StatusCodes::SUCCESS(0, "Успешно");
+const StatusCode StatusCodes::INVALID_INPUT_CHAR(1, "Недопустимый входной символ");
+const StatusCode StatusCodes::INVALID_OPERATOR(2, "Неизвестный оператор");
+const StatusCode StatusCodes::INVALID_IDENTIFIER(3, "Недопустимый формат идентификатора");
+
+const std::map<int, StatusCode> StatusCode::INSTANCES = {
     { 0, StatusCodes::SUCCESS },
     { 1, StatusCodes::INVALID_INPUT_CHAR },
     { 2, StatusCodes::INVALID_OPERATOR },

@@ -8,6 +8,7 @@
 #include "../LEXER/lexer.h"
 #include "../Utils/utils.h"
 #include "../Utils/cast_enum.h"
+#include "stack_item.h"
 #include "constants.h"
 #include "command.h"
 
@@ -19,28 +20,6 @@
 #include <functional>
 #include <vector>
 #include <map>
-
-
-
-struct StackItem {
-    StackItem(int code, std::string tag = "", std::string value = "") 
-        : code(code)
-        , value(value)
-        , tag(tag == "" ? MAP_INPUT_STRING[code] : tag)
-    { }
-
-    int code;
-
-    std::string value;
-    std::string tag;
-
-    bool isNotTerm() {
-        return code == SYNTAX_TOKENS::NONTERMINAL.code;
-    }
-};
-
-StackItem START_LIMIT = StackItem(SYNTAX_TOKENS::LIMIT.code, "Н");
-StackItem NOT_TERM = StackItem(SYNTAX_TOKENS::NONTERMINAL.code, SYNTAX_TOKENS::NONTERMINAL.symbol);
 
 class SyntaxScanner {
 private:
@@ -65,7 +44,7 @@ public:
         }
     }
 
-    int getIndexInDictionary(TermTypes tokenTypeCode) {
+    int getIndexInDictionary(TermType tokenTypeCode) {
         return ROW_COLUMN_MAP[tokenTypeCode];
     }
 

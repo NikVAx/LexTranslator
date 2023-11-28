@@ -19,22 +19,7 @@
 
 #include "../Utils/utils.h"
 
-class StringTreeBuilder {
-private:
-    SyntaxScanner& scanner;
-    int i = 0;
-    int termIndex = 0;
-public:
-    StringTreeBuilder(SyntaxScanner& scanner)
-        : scanner(scanner)
-    {}
-};
 
-//SyntaxTree tree_e;
-
-//void buildTreeCascade(TreeNode* node) {
-//
-//}
 
 void build_line(SyntaxScanner& scanner) {
     std::string line = "S"; 
@@ -75,16 +60,91 @@ std::vector<Command> splitCommands(ParseResult& parseResult) {
     return commands;
 }
 
+struct CharTreeItem {
+    CharTreeItem(SyntaxRule* rule, std::string value)
+        : currentRule(rule)
+        , value(value)
+    {
+
+    }
+
+    friend std::ostream& operator<<(std::ostream& s, const CharTreeItem& item) {
+        s << item.value << std::endl;
+        return s;
+    }
+
+    SyntaxRule* currentRule;
+    std::string value;
+};
+
+class SyntaxTreeBuilder {
+public:
+    std::vector<SyntaxNode> rules;
+
+    SyntaxTreeBuilder(std::vector<SyntaxNode> rules)
+    {
+        for (int i = rules.size() - 1; i >= 0; --i) {
+            this->rules.push_back(rules[i]);
+        }
+
+    }
+
+
+
+    int ruleIndex = 0;
+    
+
+    Tree<CharTreeItem>* build() {
+        Tree<CharTreeItem>* charTree = new Tree<CharTreeItem>();
+        CharTreeItem rootRuleItem = CharTreeItem(NULL, "S");
+        charTree->root = new TreeNode<CharTreeItem>(rootRuleItem);
+        useRule(charTree->root);
+        return charTree;
+    }
+
+    void useRule(TreeNode<CharTreeItem>* node) {
+        if (ruleIndex >= rules.size()) {
+            return;
+        }
+        
+        SyntaxNode syntaxNode = rules.at(ruleIndex);
+        for (TokenMeta meta : syntaxNode.rule.rule.items) {
+            if (meta.type == TokenType::TERMINAL) {
+                CharTreeItem item(NULL, meta.symbol);
+                TreeNode<CharTreeItem>* child = new TreeNode<CharTreeItem>(item);
+                node->addChild(child);
+            }
+            else {
+                if (ruleIndex >= rules.size()) {
+                    return;
+                }
+
+                std::string value = SYNTAX_TOKENS::IDENTIFIER == meta 
+                    ? syntaxNode.value.value
+                    : meta.symbol;
+
+                CharTreeItem item(NULL, value);
+                TreeNode<CharTreeItem>* child = new TreeNode<CharTreeItem>(item);
+                node->addChild(child);
+                ruleIndex += 1;
+                useRule(child);
+            }
+        }
+
+        ruleIndex += 1;
+    }
+
+};
+
 int main() {
     setlocale(LC_ALL, "");
 
-    LEX::Lexer lexer;
-    
-    
+    Lexer lexer;
+     
     //std::string line = "x:=a+((IV+a)+b);";
     //std::string line = "abc:=(a+-(-(VIII+b*a+b)+a)+a);";
 
-    std::string line = "a:=some+((value*XXIV)+(value+XX)+(value+IV));b:=c*(I*-(g+a));";
+    std::string line = "_assign:=_1+((_2*XXIV)+(_3+XX)+(_4+IV));b:=c*(I*-(g+a));";
     
     std::cout << "ВВОД: " << line << "\n";
 
@@ -110,9 +170,18 @@ int main() {
 
             build_line(syntax);
 
+
+
             auto tree = TreeBuilder(syntax.rules).build();
             std::cout << "TREE" << std::endl;
             tree.print();
+
+            auto syntaxTree = SyntaxTreeBuilder(syntax.rules).build();
+            
+            std::cout << "SYNTAX TREE" << std::endl;
+            syntaxTree->print();
+
+            
         }
     }
 }

@@ -25,10 +25,11 @@ struct TreeNode {
 
     TreeNode() {};
 
-    TreeNode(T value) {
-        this->value = value;
-        this->parent = NULL;
-        this->children = {};
+    TreeNode(T value) 
+        : value(value)
+        , parent(NULL)
+        , children({ })
+    {
     }
 };
 
@@ -46,16 +47,21 @@ public:
     void print() {
         printCascase(root, 0);
     }
+
+    void forEachPreOrder(std::function<void(TreeNode<T>*, int)> action) {
+        forEachPreOrderCascade(root, 0, action);
+    }
+
 private:
 
-    void forEachCascade(TreeNode<T>* root, int depth, std::function<void(TreeNode<T>*, int)> action) {
+    void forEachPreOrderCascade(TreeNode<T>* root, int depth, std::function<void(TreeNode<T>*, int)> action) {
         if (root == NULL) {
             return;
         }
 
         for (int i = 0; i < root->children.size(); ++i) {
             action(root, depth);
-            forEachCascade(root->children[i], depth + 1, action);
+            forEachPreOrderCascade(root->children[i], depth + 1, action);
         }
     }
 

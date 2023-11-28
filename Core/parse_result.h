@@ -18,7 +18,7 @@ public:
     std::vector<ParseItem> items;
     Location current;
 
-    void addError(std::string value, StatusCodes statusCode) {
+    void addError(std::string value, StatusCode statusCode) {
         items.push_back(ParseItem(Token(value, TermTypes::UNDEFINED), statusCode));
         error = true;
     }
@@ -31,7 +31,7 @@ public:
         items.push_back(ParseItem(token));
     }
 
-    void add(std::string value, TermTypes tokenType) {
+    void add(std::string value, TermType tokenType) {
         items.push_back(ParseItem(Token(value, tokenType)));
     }
 

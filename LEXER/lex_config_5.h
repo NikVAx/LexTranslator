@@ -131,7 +131,7 @@ const std::vector<std::vector<int>> ERRORS_MATRIX = {
     { 1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 };
 
-const std::vector<TermTypes> TOKEN_TYPE_MAP =
+const std::vector<TermType> TOKEN_TYPE_MAP =
 {
     TermTypes::UNDEFINED,
     TermTypes::UNDEFINED,

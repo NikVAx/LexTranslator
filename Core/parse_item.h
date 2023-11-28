@@ -5,13 +5,13 @@
 
 struct ParseItem {
     Token token;
-    StatusCodes statusCode;
+    StatusCode statusCode;
 
     bool isValid() {
         return statusCode == StatusCodes::SUCCESS;
     }
 
-    ParseItem(Token token, StatusCodes statusCode = StatusCodes::SUCCESS)
+    ParseItem(Token token, StatusCode statusCode = StatusCodes::SUCCESS)
         : token(token), statusCode(statusCode)
     {
     }

@@ -11,13 +11,13 @@
 
 struct ParseItem {
     Token token;
-    StatusCodes statusCode;
+    StatusCode statusCode;
 
     bool isValid() {
-        return statusCode == StatusCodes::SUCCESS;
+        return statusCode == StatusCode::SUCCESS;
     }
 
-    ParseItem(Token token, StatusCodes statusCode = StatusCodes::SUCCESS)
+    ParseItem(Token token, StatusCode statusCode = StatusCode::SUCCESS)
         : token(token), statusCode(statusCode)
     {
     }
@@ -38,9 +38,9 @@ public:
     std::vector<ParseItem> items;
     Location current;
 
-    void addError(std::string value, StatusCodes statusCode) {
-        items.push_back(ParseItem(Token(value, TermTypes::UNDEFINED,
-            getTermTypeName(TermTypes::UNDEFINED)), statusCode));
+    void addError(std::string value, StatusCode statusCode) {
+        items.push_back(ParseItem(Token(value, TermType::UNDEFINED,
+            getTermTypeName(TermType::UNDEFINED)), statusCode));
         error = true;
     }
 
@@ -52,7 +52,7 @@ public:
         items.push_back(ParseItem(token));
     }
 
-    void add(std::string value, TermTypes typeCode, std::string typeName) {
+    void add(std::string value, TermType typeCode, std::string typeName) {
         items.push_back(ParseItem(Token(value, typeCode, typeName)));
     }
 
