@@ -1,8 +1,8 @@
 ﻿
-#include "../Core/lexer.h"
 #include "../SYNTAX/syntax.cpp"
 #include "../SYNTAX/tree_builder.h"
 #include "../SYNTAX/relation_matrix_configuration.h"
+#include "../Core/lexer.h"
 #include "../Core/token.h"
 #include "../Core/command_splitter.h"
 #include "../Core/command.h"

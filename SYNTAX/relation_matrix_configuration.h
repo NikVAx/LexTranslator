@@ -1,6 +1,6 @@
 #pragma once
 
-#include "relation_matrix.h"
+#include "../Core/relation_matrix.h"
 #include "../Core/relations.h"
 
 RelationMatrix MATH_MATRIX({

@@ -16,11 +16,11 @@
 
 #include "../Core/lexer.h"
 #include "../Core/command.h"
+#include "../Core/relation_matrix.h"
 
 
 #include "stack_item.h"
 #include "constants.h"
-#include "relation_matrix.h"
 #include "syntax.h"
 
 

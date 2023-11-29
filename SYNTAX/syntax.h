@@ -1,14 +1,15 @@
 #pragma once
 
 #include <stack>
+#include <sstream>
+
 #include "stack_item.h"
 #include "constants.h"
-#include "relation_matrix.h"
+#include "../Core/relation_matrix.h"
 #include "../Core/command.h"
 
 struct SyntaxResult {
-    std::vector<int> rules;
-
+    std::vector<SyntaxRule> rules;
 };
 
 class SyntaxScanner {
@@ -16,6 +17,7 @@ private:
     int head = 0;
     std::vector<Token> items;
     RelationMatrix& relationMatrix;
+    SyntaxResult syntaxResult;
 public:
     SyntaxScanner(RelationMatrix& relationMatrix)
         : relationMatrix(relationMatrix)

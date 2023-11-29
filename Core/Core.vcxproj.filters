@@ -108,6 +108,9 @@
     <ClInclude Include="iterator.h">
       <Filter>Файлы заголовков\src\data structures</Filter>
     </ClInclude>
+    <ClInclude Include="relation_matrix.h">
+      <Filter>Файлы заголовков\src\syntax</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core.cpp">

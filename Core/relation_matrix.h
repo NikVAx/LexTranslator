@@ -1,8 +1,7 @@
 #pragma once
 
+#include "relations.h"
 #include <vector>
-
-#include "../Core/relations.h"
 
 class RelationMatrix {
 public:

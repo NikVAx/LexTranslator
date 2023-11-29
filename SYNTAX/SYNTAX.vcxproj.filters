@@ -30,9 +30,6 @@
     <ClInclude Include="stack_item.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="relation_matrix.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="relation_matrix_configuration.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
