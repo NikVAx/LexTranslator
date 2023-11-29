@@ -352,7 +352,7 @@ namespace GUI {
 		if (result.success()) {
 			for (int i = 0; i < result.items.size(); ++i) {
 				String^ tokenString = gcnew String(result.items[i].token.value.c_str());
-				String^ typeNameString = gcnew String(result.items[i].token.typeCode.toString().c_str());
+				String^ typeNameString = gcnew String(result.items[i].token.termType.toString().c_str());
 
 				TokensTable->Rows->Add(System::Int32(i + 1), tokenString, typeNameString);
 			}

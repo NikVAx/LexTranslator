@@ -127,7 +127,7 @@ std::map<TermType, int> ROW_COLUMN_MAP = {
     { TermTypes::CLOSE_BRACKET,  SYNTAX_TOKENS::CLOSE_BRACKET.code }, // )
     { TermTypes::SEMICOLON,  SYNTAX_TOKENS::SEMICOLON.code }, // ;
     { TermTypes::ASSIGNMENT,  SYNTAX_TOKENS::ASSIGNMENT.code }, // :=
-    { TermTypes::END_TERMINAL, SYNTAX_TOKENS::LIMIT.code}, // #
+    { TermTypes::END_OF_COMMAND, SYNTAX_TOKENS::LIMIT.code}, // #
 };
 
 std::map<int, std::string> MAP_INPUT_STRING = {

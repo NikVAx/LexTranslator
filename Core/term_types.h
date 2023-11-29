@@ -46,7 +46,7 @@ namespace TermTypes {
     static const TermType IF(17, "Оператор IF");
     static const TermType THEN(18, "Оператор THEN");
     static const TermType ELSE(19, "Оператор ELSE");
-    static const TermType END_TERMINAL(20, "Конец строки");
+    static const TermType END_OF_COMMAND(20, "Конец строки");
     static const TermType FOR(21, "Оператор FOR");
     static const TermType DO(22, "Оператор DO");
     static const TermType LESS(23, "Оператор <");

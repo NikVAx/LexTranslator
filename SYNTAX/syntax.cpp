@@ -144,13 +144,13 @@ public:
             int topStackTermIndex = getTerminalIndex(stack.size() - 1);
 
             int top = stack.at(topStackTermIndex).code;
-            int input = getIndexInDictionary(currentToken.typeCode);
+            int input = getIndexInDictionary(currentToken.termType);
 
             // Шаг 2: получения отношения по таблице
             Relations relation = getRelation(top, input);
 
-            if (shouldAddValue(currentToken.typeCode)) {
-                SyntaxValue value = SyntaxValue(currentToken.typeCode, currentToken.value);
+            if (shouldAddValue(currentToken.termType)) {
+                SyntaxValue value = SyntaxValue(currentToken.termType, currentToken.value);
                 values.push_back(value);
             }
 
