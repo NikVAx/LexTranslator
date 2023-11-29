@@ -1,9 +1,6 @@
 #pragma once
 
 #include "../Core/relations.h"
-
-#include "../Utils/cast_enum.h"
-#include "../Utils/iterator.h"
 #include "../Core/term_types.h"
 #include "../Core/relations.h"
 
@@ -14,8 +11,6 @@
 #include <iostream>
 
 #include "syntax_char_meta.h"
-
-
 
 class SYNTAX_TOKENS {
 public:

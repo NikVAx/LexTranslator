@@ -6,6 +6,10 @@
 #include "relation_matrix.h"
 #include "../Core/command.h"
 
+struct SyntaxResult {
+    std::vector<int> rules;
+
+};
 
 class SyntaxScanner {
 private:
@@ -142,7 +146,7 @@ public:
 #pragma region  debug
             std::cout
                 << (relation == Relations::NEXT ? "#REDUCE" : "#SHIFT ")
-                << "\n  STACK: " << stack_str(stack) << " " << cast_enum(relation) << "\n";
+                << "\n  STACK: " << stack_str(stack) << " " << (char) relation << "\n";
 #pragma endregion         
 
             if (relation == Relations::PREV || relation == Relations::BASE) {

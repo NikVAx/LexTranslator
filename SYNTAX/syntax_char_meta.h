@@ -3,7 +3,6 @@
 #include <string>
 #include <ostream>
 
-#include "../Utils/cast_enum.h"
 #include "../Core/token_types.h"
 
 struct SyntaxCharMeta {

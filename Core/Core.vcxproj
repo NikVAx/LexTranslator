@@ -24,6 +24,7 @@
     <ProjectGuid>{b170809f-9a85-45e0-966a-c1f4fbfdeb8d}</ProjectGuid>
     <RootNamespace>Core</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Core</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -144,6 +145,7 @@
     <ClInclude Include="current_config.h" />
     <ClInclude Include="enum_struct.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="iterator.h" />
     <ClInclude Include="lexer.h" />
     <ClInclude Include="lexer_configuration.h" />
     <ClInclude Include="lex_config_5.h" />
