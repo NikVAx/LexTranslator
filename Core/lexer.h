@@ -1,11 +1,9 @@
 #pragma once
 
-#include "../Core/status_codes.h"
-#include "../Core/parse_result.h"
-#include "../Core/token.h"
-
-#include "transition_info.h"
+#include "term_types.h"
+#include "parse_result.h"
 #include "state_machine.h"
+#include "state_machine_configuration.h"
 #include "lexer_configuration.h"
 
 #include <string>

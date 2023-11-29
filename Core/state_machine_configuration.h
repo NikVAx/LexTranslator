@@ -1,6 +1,6 @@
 #pragma once
 
-#include "current_configuration.h"
+#include "current_config.h"
 
 #include <map>
 #include <exception>

@@ -1,8 +1,11 @@
 #pragma once
 
+#include "../Core/relations.h"
+
 #include "../Utils/cast_enum.h"
 #include "../Utils/iterator.h"
 #include "../Core/term_types.h"
+#include "../Core/relations.h"
 
 #include <vector>
 #include <string>
@@ -10,111 +13,36 @@
 #include <algorithm>
 #include <iostream>
 
-/* ----------------- RELATION MATRIX ----------------- */
+#include "syntax_char_meta.h"
 
-enum class Relations : char {
-    BASE = '=',
-    NEXT = '>',
-    PREV = '<',
-    NONE = '-'
-};
 
-class RelationMatrix {
-public:
-    const std::vector<std::vector<Relations>> MATRIX;
-
-    const int size() {
-        return MATRIX.size();
-    }
-
-    RelationMatrix(const std::vector<std::vector<Relations>> matrix)
-        : MATRIX(matrix) { 
-        if (MATRIX.size() != MATRIX[0].size()) {
-            throw std::exception("It is not relation matrix");
-        } 
-    }
-};
-
-RelationMatrix MATH_MATRIX({
-    { Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::BASE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE} ,
-    { Relations::NONE, Relations::NEXT, Relations::PREV, Relations::PREV, Relations::PREV, Relations::PREV, Relations::PREV, Relations::NEXT, Relations::NEXT, Relations::NONE} ,
-    { Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::BASE, Relations::NONE, Relations::NONE, Relations::NONE} ,
-    { Relations::NONE, Relations::NEXT, Relations::PREV, Relations::NEXT, Relations::NEXT, Relations::PREV, Relations::PREV, Relations::NEXT, Relations::NEXT, Relations::NONE} ,
-    { Relations::NONE, Relations::NEXT, Relations::PREV, Relations::NEXT, Relations::NEXT, Relations::PREV, Relations::PREV, Relations::NEXT, Relations::NEXT, Relations::NONE} ,
-    { Relations::NONE, Relations::NEXT, Relations::NONE, Relations::NEXT, Relations::NEXT, Relations::NONE, Relations::NONE, Relations::NEXT, Relations::NEXT, Relations::BASE} ,
-    { Relations::NONE, Relations::PREV, Relations::PREV, Relations::PREV, Relations::PREV, Relations::PREV, Relations::PREV, Relations::BASE, Relations::NONE, Relations::NONE} ,
-    { Relations::NONE, Relations::NEXT, Relations::NONE, Relations::NEXT, Relations::NEXT, Relations::NONE, Relations::NONE, Relations::NEXT, Relations::NEXT, Relations::NONE} ,
-    { Relations::NEXT, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE} ,
-    { Relations::NONE, Relations::PREV, Relations::PREV, Relations::PREV, Relations::PREV, Relations::PREV, Relations::PREV, Relations::NONE, Relations::BASE, Relations::NONE} ,
-});
-
-RelationMatrix FOR_MATRIX({
-    { Relations::NONE }
-});
-RelationMatrix IF_MATRIX({
-    { Relations::NONE }
-});
-RelationMatrix BOOL_MATRIX({
-    { Relations::NONE }
-});
-
-/* ----------------- END RELATION MATRIX ----------------- */
-
-/* ----------------- TOKENS ----------------- */
-
-enum class TokenType {
-    TERMINAL,
-    NONTERMINAL
-};
-
-struct SyntaxTokenMeta {
-    SyntaxTokenMeta(int code, std::string symbol, TokenType type) {
-        this->code = code;
-        this->symbol = symbol;
-        this->type = type;
-    }
-
-    int code;
-    std::string symbol;
-    TokenType type;
-
-    bool operator ==(const SyntaxTokenMeta& token) const {
-        return this->code == token.code;
-    }
-
-    friend std::ostream& operator<<(std::ostream& s, const SyntaxTokenMeta& token)
-    {
-        s << "code: " << token.code << " symbol: " << token.symbol.c_str() << " type: " << cast_enum(token.type);
-        return s;
-    }
-};
 
 class SYNTAX_TOKENS {
 public:
-    static const SyntaxTokenMeta LIMIT;
-    static const SyntaxTokenMeta PLUS; 
-    static const SyntaxTokenMeta MINUS;
-    static const SyntaxTokenMeta MULTIPLY;
-    static const SyntaxTokenMeta DIVIDE;
-    static const SyntaxTokenMeta IDENTIFIER;
-    static const SyntaxTokenMeta OPEN_BRACKET;
-    static const SyntaxTokenMeta CLOSE_BRACKET;
-    static const SyntaxTokenMeta SEMICOLON;
-    static const SyntaxTokenMeta ASSIGNMENT;
-    static const SyntaxTokenMeta NONTERMINAL;
+    static const SyntaxCharMeta LIMIT;
+    static const SyntaxCharMeta PLUS; 
+    static const SyntaxCharMeta MINUS;
+    static const SyntaxCharMeta MULTIPLY;
+    static const SyntaxCharMeta DIVIDE;
+    static const SyntaxCharMeta IDENTIFIER;
+    static const SyntaxCharMeta OPEN_BRACKET;
+    static const SyntaxCharMeta CLOSE_BRACKET;
+    static const SyntaxCharMeta SEMICOLON;
+    static const SyntaxCharMeta ASSIGNMENT;
+    static const SyntaxCharMeta NONTERMINAL;
 };
 
-const SyntaxTokenMeta SYNTAX_TOKENS::LIMIT = SyntaxTokenMeta(0, "#", TokenType::TERMINAL);
-const SyntaxTokenMeta SYNTAX_TOKENS::PLUS = SyntaxTokenMeta(1, "+", TokenType::TERMINAL);
-const SyntaxTokenMeta SYNTAX_TOKENS::MINUS = SyntaxTokenMeta(2, "-", TokenType::TERMINAL);
-const SyntaxTokenMeta SYNTAX_TOKENS::MULTIPLY = SyntaxTokenMeta(3, "*", TokenType::TERMINAL);
-const SyntaxTokenMeta SYNTAX_TOKENS::DIVIDE = SyntaxTokenMeta(4, "/", TokenType::TERMINAL);
-const SyntaxTokenMeta SYNTAX_TOKENS::IDENTIFIER = SyntaxTokenMeta(5, "I", TokenType::NONTERMINAL);
-const SyntaxTokenMeta SYNTAX_TOKENS::OPEN_BRACKET = SyntaxTokenMeta(6, "(", TokenType::TERMINAL);
-const SyntaxTokenMeta SYNTAX_TOKENS::CLOSE_BRACKET = SyntaxTokenMeta(7, ")", TokenType::TERMINAL);
-const SyntaxTokenMeta SYNTAX_TOKENS::SEMICOLON = SyntaxTokenMeta(8, ";", TokenType::TERMINAL);
-const SyntaxTokenMeta SYNTAX_TOKENS::ASSIGNMENT = SyntaxTokenMeta(9, ":=", TokenType::TERMINAL);
-const SyntaxTokenMeta SYNTAX_TOKENS::NONTERMINAL = SyntaxTokenMeta(10, "S", TokenType::NONTERMINAL);
+const SyntaxCharMeta SYNTAX_TOKENS::LIMIT(0, "#", TokenType::TERMINAL);
+const SyntaxCharMeta SYNTAX_TOKENS::PLUS(1, "+", TokenType::TERMINAL);
+const SyntaxCharMeta SYNTAX_TOKENS::MINUS(2, "-", TokenType::TERMINAL);
+const SyntaxCharMeta SYNTAX_TOKENS::MULTIPLY(3, "*", TokenType::TERMINAL);
+const SyntaxCharMeta SYNTAX_TOKENS::DIVIDE(4, "/", TokenType::TERMINAL);
+const SyntaxCharMeta SYNTAX_TOKENS::IDENTIFIER(5, "I", TokenType::NONTERMINAL);
+const SyntaxCharMeta SYNTAX_TOKENS::OPEN_BRACKET(6, "(", TokenType::TERMINAL);
+const SyntaxCharMeta SYNTAX_TOKENS::CLOSE_BRACKET(7, ")", TokenType::TERMINAL);
+const SyntaxCharMeta SYNTAX_TOKENS::SEMICOLON(8, ";", TokenType::TERMINAL);
+const SyntaxCharMeta SYNTAX_TOKENS::ASSIGNMENT(9, ":=", TokenType::TERMINAL);
+const SyntaxCharMeta SYNTAX_TOKENS::NONTERMINAL(10, "S", TokenType::NONTERMINAL);
 
 std::map<TermType, int> ROW_COLUMN_MAP = {
     { TermTypes::PLUS, SYNTAX_TOKENS::PLUS.code}, // +
@@ -127,26 +55,22 @@ std::map<TermType, int> ROW_COLUMN_MAP = {
     { TermTypes::CLOSE_BRACKET,  SYNTAX_TOKENS::CLOSE_BRACKET.code }, // )
     { TermTypes::SEMICOLON,  SYNTAX_TOKENS::SEMICOLON.code }, // ;
     { TermTypes::ASSIGNMENT,  SYNTAX_TOKENS::ASSIGNMENT.code }, // :=
-    { TermTypes::END_OF_COMMAND, SYNTAX_TOKENS::LIMIT.code}, // #
+    { TermTypes::LIMIT, SYNTAX_TOKENS::LIMIT.code}, // #
 };
 
 std::map<int, std::string> MAP_INPUT_STRING = {
-    { SYNTAX_TOKENS::PLUS.code, SYNTAX_TOKENS::PLUS.symbol }, // +
-    { SYNTAX_TOKENS::MINUS.code, SYNTAX_TOKENS::MINUS.symbol }, // -
-    { SYNTAX_TOKENS::MULTIPLY.code, SYNTAX_TOKENS::MULTIPLY.symbol }, // *
-    { SYNTAX_TOKENS::DIVIDE.code,  SYNTAX_TOKENS::DIVIDE.symbol }, // /
-    { SYNTAX_TOKENS::IDENTIFIER.code,  SYNTAX_TOKENS::IDENTIFIER.symbol }, // идентификатор
-    { SYNTAX_TOKENS::OPEN_BRACKET.code,  SYNTAX_TOKENS::OPEN_BRACKET.symbol }, // (
-    { SYNTAX_TOKENS::CLOSE_BRACKET.code,  SYNTAX_TOKENS::CLOSE_BRACKET.symbol }, // )
-    { SYNTAX_TOKENS::SEMICOLON.code,  SYNTAX_TOKENS::SEMICOLON.symbol }, // ;
-    { SYNTAX_TOKENS::ASSIGNMENT.code,  SYNTAX_TOKENS::ASSIGNMENT.symbol }, // :=
-    { SYNTAX_TOKENS::LIMIT.code,  SYNTAX_TOKENS::LIMIT.symbol }, // #
-    { SYNTAX_TOKENS::NONTERMINAL.code,  SYNTAX_TOKENS::NONTERMINAL.symbol}, // S
+    { SYNTAX_TOKENS::PLUS.code, SYNTAX_TOKENS::PLUS.tokenString }, // +
+    { SYNTAX_TOKENS::MINUS.code, SYNTAX_TOKENS::MINUS.tokenString }, // -
+    { SYNTAX_TOKENS::MULTIPLY.code, SYNTAX_TOKENS::MULTIPLY.tokenString }, // *
+    { SYNTAX_TOKENS::DIVIDE.code,  SYNTAX_TOKENS::DIVIDE.tokenString }, // /
+    { SYNTAX_TOKENS::IDENTIFIER.code,  SYNTAX_TOKENS::IDENTIFIER.tokenString }, // идентификатор
+    { SYNTAX_TOKENS::OPEN_BRACKET.code,  SYNTAX_TOKENS::OPEN_BRACKET.tokenString }, // (
+    { SYNTAX_TOKENS::CLOSE_BRACKET.code,  SYNTAX_TOKENS::CLOSE_BRACKET.tokenString }, // )
+    { SYNTAX_TOKENS::SEMICOLON.code,  SYNTAX_TOKENS::SEMICOLON.tokenString }, // ;
+    { SYNTAX_TOKENS::ASSIGNMENT.code,  SYNTAX_TOKENS::ASSIGNMENT.tokenString }, // :=
+    { SYNTAX_TOKENS::LIMIT.code,  SYNTAX_TOKENS::LIMIT.tokenString }, // #
+    { SYNTAX_TOKENS::NONTERMINAL.code,  SYNTAX_TOKENS::NONTERMINAL.tokenString}, // S
 };
-
-/* ----------------- TOKENS END ----------------- */
-
-/* ----------------- RULES ----------------- */
 
 template <class T>
 std::string join(std::vector<T> items, std::string delim = "") {
@@ -158,47 +82,47 @@ std::string join(std::vector<T> items, std::string delim = "") {
 
 class BuildRule {
 private:
-    std::vector<SyntaxTokenMeta> EXCLUDE_SYMBOLS = { SYNTAX_TOKENS::OPEN_BRACKET, SYNTAX_TOKENS::CLOSE_BRACKET, SYNTAX_TOKENS::SEMICOLON };
+    std::vector<SyntaxCharMeta> EXCLUDE_SYMBOLS = { SYNTAX_TOKENS::OPEN_BRACKET, SYNTAX_TOKENS::CLOSE_BRACKET, SYNTAX_TOKENS::SEMICOLON };
 
-    std::vector<std::string> getTokenSymbols(std::vector<SyntaxTokenMeta> items) {
+    std::vector<std::string> getTokenSymbols(std::vector<SyntaxCharMeta> items) {
         std::vector<std::string> symbols;
-        for (auto token : items) {
-            symbols.push_back(token.symbol);
+        for (auto& token : items) {
+            symbols.push_back(token.tokenString);
         }
         return symbols;
     }
 
-    std::vector<SyntaxTokenMeta> getSimpleRule(std::vector<SyntaxTokenMeta> items) {
-        std::vector<SyntaxTokenMeta> filteredItems;
-        std::copy_if(items.begin(), items.end(), std::back_inserter(filteredItems), [&](SyntaxTokenMeta item) {
+    std::vector<SyntaxCharMeta> getSimpleRule(std::vector<SyntaxCharMeta> items) {
+        std::vector<SyntaxCharMeta> filteredItems;
+        std::copy_if(items.begin(), items.end(), std::back_inserter(filteredItems), [&](SyntaxCharMeta item) {
             return std::find(EXCLUDE_SYMBOLS.begin(), EXCLUDE_SYMBOLS.end(), item) != EXCLUDE_SYMBOLS.end();
         });
         return filteredItems;
     }
 
-    std::vector<SyntaxTokenMeta> _getTerminalItems(std::vector<SyntaxTokenMeta> items) {
-        std::vector<SyntaxTokenMeta> filteredItems;
-        std::copy_if(items.begin(), items.end(), std::back_inserter(filteredItems), [&](SyntaxTokenMeta item) {
+    std::vector<SyntaxCharMeta> _getTerminalItems(std::vector<SyntaxCharMeta> items) {
+        std::vector<SyntaxCharMeta> filteredItems;
+        std::copy_if(items.begin(), items.end(), std::back_inserter(filteredItems), [&](SyntaxCharMeta item) {
             return item.type == TokenType::TERMINAL;
         });
         return filteredItems;
     }
 
-    std::vector<SyntaxTokenMeta> _getNonterminalItems(std::vector<SyntaxTokenMeta> items) {
-        std::vector<SyntaxTokenMeta> filteredItems;
-        std::copy_if(items.begin(), items.end(), std::back_inserter(filteredItems), [&](SyntaxTokenMeta item) {
+    std::vector<SyntaxCharMeta> _getNonterminalItems(std::vector<SyntaxCharMeta> items) {
+        std::vector<SyntaxCharMeta> filteredItems;
+        std::copy_if(items.begin(), items.end(), std::back_inserter(filteredItems), [&](SyntaxCharMeta item) {
             return item.type == TokenType::NONTERMINAL;
         });
         return filteredItems;
     }
 
 public:
-    std::vector<SyntaxTokenMeta> items;
+    std::vector<SyntaxCharMeta> items;
     std::string ruleString;
 
     BuildRule() { }
 
-    BuildRule(std::vector<SyntaxTokenMeta> items) 
+    BuildRule(std::vector<SyntaxCharMeta> items) 
         : items(items)
         , ruleString(join(getTokenSymbols(items))) 
     {};
@@ -211,11 +135,11 @@ public:
         return join(getTokenSymbols(_getTerminalItems(items)));
     }
 
-    std::vector<SyntaxTokenMeta> getNonTerminalItems() {
+    std::vector<SyntaxCharMeta> getNonTerminalItems() {
         return _getNonterminalItems(items);
     }
 
-    std::vector<SyntaxTokenMeta> getTerminalItems() {
+    std::vector<SyntaxCharMeta> getTerminalItems() {
         return _getTerminalItems(items);
     };
 
@@ -226,8 +150,14 @@ public:
 };
 
 struct SyntaxRule {
-    SyntaxRule() : rule(), code(-1) {};
-    SyntaxRule(int code, BuildRule rule) : code(code), rule(rule) {}
+    SyntaxRule() 
+        : SyntaxRule(-1, BuildRule())
+    { };
+
+    SyntaxRule(int code, BuildRule rule) 
+        : code(code)
+        , rule(rule) 
+    { }
 
     int code;
     BuildRule rule;
@@ -283,7 +213,6 @@ std::map<int, BuildRule> BUILD_RULES = {
     { SYNTAX_RULES::R9.code,  SYNTAX_RULES::R9.rule },
 };
 
-/* ----------------- RULES END ----------------- */
 
 struct SyntaxValue {
     SyntaxValue(TermType type = TermTypes::UNDEFINED, std::string value = "") 

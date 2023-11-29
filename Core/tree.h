@@ -25,7 +25,7 @@ struct TreeNode {
 
     TreeNode() {};
 
-    TreeNode(T value) 
+    TreeNode(T value)
         : value(value)
         , parent(NULL)
         , children({ })

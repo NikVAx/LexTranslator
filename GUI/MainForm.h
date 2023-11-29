@@ -1,15 +1,16 @@
 #pragma once
 
-#include "../LEXER/lexer.h"
+#include "../Core/lexer.h"
 #include "../Core/parse_result.h"
 #include "../Core/parse_item.h"
+#include "../Core/command_splitter.h"
+#include "../SYNTAX/syntax.h"
+#include "../SYNTAX/relation_matrix_configuration.h"
 
 #include <msclr/marshal_cppstd.h>
 
 #include <string>
 #include <sstream>
-
-Lexer lexer;
 
 namespace GUI {
 
@@ -338,14 +339,16 @@ namespace GUI {
 	}
 
 	private: System::Void ExecuteBtn_Click(System::Object^ sender, System::EventArgs^ e) {
+		
+		
 		if (String::IsNullOrWhiteSpace(SourceCodeTxt->Text)) {
 			MessageBox::Show(this, "Нет данных для распознавания!", "Сообщение");
 			return;
 		}
 
-		std::string unmanaged = msclr::interop::marshal_as<std::string>(SourceCodeTxt->Text);
+		std::string unmanagedSourceCodeString = msclr::interop::marshal_as<std::string>(SourceCodeTxt->Text);
 
-		ParseResult result = lexer.parse(unmanaged);
+		ParseResult result = Lexer().parse(unmanagedSourceCodeString);
 
 		TokensTable->Rows->Clear();
 
@@ -353,19 +356,47 @@ namespace GUI {
 			for (int i = 0; i < result.items.size(); ++i) {
 				String^ tokenString = gcnew String(result.items[i].token.value.c_str());
 				String^ typeNameString = gcnew String(result.items[i].token.termType.toString().c_str());
-
 				TokensTable->Rows->Add(System::Int32(i + 1), tokenString, typeNameString);
+			}
+
+			auto commands = CommandSplitter().split(result);
+
+
+			for (auto& command : commands) {
+
+				std::cout << "СТАТУС КОМАНДЫ: " << (command.isValid ? "ВЕРНА" : "НЕ ВЕРНА") << "\n";
+				for (auto& item : command.tokens) {
+					std::cout
+						<< item.value << "\t"
+						<< item.termType << "\n"
+						;
+				}
+
+				if (command.isValid) {
+					auto syntaxNodes = SyntaxScanner(MATH_MATRIX)
+						.build(command)
+						.proccess();
+
+					for (auto node : syntaxNodes) {
+						std::cout << node.rule.code << "\n";
+					}
+
+					//auto tree = TreeBuilder(rules)
+					//	.build();
+
+					//tree.print();
+				}
 			}
 
 			MessageBox::Show(this, "Анализ текста выполнен успешно!", "Сообщение");
 		}
 		else {
 			std::stringstream ss;
-			char inputChar = unmanaged[result.current.head];
+			char inputChar = unmanagedSourceCodeString[result.current.head];
 			ss  << "Встречена ошибка на этапе \"Лексический анализ\":\n\n"
 				<< "В строке: " << result.current.row << "; столбце: " << result.current.column << ";\n"
 				<< "Входной симол \'" << inputChar << " \'(ascii:" << (int)inputChar << ")\n\n"
-				<< "Сообщение: " << "Not Implemented" << ".";
+				<< "Сообщение: " << "обработка ошибок не реализована" << ".";
 			//TODO: Добавить обработку ошибок
 
 			String^ message = gcnew String(ss.str().c_str());

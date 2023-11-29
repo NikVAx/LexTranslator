@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
+#include "term_types.h"
 
-#include "../Core/term_types.h"
+#include <vector>
 
 static const int INPUT_ALPHABET_SIZE = 128;
 const std::vector<int> INPUT_ALPHABET_MAP =

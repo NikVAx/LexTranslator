@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Core/status_codes.h"
-
 #include <vector>
+
+#include "status_codes.h"
 
 struct TransitionInfo {
 protected:

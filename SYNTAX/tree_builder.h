@@ -1,31 +1,28 @@
 #pragma once
 
 #include "constants.h";
-#include "../Utils/utils.h"
+#include "../Core/tree.h"
 
 #include <vector>; 
 
 class TreeBuilder {
-	std::vector<SyntaxNode> rules;
+	std::vector<SyntaxNode> syntaxNodes;
 	std::vector<SyntaxNode> rulesStack = {};
 
 	void buildTree(TreeNode<SyntaxNode>* current, TreeNode<SyntaxNode>* parent) {
 		
-		std::vector<SyntaxTokenMeta> items = current->value.rule.rule.items;
-		std::vector<SyntaxTokenMeta> nonterminals = current->value.rule.rule.getNonTerminalItems();
+		std::vector<SyntaxCharMeta> items = current->value.rule.rule.items;
+		std::vector<SyntaxCharMeta> nonterminals = current->value.rule.rule.getNonTerminalItems();
 
 		std::reverse(nonterminals.begin(), nonterminals.end());
 		std::reverse(items.begin(), items.end());
 
-		//if (nonterminals.size() == 0) {
-		//	return;
-		//}
 
-		for (SyntaxTokenMeta meta : items) {
-		
+		for (SyntaxCharMeta meta : items) {
+			
 		}
 
-		for (SyntaxTokenMeta nonterminal : nonterminals) {
+		for (SyntaxCharMeta nonterminal : nonterminals) {
 			if (rulesStack.empty()) {
 				return;
 			}
@@ -43,16 +40,16 @@ class TreeBuilder {
 	}
 
 public:
-	TreeBuilder(std::vector<SyntaxNode> rules) 
-		: rules(rules)
-		, rulesStack(rules)
-	{
-	};
+	TreeBuilder(std::vector<SyntaxNode> syntaxNodes) 
+		: syntaxNodes(syntaxNodes)
+		, rulesStack(syntaxNodes)
+	{ };
 
 	Tree<SyntaxNode> build() {
 		Tree<SyntaxNode>* tree = new Tree<SyntaxNode>();
 
 		SyntaxNode root = rulesStack.back();
+		
 		rulesStack.pop_back();
 
 		TreeNode<SyntaxNode>* rootNode = new TreeNode<SyntaxNode>(root);
@@ -67,13 +64,13 @@ public:
 };
 
 class TreeBuilder2 {
-	std::vector<SyntaxNode> rules;
+	std::vector<SyntaxNode> syntaxNodes;
 
 	std::vector<SyntaxNode> rulesStack = {};
 
 	void buildTree(TreeNode<SyntaxNode>* current, TreeNode<SyntaxNode>* parent) {
 
-		std::vector<SyntaxTokenMeta> nonterminals = current->value.rule.rule.getNonTerminalItems();
+		std::vector<SyntaxCharMeta> nonterminals = current->value.rule.rule.getNonTerminalItems();
 
 		std::reverse(nonterminals.begin(), nonterminals.end());
 
@@ -81,7 +78,7 @@ class TreeBuilder2 {
 			return;
 		}
 
-		for (SyntaxTokenMeta nonterminal : nonterminals) {
+		for (SyntaxCharMeta nonterminal : nonterminals) {
 			if (rulesStack.empty()) {
 				return;
 			}
@@ -99,12 +96,12 @@ class TreeBuilder2 {
 	}
 
 public:
-	TreeBuilder2(std::vector<SyntaxNode> rules) : rules(rules) {};
+	TreeBuilder2(std::vector<SyntaxNode> syntaxNodes) : syntaxNodes(syntaxNodes) {};
 
 	Tree<SyntaxNode> build() {
 		Tree<SyntaxNode>* tree = new Tree<SyntaxNode>();
 
-		rulesStack = rules;
+		rulesStack = syntaxNodes;
 
 		SyntaxNode root = rulesStack.back();
 		rulesStack.pop_back();

@@ -1,7 +1,9 @@
 #pragma once
 
+#include "term_types.h"
+
 #include <vector>
-#include "TermTypes.h"
+
 
 static const int INPUT_ALPHABET_SIZE = 128;
 const std::vector<int> INPUT_ALPHABET_MAP =
@@ -245,3 +247,4 @@ const std::vector<TermTypes> TOKEN_TYPE_MAP =
     TermTypes::UNDEFINED,
     TermTypes::COMMENT
 };
+

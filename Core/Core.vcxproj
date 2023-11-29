@@ -139,14 +139,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="command.h" />
+    <ClInclude Include="command_splitter.h" />
+    <ClInclude Include="current_config.h" />
     <ClInclude Include="enum_struct.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="lexer.h" />
+    <ClInclude Include="lexer_configuration.h" />
+    <ClInclude Include="lex_config_5.h" />
+    <ClInclude Include="lex_config_5_old.h" />
     <ClInclude Include="parse_item.h" />
     <ClInclude Include="parse_result.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="relations.h" />
+    <ClInclude Include="state_machine.h" />
+    <ClInclude Include="state_machine_configuration.h" />
     <ClInclude Include="status_codes.h" />
     <ClInclude Include="term_types.h" />
     <ClInclude Include="token.h" />
+    <ClInclude Include="token_types.h" />
+    <ClInclude Include="transition_info.h" />
+    <ClInclude Include="tree.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core.cpp" />

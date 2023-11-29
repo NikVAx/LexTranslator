@@ -139,12 +139,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="command.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="constants.h" />
+    <ClInclude Include="relation_matrix.h" />
+    <ClInclude Include="relation_matrix_configuration.h" />
     <ClInclude Include="stack_item.h" />
+    <ClInclude Include="syntax.h" />
+    <ClInclude Include="syntax_char_meta.h" />
     <ClInclude Include="tree_builder.h" />
+    <ClInclude Include="_Syntax_configuration.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
