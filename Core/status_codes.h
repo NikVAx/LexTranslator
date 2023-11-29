@@ -26,21 +26,9 @@ private:
     static const std::map<int, StatusCode> INSTANCES;
 };
 
-struct StatusCodes {
-    static const StatusCode SUCCESS;
-    static const StatusCode INVALID_INPUT_CHAR;
-    static const StatusCode INVALID_OPERATOR;
-    static const StatusCode INVALID_IDENTIFIER;
-};
-
-const StatusCode StatusCodes::SUCCESS(0, "Успешно");
-const StatusCode StatusCodes::INVALID_INPUT_CHAR(1, "Недопустимый входной символ");
-const StatusCode StatusCodes::INVALID_OPERATOR(2, "Неизвестный оператор");
-const StatusCode StatusCodes::INVALID_IDENTIFIER(3, "Недопустимый формат идентификатора");
-
-const std::map<int, StatusCode> StatusCode::INSTANCES = {
-    { 0, StatusCodes::SUCCESS },
-    { 1, StatusCodes::INVALID_INPUT_CHAR },
-    { 2, StatusCodes::INVALID_OPERATOR },
-    { 3, StatusCodes::INVALID_IDENTIFIER },
-};
+namespace StatusCodes {
+    static const StatusCode SUCCESS(0, "Успешно");
+    static const StatusCode LEX_INVALID_INPUT_CHAR(1, "Недопустимый входной символ");
+    static const StatusCode LEX_INVALID_OPERATOR(2, "Неизвестный оператор");
+    static const StatusCode LEX_INVALID_IDENTIFIER(3, "Недопустимый формат идентификатора");
+}

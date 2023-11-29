@@ -108,7 +108,9 @@ public:
         }
         
         SyntaxNode syntaxNode = rules.at(ruleIndex);
+
         for (TokenMeta meta : syntaxNode.rule.rule.items) {
+
             if (meta.type == TokenType::TERMINAL) {
                 CharTreeItem item(NULL, meta.symbol);
                 TreeNode<CharTreeItem>* child = new TreeNode<CharTreeItem>(item);

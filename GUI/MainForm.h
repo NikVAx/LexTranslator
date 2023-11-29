@@ -1,7 +1,8 @@
 #pragma once
 
 #include "../LEXER/lexer.h"
-#include "../LEXER/parse.h"
+#include "../Core/parse_result.h"
+#include "../Core/parse_item.h"
 
 #include <msclr/marshal_cppstd.h>
 
@@ -350,8 +351,8 @@ namespace GUI {
 
 		if (result.success()) {
 			for (int i = 0; i < result.items.size(); ++i) {
-				String^ tokenString = gcnew String(result.items[i].value.c_str());
-				String^ typeNameString = gcnew String(result.items[i].typeName.c_str());
+				String^ tokenString = gcnew String(result.items[i].token.value.c_str());
+				String^ typeNameString = gcnew String(result.items[i].token.typeCode.toString().c_str());
 
 				TokensTable->Rows->Add(System::Int32(i + 1), tokenString, typeNameString);
 			}
