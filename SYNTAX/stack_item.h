@@ -6,16 +6,14 @@
 #include <string>
 
 struct StackItem {
-    StackItem(int code, std::string tag = "", std::string value = "")
+    StackItem(int code, std::string value = "")
         : code(code)
         , value(value)
-        , tag(tag == "" ? MAP_INPUT_STRING[code] : tag)
     { }
 
     int code;
 
     std::string value;
-    std::string tag;
 
     bool isNotTerm() {
         return code == SYNTAX_TOKENS::NONTERMINAL.code;

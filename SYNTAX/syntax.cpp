@@ -25,10 +25,16 @@ class SyntaxScanner {
 private:
     int head = 0;
     std::vector<Token> items;
+    RelationMatrix relationMatrix;
 public:
+    SyntaxScanner(RelationMatrix relationMatrix)
+        : relationMatrix(relationMatrix)
+    {
+
+    }
+
     std::vector<SyntaxNode> rules;
     std::vector<StackItem> stack;
-
     std::vector<SyntaxValue> values;
 
     void init(Command command) {
@@ -49,9 +55,9 @@ public:
     }
 
     Relations getRelation(int leftTermIndex, int rightTermIndex) {
-        if (leftTermIndex >= MATH_MATRIX.SIZE() || rightTermIndex >= MATH_MATRIX.SIZE())
+        if (leftTermIndex >= relationMatrix.size() || rightTermIndex >= relationMatrix.size())
             throw std::exception("Relation matrix out of range");
-        return MATH_MATRIX.MATRIX[leftTermIndex][rightTermIndex];
+        return relationMatrix.MATRIX[leftTermIndex][rightTermIndex];
     }
 
     void reduce(int input, Token token) {
@@ -170,7 +176,7 @@ public:
     }
 
     void shift(int input, Token token) {
-        stack.push_back(StackItem(input, "", token.value));
+        stack.push_back(StackItem(input, token.value));
         head += 1;
     }
 
