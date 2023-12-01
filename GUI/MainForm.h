@@ -4,13 +4,19 @@
 #include "../Core/parse_result.h"
 #include "../Core/parse_item.h"
 #include "../Core/command_splitter.h"
+#include "../Core/token.h"
+
 #include "../SYNTAX/syntax.h"
-#include "../SYNTAX/relation_matrix_configuration.h"
+
+#include "../Core/current_config.h"
+
+
 
 #include <msclr/marshal_cppstd.h>
 
 #include <string>
 #include <sstream>
+#include <list>
 
 namespace GUI {
 
@@ -64,8 +70,10 @@ namespace GUI {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Index;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Token;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ TokenType;
-	private: System::Windows::Forms::TabPage^ tabPage1;
-	private: System::Windows::Forms::TreeView^ treeView1;
+	private: System::Windows::Forms::TabPage^ lab2Page;
+
+	private: System::Windows::Forms::TreeView^ SyntaxTreeView;
+
 
 
 
@@ -85,14 +93,6 @@ namespace GUI {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::TreeNode^ treeNode1 = (gcnew System::Windows::Forms::TreeNode(L"Узел1"));
-			System::Windows::Forms::TreeNode^ treeNode2 = (gcnew System::Windows::Forms::TreeNode(L"Узел2"));
-			System::Windows::Forms::TreeNode^ treeNode3 = (gcnew System::Windows::Forms::TreeNode(L"Узел0", gcnew cli::array< System::Windows::Forms::TreeNode^  >(2) {
-				treeNode1,
-					treeNode2
-			}));
-			System::Windows::Forms::TreeNode^ treeNode4 = (gcnew System::Windows::Forms::TreeNode(L"Узел3"));
-			System::Windows::Forms::TreeNode^ treeNode5 = (gcnew System::Windows::Forms::TreeNode(L"Узел4"));
 			this->Tabs = (gcnew System::Windows::Forms::TabControl());
 			this->PageSource = (gcnew System::Windows::Forms::TabPage());
 			this->ExecuteBtn = (gcnew System::Windows::Forms::Button());
@@ -105,13 +105,13 @@ namespace GUI {
 			this->Index = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->Token = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->TokenType = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->tabPage1 = (gcnew System::Windows::Forms::TabPage());
-			this->treeView1 = (gcnew System::Windows::Forms::TreeView());
+			this->lab2Page = (gcnew System::Windows::Forms::TabPage());
+			this->SyntaxTreeView = (gcnew System::Windows::Forms::TreeView());
 			this->Tabs->SuspendLayout();
 			this->PageSource->SuspendLayout();
 			this->PageLab1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TokensTable))->BeginInit();
-			this->tabPage1->SuspendLayout();
+			this->lab2Page->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// Tabs
@@ -121,12 +121,12 @@ namespace GUI {
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->Tabs->Controls->Add(this->PageSource);
 			this->Tabs->Controls->Add(this->PageLab1);
-			this->Tabs->Controls->Add(this->tabPage1);
+			this->Tabs->Controls->Add(this->lab2Page);
 			this->Tabs->Location = System::Drawing::Point(22, 22);
 			this->Tabs->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->Tabs->Name = L"Tabs";
 			this->Tabs->SelectedIndex = 0;
-			this->Tabs->Size = System::Drawing::Size(824, 530);
+			this->Tabs->Size = System::Drawing::Size(925, 590);
 			this->Tabs->TabIndex = 0;
 			// 
 			// PageSource
@@ -263,41 +263,33 @@ namespace GUI {
 			this->TokenType->ReadOnly = true;
 			this->TokenType->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
 			// 
-			// tabPage1
+			// lab2Page
 			// 
-			this->tabPage1->Controls->Add(this->treeView1);
-			this->tabPage1->Location = System::Drawing::Point(4, 34);
-			this->tabPage1->Name = L"tabPage1";
-			this->tabPage1->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage1->Size = System::Drawing::Size(816, 492);
-			this->tabPage1->TabIndex = 2;
-			this->tabPage1->Text = L"tabPage1";
-			this->tabPage1->UseVisualStyleBackColor = true;
+			this->lab2Page->Controls->Add(this->SyntaxTreeView);
+			this->lab2Page->Location = System::Drawing::Point(4, 34);
+			this->lab2Page->Name = L"lab2Page";
+			this->lab2Page->Padding = System::Windows::Forms::Padding(3);
+			this->lab2Page->Size = System::Drawing::Size(917, 552);
+			this->lab2Page->TabIndex = 2;
+			this->lab2Page->Text = L"Синтаксическое дерево";
+			this->lab2Page->UseVisualStyleBackColor = true;
 			// 
-			// treeView1
+			// SyntaxTreeView
 			// 
-			this->treeView1->Location = System::Drawing::Point(6, 3);
-			this->treeView1->Name = L"treeView1";
-			treeNode1->Name = L"Узел1";
-			treeNode1->Text = L"Узел1";
-			treeNode2->Name = L"Узел2";
-			treeNode2->Text = L"Узел2";
-			treeNode3->Name = L"Узел0";
-			treeNode3->Text = L"Узел0";
-			treeNode4->Name = L"Узел3";
-			treeNode4->Text = L"Узел3";
-			treeNode5->Name = L"Узел4";
-			treeNode5->Text = L"Узел4";
-			this->treeView1->Nodes->AddRange(gcnew cli::array< System::Windows::Forms::TreeNode^  >(3) { treeNode3, treeNode4, treeNode5 });
-			this->treeView1->Size = System::Drawing::Size(804, 483);
-			this->treeView1->TabIndex = 0;
+			this->SyntaxTreeView->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->SyntaxTreeView->Location = System::Drawing::Point(6, 3);
+			this->SyntaxTreeView->Name = L"SyntaxTreeView";
+			this->SyntaxTreeView->Size = System::Drawing::Size(908, 543);
+			this->SyntaxTreeView->TabIndex = 0;
 			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(11, 25);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::LightGray;
-			this->ClientSize = System::Drawing::Size(868, 576);
+			this->ClientSize = System::Drawing::Size(969, 636);
 			this->Controls->Add(this->Tabs);
 			this->Font = (gcnew System::Drawing::Font(L"Segoe UI", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -309,7 +301,7 @@ namespace GUI {
 			this->PageSource->PerformLayout();
 			this->PageLab1->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TokensTable))->EndInit();
-			this->tabPage1->ResumeLayout(false);
+			this->lab2Page->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}
@@ -336,19 +328,20 @@ namespace GUI {
 		SourceFileTxt->Clear();
 		SourceCodeTxt->Clear();
 		TokensTable->Rows->Clear();
+		SyntaxTreeView->Nodes->Clear();
 	}
 
 	private: System::Void ExecuteBtn_Click(System::Object^ sender, System::EventArgs^ e) {
-		
+		setlocale(LC_ALL, "");
 		
 		if (String::IsNullOrWhiteSpace(SourceCodeTxt->Text)) {
 			MessageBox::Show(this, "Нет данных для распознавания!", "Сообщение");
 			return;
 		}
 
-		std::string unmanagedSourceCodeString = msclr::interop::marshal_as<std::string>(SourceCodeTxt->Text);
+		std::string srcStdString = msclr::interop::marshal_as<std::string>(SourceCodeTxt->Text);
 
-		ParseResult result = Lexer().parse(unmanagedSourceCodeString);
+		ParseResult result = Lexer().parse(srcStdString);
 
 		TokensTable->Rows->Clear();
 
@@ -361,10 +354,9 @@ namespace GUI {
 
 			auto commands = CommandSplitter().split(result);
 
-
 			for (auto& command : commands) {
 
-				std::cout << "СТАТУС КОМАНДЫ: " << (command.isValid ? "ВЕРНА" : "НЕ ВЕРНА") << "\n";
+				std::cout << "COMMAND STATUS: " << (command.isValid ? "VALID" : "INVALID") << "\n";
 				for (auto& item : command.tokens) {
 					std::cout
 						<< item.value << "\t"
@@ -373,18 +365,29 @@ namespace GUI {
 				}
 
 				if (command.isValid) {
-					auto syntaxNodes = SyntaxScanner(MATH_MATRIX)
-						.build(command)
-						.proccess();
+					TreeNode^ root = gcnew TreeNode(L"S");
+					
+					SyntaxScanner syntax = SyntaxScanner(CurrentSyntaxConfig);
 
-					for (auto node : syntaxNodes) {
-						std::cout << node.rule.code << "\n";
+					auto syntaxNodes = syntax.build(command).proccess();
+
+					std::cout 
+						<< "\n\n-----------------\n" 
+						<< command.toString()
+						<< "\n-----------------\n\n";
+
+					std::list<SyntaxNode> rnodes = syntaxNodes;
+
+					for (auto& it = syntaxNodes.rbegin(); it != syntaxNodes.rend(); it++) {
+						std::cout << it->syntaxRule.buildRule << "\t" 
+							<< it->syntaxRule.buildRule.ruleString  << "\n";
 					}
 
-					//auto tree = TreeBuilder(rules)
-					//	.build();
+					std::list<::Token> tokens = command.getValues();
 
-					//tree.print();
+					buildSyntaxTree(root, rnodes, tokens, 0);
+					
+					SyntaxTreeView->Nodes->Add(root);
 				}
 			}
 
@@ -392,9 +395,9 @@ namespace GUI {
 		}
 		else {
 			std::stringstream ss;
-			char inputChar = unmanagedSourceCodeString[result.current.head];
+			char inputChar = srcStdString[result.current.index];
 			ss  << "Встречена ошибка на этапе \"Лексический анализ\":\n\n"
-				<< "В строке: " << result.current.row << "; столбце: " << result.current.column << ";\n"
+				<< "В символе: " <<  result.current.index << ";\n"
 				<< "Входной симол \'" << inputChar << " \'(ascii:" << (int)inputChar << ")\n\n"
 				<< "Сообщение: " << "обработка ошибок не реализована" << ".";
 			//TODO: Добавить обработку ошибок
@@ -402,6 +405,40 @@ namespace GUI {
 			String^ message = gcnew String(ss.str().c_str());
 
 			MessageBox::Show(message);
+		}
+	}
+
+	private: System::Int32 k = 0;
+
+	private: void buildSyntaxTree(TreeNode^ parent,
+		std::list<SyntaxNode>& rnodes, std::list<::Token>& tokens, int depth) {
+		auto& rnode = rnodes.back();
+		auto items = rnode.syntaxRule.buildRule.items;
+		    
+		System::Collections::Generic::List<TreeNode^> treenodes;
+
+		for (int i = items.size() - 1; i >= 0; --i) {
+			std::cout << i << " is i index on depth " << depth << "\n";
+			
+			if (items[i] == SyntaxChars::IDENTIFIER && !rnodes.empty()) {
+				String^ text = gcnew String(tokens.back().value.c_str());
+				tokens.pop_back();
+				TreeNode^ node = gcnew TreeNode(text);
+				treenodes.Add(node);
+			}
+			else {
+				String^ text = gcnew String(items[i].tokenString.c_str());
+				TreeNode^ node = gcnew TreeNode(text);
+				treenodes.Add(node);
+				if (items[i] == SyntaxChars::NONTERMINAL && !rnodes.empty()) {
+					rnodes.pop_back();
+					buildSyntaxTree(node, rnodes, tokens, depth + 1);
+				}
+			}
+		}
+
+		for (int i = treenodes.Count - 1; i >= 0; --i) {
+			parent->Nodes->Add(treenodes[i]);
 		}
 	}
 	};

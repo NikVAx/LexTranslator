@@ -1,3 +1,6 @@
 #pragma once
 
-#include "lex_config_5.h"
+#include "parser_config_5.h"
+#include "syntax_config_5.h"
+
+SyntaxConfig& CurrentSyntaxConfig = MathGrammarConfig;

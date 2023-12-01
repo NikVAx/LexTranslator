@@ -1,6 +1,6 @@
 #pragma once
 
-#include "term_types.h"
+#include "term_type.h"
 #include "parse_result.h"
 #include "state_machine.h"
 #include "state_machine_configuration.h"
@@ -32,11 +32,13 @@ public:
 
             if (info.isNotSuccess()) {
                 result.addError(tokenString, info.getStatusCode());
+                
                 continue;
             }
 
             if (info.isTokenBoundary() && !tokenString.empty()) {
                 TermType tokenType = _lexConfig.mapTokenType(_sm.currentState);
+
 
                 if (tokenType != TermTypes::COMMENT) {
                     result.add(tokenString, tokenType);

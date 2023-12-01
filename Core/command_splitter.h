@@ -14,13 +14,22 @@ public:
 
         while (index < parseResult.items.size()) {
             Command command;
+            
             while (index < parseResult.items.size()) {
-                if (!parseResult.items[index].isValid()) {
+                ParseItem item = parseResult.items[index];
+                
+                if (!item.isValid()) {
                     command.isValid = false;
                 }
 
-                command.tokens.push_back(parseResult.items[index].token);
-                if (parseResult.items[index].token.value == ";") {
+                command.tokens.push_back(item.token);
+
+                // TODO: add list of value-types
+                if (item.token.termType == TermTypes::NUMBER || item.token.termType == TermTypes::IDENTIFIER) {
+                    command.values.push_back(item.token);
+                }
+                
+                if (item.token.value == ";") {
                     command.tokens.push_back(Token("Ê", TermTypes::LIMIT));
                     index += 1;
                     break;

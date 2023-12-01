@@ -3,24 +3,26 @@
 #include <string>
 #include <ostream>
 
-#include "../Core/token_types.h"
+#include "token_types.h"
 
-struct SyntaxCharMeta {
-    SyntaxCharMeta(int code, std::string tokenString, TokenType type) 
+struct SyntaxChar {
+    SyntaxChar() {}
+
+    SyntaxChar(int code, std::string tokenString, TokenType type)
         : code(code)
         , tokenString(tokenString)
-        , type(type)  
+        , type(type)
     { }
 
     int code;
     std::string tokenString;
     TokenType type;
 
-    bool operator ==(const SyntaxCharMeta& token) const {
+    bool operator ==(const SyntaxChar& token) const {
         return this->code == token.code;
     }
 
-    friend std::ostream& operator<<(std::ostream& s, const SyntaxCharMeta& token)
+    friend std::ostream& operator<<(std::ostream& s, const SyntaxChar& token)
     {
         s << "code: " << token.code << " symbol: " << token.tokenString.c_str() << " type: " << (int)(token.type);
         return s;

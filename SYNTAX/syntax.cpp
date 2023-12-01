@@ -16,7 +16,6 @@
 
 #include "../Core/lexer.h"
 #include "../Core/command.h"
-#include "../Core/relation_matrix.h"
 
 
 #include "stack_item.h"

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "state_machine_configuration.h"
-#include "term_types.h"
+#include "term_type.h"
 
 class LexerConfiguration {
 private:

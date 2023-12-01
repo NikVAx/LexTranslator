@@ -30,16 +30,10 @@
     <ClInclude Include="stack_item.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="relation_matrix_configuration.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="syntax_char_meta.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="syntax.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="_Syntax_configuration.h">
+    <ClInclude Include="syntax_node.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

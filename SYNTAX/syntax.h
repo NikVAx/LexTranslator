@@ -2,28 +2,42 @@
 
 #include <stack>
 #include <sstream>
+#include <list>
 
 #include "stack_item.h"
+#include "syntax_node.h"
+#include "../Core/syntax_rule.h"
 #include "constants.h"
-#include "../Core/relation_matrix.h"
 #include "../Core/command.h"
 
-struct SyntaxResult {
-    std::vector<SyntaxRule> rules;
+std::map<TermType, SyntaxChar> TOKEN_TO_SYNTAX_CHAR
+{
+    { TermTypes::PLUS, SyntaxChars::PLUS },
+    { TermTypes::MINUS, SyntaxChars::MINUS },
+    { TermTypes::MULTIPLY, SyntaxChars::MULTIPLY },
+    { TermTypes::DIVIDE,  SyntaxChars::DIVIDE },
+    { TermTypes::IDENTIFIER,  SyntaxChars::IDENTIFIER },
+    { TermTypes::OPEN_BRACKET,  SyntaxChars::OPEN_BRACKET },
+    { TermTypes::CLOSE_BRACKET,  SyntaxChars::CLOSE_BRACKET },
+    { TermTypes::SEMICOLON,  SyntaxChars::SEMICOLON },
+    { TermTypes::ASSIGNMENT,  SyntaxChars::ASSIGNMENT },
+    { TermTypes::LIMIT,  SyntaxChars::LIMIT },
 };
 
 class SyntaxScanner {
 private:
+    SyntaxConfig& syntaxConfig;
+
     int head = 0;
     std::vector<Token> items;
-    RelationMatrix& relationMatrix;
-    SyntaxResult syntaxResult;
+
+
 public:
-    SyntaxScanner(RelationMatrix& relationMatrix)
-        : relationMatrix(relationMatrix)
+    SyntaxScanner(SyntaxConfig& syntaxConfig)
+        : syntaxConfig(syntaxConfig)
     { }
 
-    std::vector<SyntaxNode> syntaxNodes;
+    std::list<SyntaxNode> syntaxNodes;
     std::vector<StackItem> stack;
     std::vector<SyntaxValue> values;
 
@@ -41,16 +55,6 @@ public:
         }
     }
 
-    int getIndexInDictionary(TermType tokenTypeCode) {
-        return ROW_COLUMN_MAP[tokenTypeCode];
-    }
-
-    Relations getRelation(int leftTermIndex, int rightTermIndex) {
-        if (leftTermIndex >= relationMatrix.size() || rightTermIndex >= relationMatrix.size())
-            throw std::exception("Relation matrix out of range");
-        return relationMatrix.MATRIX[leftTermIndex][rightTermIndex];
-    }
-
     void reduce(int input, Token token) {
         int index1 = getTerminalIndex(stack.size() - 1);
         int index2 = getTerminalIndex(index1 - 1);
@@ -61,7 +65,7 @@ public:
         bool notFound = true;
 
         do {
-            Relations innerRelation = getRelation(elAt2, elAt1);
+            Relations innerRelation = syntaxConfig.getRelation(elAt2, elAt1);
 
             if (innerRelation == Relations::BASE && index2 > 0) {
                 notFound = false;
@@ -81,14 +85,9 @@ public:
 
         std::string ruleString = popIfLaterOrNotTerminal(baseIndex);
 
-        SyntaxRule rule = REDUCE_RULES[ruleString];
-
-        //if (values.size() == 2) {
-        //    SyntaxNode lastNode = SyntaxNode(rule, values[0]);
-        //    rules.push_back(lastNode);
-        //}
-
-        SyntaxNode node = SyntaxNode(rule, values.size() != 0 ? values[values.size() - 1] : SyntaxValue());
+        SyntaxRule syntaxRule = syntaxConfig.getRuleByString(ruleString);
+        
+        SyntaxNode node = SyntaxNode(syntaxRule, values.size() != 0 ? values[values.size() - 1] : SyntaxValue());
 
         values.clear();
 
@@ -121,8 +120,7 @@ public:
         return ss.str();
     }
 
-    // разбор одной команды
-    std::vector<SyntaxNode> proccess() {
+    std::list<SyntaxNode> proccess() {
         std::cout << "COMMAND.BEGIN\n";
         stack.push_back(START_LIMIT);
 
@@ -135,10 +133,10 @@ public:
             int topStackTermIndex = getTerminalIndex(stack.size() - 1);
 
             int top = stack.at(topStackTermIndex).code;
-            int input = getIndexInDictionary(currentToken.termType);
+            int input = syntaxConfig.getIndex(currentToken.termType);
 
             // Шаг 2: получения отношения по таблице
-            Relations relation = getRelation(top, input);
+            Relations relation = syntaxConfig.getRelation(top, input);
 
             if (shouldAddValue(currentToken.termType)) {
                 SyntaxValue value = SyntaxValue(currentToken.termType, currentToken.value);
@@ -152,15 +150,15 @@ public:
 #pragma endregion         
 
             if (relation == Relations::PREV || relation == Relations::BASE) {
-                shift(input, currentToken); //сдвиг
+                shift(currentToken);
                 continue;
             }
             if (relation == Relations::NEXT) {
-                reduce(input, currentToken); // свертка             
+                reduce(input, currentToken);             
                 continue;
             }
             if (relation == Relations::NONE) {
-                end(input); // конец алгоритма (успешный или ошибочный)
+                end(input, currentToken);
                 break;
             }
 
@@ -169,12 +167,16 @@ public:
         return syntaxNodes;
     }
 
-    void shift(int input, Token token) {
-        stack.push_back(StackItem(input, token.value));
+    void shift(Token token) {
+        stack.push_back(
+            StackItem(
+                syntaxConfig.getIndex(token.termType), 
+                token.value, 
+                TOKEN_TO_SYNTAX_CHAR[token.termType]));
         head += 1;
     }
 
-    void end(int input) {
+    void end(int input, Token token) {
         if (input == START_LIMIT.code && head != 0) {
             std::cout << "COMMAND.END: SUCCESS\n";
         }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "term_type.h"
 #include "term_types.h"
 
 #include <vector>

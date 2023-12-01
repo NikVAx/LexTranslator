@@ -1,24 +1,26 @@
 #pragma once
 
-#include "constants.h"
 #include "../Core/term_types.h"
+#include "../Core/syntax_chars.h"
 
 #include <string>
 
 struct StackItem {
-    StackItem(int code, std::string value = "")
+    StackItem(int code, std::string value, SyntaxChar currentChar)
         : code(code)
         , value(value)
+        , currentChar(currentChar)
     { }
 
     int code;
+    SyntaxChar currentChar;
 
     std::string value;
 
     bool isNotTerm() {
-        return code == SYNTAX_TOKENS::NONTERMINAL.code;
+        return code == SyntaxChars::NONTERMINAL.code;
     }
 };
 
-StackItem START_LIMIT = StackItem(SYNTAX_TOKENS::LIMIT.code, "Í");
-StackItem NOT_TERM = StackItem(SYNTAX_TOKENS::NONTERMINAL.code, SYNTAX_TOKENS::NONTERMINAL.tokenString);
+StackItem START_LIMIT = StackItem(SyntaxChars::LIMIT.code, "Í", SyntaxChars::LIMIT);
+StackItem NOT_TERM = StackItem(SyntaxChars::NONTERMINAL.code, SyntaxChars::NONTERMINAL.tokenString, SyntaxChars::NONTERMINAL);

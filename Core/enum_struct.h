@@ -2,7 +2,7 @@
 
 #include <string>
 
-typedef struct EnumStruct {
+struct EnumStruct {
 public:
 	EnumStruct(const int code, const std::string string)
 		: _code(code)

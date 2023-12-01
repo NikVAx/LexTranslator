@@ -13,14 +13,8 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Файлы заголовков\configurations">
-      <UniqueIdentifier>{bc037c2b-1b95-4a00-986d-73461c161758}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Файлы заголовков\src">
       <UniqueIdentifier>{590a0891-b1a1-45cc-842e-ccd2c011cf83}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Файлы заголовков\src\enumerations">
-      <UniqueIdentifier>{a42954fd-4b7b-4c31-b2e1-9ba35faf1840}</UniqueIdentifier>
     </Filter>
     <Filter Include="Файлы заголовков\src\lexer">
       <UniqueIdentifier>{0d9e6e17-a900-4863-93a0-b4d955d3d925}</UniqueIdentifier>
@@ -34,11 +28,38 @@
     <Filter Include="Файлы заголовков\src\shared">
       <UniqueIdentifier>{8df6902b-deeb-45ab-9db6-f3c081cfd596}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы заголовков\configurations\lexer">
-      <UniqueIdentifier>{5fa72d1d-5f6a-4699-b5b9-e6a4dd2a89af}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Файлы заголовков\src\data structures">
       <UniqueIdentifier>{b7120098-8dda-4dd4-afdd-b4644ea03044}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\configs">
+      <UniqueIdentifier>{bc037c2b-1b95-4a00-986d-73461c161758}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\configs\types">
+      <UniqueIdentifier>{91820848-fc9c-4c2d-8029-b606afea82ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\configs\base config">
+      <UniqueIdentifier>{dbd09955-f5c9-4937-8074-b26b55138530}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\configs\constants">
+      <UniqueIdentifier>{85ccdb10-167a-462c-b319-a694d1f635dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\src\value types">
+      <UniqueIdentifier>{a42954fd-4b7b-4c31-b2e1-9ba35faf1840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\src\value types\values">
+      <UniqueIdentifier>{fdb808d2-b86c-4bc7-bd41-ccd4f7cd80a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\src\value types\types">
+      <UniqueIdentifier>{c555f647-dd31-429e-a6c1-156a0cca7207}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\src\value types\enums">
+      <UniqueIdentifier>{44d9bbcb-03f7-4d37-bc32-11c9dd639b01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\configs\constants\syntax">
+      <UniqueIdentifier>{dc9c673c-53f1-41f3-b23e-33101634770a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\configs\constants\parser">
+      <UniqueIdentifier>{53dcee25-9ded-4f4d-babc-4749234b8275}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -47,12 +68,6 @@
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="relations.h">
-      <Filter>Файлы заголовков\src\enumerations</Filter>
-    </ClInclude>
-    <ClInclude Include="token_types.h">
-      <Filter>Файлы заголовков\src\enumerations</Filter>
     </ClInclude>
     <ClInclude Include="token.h">
       <Filter>Файлы заголовков\src\shared</Filter>
@@ -72,23 +87,8 @@
     <ClInclude Include="parse_result.h">
       <Filter>Файлы заголовков\src\lexer</Filter>
     </ClInclude>
-    <ClInclude Include="enum_struct.h">
-      <Filter>Файлы заголовков\src\shared</Filter>
-    </ClInclude>
     <ClInclude Include="status_codes.h">
       <Filter>Файлы заголовков\src\lexer</Filter>
-    </ClInclude>
-    <ClInclude Include="term_types.h">
-      <Filter>Файлы заголовков\src\shared</Filter>
-    </ClInclude>
-    <ClInclude Include="lex_config_5.h">
-      <Filter>Файлы заголовков\configurations\lexer</Filter>
-    </ClInclude>
-    <ClInclude Include="lex_config_5_old.h">
-      <Filter>Файлы заголовков\configurations\lexer</Filter>
-    </ClInclude>
-    <ClInclude Include="current_config.h">
-      <Filter>Файлы заголовков\configurations</Filter>
     </ClInclude>
     <ClInclude Include="state_machine_configuration.h">
       <Filter>Файлы заголовков\src\lexer</Filter>
@@ -108,8 +108,56 @@
     <ClInclude Include="iterator.h">
       <Filter>Файлы заголовков\src\data structures</Filter>
     </ClInclude>
-    <ClInclude Include="relation_matrix.h">
+    <ClInclude Include="syntax_config.h">
+      <Filter>Файлы заголовков\configs\types</Filter>
+    </ClInclude>
+    <ClInclude Include="syntax_chars.h">
+      <Filter>Файлы заголовков\src\value types\values</Filter>
+    </ClInclude>
+    <ClInclude Include="token_types.h">
+      <Filter>Файлы заголовков\src\value types\values</Filter>
+    </ClInclude>
+    <ClInclude Include="term_types.h">
+      <Filter>Файлы заголовков\src\value types\values</Filter>
+    </ClInclude>
+    <ClInclude Include="term_type.h">
+      <Filter>Файлы заголовков\src\value types\types</Filter>
+    </ClInclude>
+    <ClInclude Include="enum_struct.h">
+      <Filter>Файлы заголовков\src\value types\types</Filter>
+    </ClInclude>
+    <ClInclude Include="relations.h">
+      <Filter>Файлы заголовков\src\value types\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="syntax_char.h">
+      <Filter>Файлы заголовков\src\value types\types</Filter>
+    </ClInclude>
+    <ClInclude Include="syntax_value.h">
+      <Filter>Файлы заголовков\src\value types\types</Filter>
+    </ClInclude>
+    <ClInclude Include="current_config.h">
+      <Filter>Файлы заголовков\configs\base config</Filter>
+    </ClInclude>
+    <ClInclude Include="build_rule.h">
       <Filter>Файлы заголовков\src\syntax</Filter>
+    </ClInclude>
+    <ClInclude Include="funcs.h">
+      <Filter>Файлы заголовков\src\shared</Filter>
+    </ClInclude>
+    <ClInclude Include="parser_config_5.h">
+      <Filter>Файлы заголовков\configs\constants\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parser_config_5_old.h">
+      <Filter>Файлы заголовков\configs\constants\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="syntax_rule.h">
+      <Filter>Файлы заголовков\src\syntax</Filter>
+    </ClInclude>
+    <ClInclude Include="syntax_config_5.h">
+      <Filter>Файлы заголовков\configs\constants\syntax</Filter>
+    </ClInclude>
+    <ClInclude Include="operators_matrices.h">
+      <Filter>Файлы заголовков\configs\constants</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "token.h"
+#include "term_type.h"
 #include "parse_item.h"
 
 #include <vector>
@@ -10,9 +11,8 @@ private:
     bool error = false;
 public:
     struct Location {
-        int head = 0;
-        int row = 1;
-        int column = 1;
+        int index = 0;
+        int tokenIndex = 0;
     };
 
     std::vector<ParseItem> items;
@@ -33,9 +33,5 @@ public:
 
     void add(std::string value, TermType tokenType) {
         items.push_back(ParseItem(Token(value, tokenType)));
-    }
-
-    void updateCurrentCharLocationData(char ch) {
-
     }
 };

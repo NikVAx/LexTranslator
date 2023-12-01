@@ -1,29 +1,6 @@
 #pragma once
 
-#include "enum_struct.h"
-#include <string>
-
-typedef struct TermType : EnumStruct {
-public:
-    TermType(const int code, const std::string string)
-        : EnumStruct(code, string)
-    { }
-
-    int code() const {
-        return _code;
-    }
-
-    operator std::string() const {
-        return toString();
-    }
-
-    TermType operator=(TermType& a) {
-        return a;
-    }
-
-private:
-    const std::string name;
-};
+#include "term_type.h"
 
 namespace TermTypes {
     static const TermType UNDEFINED(0, "Неопределено");
