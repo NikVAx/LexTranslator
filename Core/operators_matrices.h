@@ -18,6 +18,20 @@ const std::vector<std::vector<Relations>> MATRIX_1 =
     { Relations::NONE, Relations::PREV, Relations::PREV, Relations::PREV, Relations::PREV, Relations::PREV, Relations::PREV, Relations::NONE, Relations::BASE, Relations::NONE} ,
 };
 
+const std::vector<std::vector<StatusCode>> MATRIX_1_ERRORS =
+{
+    { StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR} ,
+    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR} ,
+    { StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR} ,
+    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR} ,
+    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR} ,
+    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__} ,
+    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR} ,
+    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR} ,
+    { StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR} ,
+    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR} ,
+};
+
 const std::vector<std::vector<Relations>> MATRIX_2 =
 {
     { Relations::NONE } ,

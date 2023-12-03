@@ -27,8 +27,10 @@ private:
 };
 
 namespace StatusCodes {
-    static const StatusCode SUCCESS(0, "Успешно");
+    static const StatusCode SUCCESS__(0, "Успешно");
     static const StatusCode LEX_INVALID_INPUT_CHAR(1, "Недопустимый входной символ");
     static const StatusCode LEX_INVALID_OPERATOR(2, "Неизвестный оператор");
     static const StatusCode LEX_INVALID_IDENTIFIER(3, "Недопустимый формат идентификатора");
+
+    static const StatusCode SYN_ERROR(101, "Синтаксическая ошибка");
 }

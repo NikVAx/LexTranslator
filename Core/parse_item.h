@@ -8,10 +8,10 @@ struct ParseItem {
     StatusCode statusCode;
 
     bool isValid() {
-        return statusCode == StatusCodes::SUCCESS;
+        return statusCode == StatusCodes::SUCCESS__;
     }
 
-    ParseItem(Token token, StatusCode statusCode = StatusCodes::SUCCESS)
+    ParseItem(Token token, StatusCode statusCode = StatusCodes::SUCCESS__)
         : token(token), statusCode(statusCode)
     {
     }

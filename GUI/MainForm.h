@@ -349,19 +349,10 @@ namespace GUI {
 		if (result.success()) {
 			fillDataGridViewWithTokens(result);
 
-			auto commands = MathCommandSplitter().split(result);
+			auto commands = MathCommandSplitter()
+				.split(result);
 
 			for (auto& command : commands) {
-
-				//std::cout << "COMMAND STATUS: " << (command.isValid ? "VALID" : "INVALID") << "\n";
-				//
-				//for (auto& item : command.tokens) {
-				//	std::cout
-				//		<< item.value << "\t"
-				//		<< item.termType << "\n"
-				//		;
-				//}
-
 				if (command.isValid) {
 					
 					SyntaxScanner syntax = SyntaxScanner(CurrentSyntaxConfig);
@@ -385,11 +376,12 @@ namespace GUI {
 		else {
 			std::stringstream ss;
 			char inputChar = srcStdString[result.current.index];
+			;
+
 			ss  << "Встречена ошибка на этапе \"Лексический анализ\":\n\n"
 				<< "В символе: " <<  result.current.index << ";\n"
-				<< "Входной симол \'" << inputChar << " \'(ascii:" << (int)inputChar << ")\n\n"
-				<< "Сообщение: " << "обработка ошибок не реализована" << ".";
-			//TODO: Добавить обработку ошибок
+				<< "Входной симол \'" << inputChar << " \'(ASCII:" << (int)inputChar << ")\n\n"
+				<< "Сообщение: " << result.items.at(result.items.size() - 1).statusCode.toString() << ".";
 
 			String^ message = gcnew String(ss.str().c_str());
 

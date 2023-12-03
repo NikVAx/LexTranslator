@@ -26,12 +26,13 @@ public:
         for (int head = 0; head < text.length(); head++) {
             char ch = text[head];
 
+            result.current.index += 1;
+
             TransitionInfo info = _sm.getTransition(ch);
 
             if (info.isNotSuccess()) {
                 result.addError(tokenString, info.getStatusCode());
-                
-                continue;
+                break;
             }
 
             if (info.isTokenBoundary() && !tokenString.empty()) {

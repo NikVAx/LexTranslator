@@ -31,7 +31,8 @@ namespace GUI {
 			  treeView->Nodes->Add(root);
 		  }
 
-		  void buildCascade(TreeNode^ parent, std::list<SyntaxNode>& rnodes, std::list<::Token>& tokens, int depth) {
+		  void buildCascade(TreeNode^ parent, std::list<SyntaxNode>& rnodes, 
+			  std::list<::Token>& tokens, int depth) {
 			  if (rnodes.empty())
 				  return;
 

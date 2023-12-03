@@ -42,7 +42,7 @@ public:
     bool isNotSuccess() {
         StatusCode code = getStatusCode();
 
-        return code != StatusCodes::SUCCESS;
+        return code != StatusCodes::SUCCESS__;
     }
 
     bool isEmptyChar() {
