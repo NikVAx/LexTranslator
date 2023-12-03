@@ -23,7 +23,7 @@ struct Command {
         return ss.str();
     }
 
-    std::list<Token> getValues() {
+    std::list<Token> getValueTokens() {
         return values;
     }
 };

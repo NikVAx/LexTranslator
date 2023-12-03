@@ -1,9 +1,11 @@
 #pragma once
+
 #include "syntax_chars.h"
 #include "syntax_rule.h"
 #include "operators_matrices.h"
 #include "syntax_config.h"
 #include "term_types.h"
+
 #include <map>
 
 const std::map<TermType, int> TERM_TYPE_TO_MATRIX_INDEX = {

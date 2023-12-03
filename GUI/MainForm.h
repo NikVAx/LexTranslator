@@ -30,62 +30,6 @@ namespace GUI {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-
-//public ref class SyntaxTreeViewBuilder
-//{
-//public: TreeView^ treeView;
-//
-//public:	SyntaxTreeViewBuilder(TreeView^ treeView)
-//		: treeView(treeView)
-//	{
-//
-//	}
-//
-//	void build(std::list<SyntaxNode>& ruleNodes, std::list<::Token>& tokens) {
-//		TreeNode^ root = gcnew TreeNode(L"S");
-//
-//		buildCascade(root, ruleNodes, tokens, 0);
-//
-//		treeView->Nodes->Add(root);
-//	}
-//
-//	void buildCascade(TreeNode^ parent, std::list<SyntaxNode>& rnodes, std::list<::Token>& tokens, int depth) {
-//		if (rnodes.empty())
-//			return;
-//		
-//		auto& rnode = rnodes.back();
-//		auto items = rnode.syntaxRule.buildRule.items;
-//
-//		System::Collections::Generic::List<TreeNode^> treenodes;
-//
-//		for (int i = items.size() - 1; i >= 0; --i) {
-//			std::cout << i << " is i index on depth " << depth << "\n";
-//
-//			if (items[i] == SyntaxChars::IDENTIFIER && !rnodes.empty()) {
-//				String^ text = gcnew String(tokens.back().value.c_str());
-//				tokens.pop_back();
-//				TreeNode^ node = gcnew TreeNode(text);
-//				treenodes.Add(node);
-//			}
-//			else {
-//				String^ text = gcnew String(items[i].tokenString.c_str());
-//				TreeNode^ node = gcnew TreeNode(text);
-//				treenodes.Add(node);
-//				if (items[i] == SyntaxChars::NONTERMINAL && !rnodes.empty()) {
-//					rnodes.pop_back();
-//					buildCascade(node, rnodes, tokens, depth + 1);
-//				}
-//			}
-//		}
-//
-//		for (int i = treenodes.Count - 1; i >= 0; --i) {
-//			parent->Nodes->Add(treenodes[i]);
-//		}
-//	}
-//
-//};
-
-
 	/// <summary>
 	/// Сводка для MainForm
 	/// </summary>
@@ -402,35 +346,27 @@ namespace GUI {
 
 		ParseResult result = Lexer().parse(srcStdString);
 
-		TokensTable->Rows->Clear();
-
 		if (result.success()) {
-			for (int i = 0; i < result.items.size(); ++i) {
-				String^ tokenString = gcnew String(result.items[i].token.value.c_str());
-				String^ typeNameString = gcnew String(result.items[i].token.termType.toString().c_str());
-				TokensTable->Rows->Add(System::Int32(i + 1), tokenString, typeNameString);
-			}
+			fillDataGridViewWithTokens(result);
 
 			auto commands = MathCommandSplitter().split(result);
 
 			for (auto& command : commands) {
 
-				std::cout << "COMMAND STATUS: " << (command.isValid ? "VALID" : "INVALID") << "\n";
-				
-				for (auto& item : command.tokens) {
-					std::cout
-						<< item.value << "\t"
-						<< item.termType << "\n"
-						;
-				}
+				//std::cout << "COMMAND STATUS: " << (command.isValid ? "VALID" : "INVALID") << "\n";
+				//
+				//for (auto& item : command.tokens) {
+				//	std::cout
+				//		<< item.value << "\t"
+				//		<< item.termType << "\n"
+				//		;
+				//}
 
 				if (command.isValid) {
 					
 					SyntaxScanner syntax = SyntaxScanner(CurrentSyntaxConfig);
 
 					auto syntaxResult = syntax.proccess(command);
-
-					std::cout << command.toString() << "\n";
 
 					std::list<SyntaxNode> rnodes = syntaxResult;
 
@@ -439,10 +375,8 @@ namespace GUI {
 							<< it->syntaxRule.buildRule.ruleString  << "\n";
 					}
 
-					std::list<::Token> tokens = command.getValues();
-
 					SyntaxTreeViewBuilder(SyntaxTreeView)
-						.build(rnodes, tokens);
+						.build(rnodes, command.getValueTokens());
 				}
 			}
 
@@ -463,12 +397,15 @@ namespace GUI {
 		}
 	}
 
-	private: System::Int32 k = 0;
+    private: void fillDataGridViewWithTokens(ParseResult& result) {
+			TokensTable->Rows->Clear();
 
-	
+			for (int i = 0; i < result.items.size(); ++i) {
+				String^ tokenString = gcnew String(result.items[i].token.value.c_str());
+				String^ typeNameString = gcnew String(result.items[i].token.termType.toString().c_str());
+				TokensTable->Rows->Add(System::Int32(i + 1), tokenString, typeNameString);
+			}
+	    }
 	};
-
-	
-
 }
 

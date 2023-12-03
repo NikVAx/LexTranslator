@@ -3,8 +3,7 @@
 #include "term_type.h"
 #include "parse_result.h"
 #include "state_machine.h"
-#include "state_machine_configuration.h"
-#include "lexer_configuration.h"
+#include "parser_config.h"
 
 #include <string>
 #include <sstream>
@@ -12,10 +11,9 @@
 
 class Lexer {
 private:
-    LexerConfiguration _lexConfig;
     StateMachine _sm;
 public:
-    Lexer() : _lexConfig(LexerConfiguration()), _sm(LexerConfiguration().getSmConfig()) { }
+    Lexer() : _sm(CurrentStateMachineConfig) { }
 
     ParseResult parse(std::string input) {
         ParseResult result;
@@ -37,7 +35,7 @@ public:
             }
 
             if (info.isTokenBoundary() && !tokenString.empty()) {
-                TermType tokenType = _lexConfig.mapTokenType(_sm.currentState);
+                TermType tokenType = CurrentStateMachineConfig.mapTokenType(_sm.currentState);
 
 
                 if (tokenType != TermTypes::COMMENT) {

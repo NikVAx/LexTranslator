@@ -149,7 +149,6 @@
     <ClInclude Include="funcs.h" />
     <ClInclude Include="iterator.h" />
     <ClInclude Include="lexer.h" />
-    <ClInclude Include="lexer_configuration.h" />
     <ClInclude Include="parser_config_5.h" />
     <ClInclude Include="parser_config_5_old.h" />
     <ClInclude Include="parse_item.h" />
@@ -157,9 +156,9 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="relations.h" />
     <ClInclude Include="stack_item.h" />
+    <ClInclude Include="parser_config.h" />
     <ClInclude Include="syntax_chars.h" />
     <ClInclude Include="state_machine.h" />
-    <ClInclude Include="state_machine_configuration.h" />
     <ClInclude Include="status_codes.h" />
     <ClInclude Include="syntax_char.h" />
     <ClInclude Include="syntax_config.h" />

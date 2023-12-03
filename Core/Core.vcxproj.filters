@@ -31,9 +31,6 @@
     <Filter Include="Файлы заголовков\configs">
       <UniqueIdentifier>{bc037c2b-1b95-4a00-986d-73461c161758}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы заголовков\configs\types">
-      <UniqueIdentifier>{91820848-fc9c-4c2d-8029-b606afea82ca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Файлы заголовков\configs\base config">
       <UniqueIdentifier>{dbd09955-f5c9-4937-8074-b26b55138530}</UniqueIdentifier>
     </Filter>
@@ -51,6 +48,9 @@
     </Filter>
     <Filter Include="Файлы заголовков\src\constants">
       <UniqueIdentifier>{a42954fd-4b7b-4c31-b2e1-9ba35faf1840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\configs\config objects">
+      <UniqueIdentifier>{91820848-fc9c-4c2d-8029-b606afea82ca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -81,13 +81,7 @@
     <ClInclude Include="status_codes.h">
       <Filter>Файлы заголовков\src\lexer</Filter>
     </ClInclude>
-    <ClInclude Include="state_machine_configuration.h">
-      <Filter>Файлы заголовков\src\lexer</Filter>
-    </ClInclude>
     <ClInclude Include="state_machine.h">
-      <Filter>Файлы заголовков\src\lexer</Filter>
-    </ClInclude>
-    <ClInclude Include="lexer_configuration.h">
       <Filter>Файлы заголовков\src\lexer</Filter>
     </ClInclude>
     <ClInclude Include="lexer.h">
@@ -100,7 +94,7 @@
       <Filter>Файлы заголовков\src\data structures</Filter>
     </ClInclude>
     <ClInclude Include="syntax_config.h">
-      <Filter>Файлы заголовков\configs\types</Filter>
+      <Filter>Файлы заголовков\configs\config objects</Filter>
     </ClInclude>
     <ClInclude Include="current_config.h">
       <Filter>Файлы заголовков\configs\base config</Filter>
@@ -155,6 +149,9 @@
     </ClInclude>
     <ClInclude Include="syntax_node.h">
       <Filter>Файлы заголовков\src\syntax</Filter>
+    </ClInclude>
+    <ClInclude Include="parser_config.h">
+      <Filter>Файлы заголовков\configs\config objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

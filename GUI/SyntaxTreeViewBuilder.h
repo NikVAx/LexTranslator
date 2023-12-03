@@ -41,8 +41,7 @@ namespace GUI {
 			  System::Collections::Generic::List<TreeNode^> treenodes;
 
 			  for (int i = items.size() - 1; i >= 0; --i) {
-				  std::cout << i << " is i index on depth " << depth << "\n";
-
+				  // TODO: not only for IDENTIFIER 
 				  if (items[i] == SyntaxChars::IDENTIFIER && !rnodes.empty()) {
 					  String^ text = gcnew String(tokens.back().value.c_str());
 					  tokens.pop_back();

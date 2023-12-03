@@ -1,35 +1,35 @@
 #pragma once
 
 #include "transition_info.h"
-#include "state_machine_configuration.h"
+#include "current_config.h"
 
 class StateMachine {
 protected:
-    StateMachineConfiguration _smConfig;
+    const ParserConfig& SmConfig;
 
     static const int IS_BOUNDARY_CODE = 1;
 public:
-    StateMachine(StateMachineConfiguration smConfig)
-        : _smConfig(smConfig)
+    StateMachine(const ParserConfig& smConfig)
+        : SmConfig(smConfig)
         , currentState(smConfig.getInitialState())
     { }
 
     int currentState = 1;
 
     TransitionInfo getTransition(char inputChar) {
-        int inputType = _smConfig.mapInputAlpha(inputChar);
-        int nextState = _smConfig.getNextState(currentState, inputType);
-        bool isBoundary = _smConfig.getBoundary(currentState, inputType) == IS_BOUNDARY_CODE;
-        StatusCode statusCode = _smConfig.getStatusCode(currentState, inputType);
+        int inputType = SmConfig.mapInputAlpha(inputChar);
+        int nextState = SmConfig.getNextState(currentState, inputType);
+        bool isBoundary = SmConfig.getBoundary(currentState, inputType) == IS_BOUNDARY_CODE;
+        StatusCode statusCode = SmConfig.getStatusCode(currentState, inputType);
 
         return TransitionInfo(inputChar, inputType, nextState, isBoundary, statusCode);
     }
 
     int getInitialState() {
-        return _smConfig.getInitialState();
+        return SmConfig.getInitialState();
     }
 
     void reset() {
-        currentState = _smConfig.getInitialState();
+        currentState = SmConfig.getInitialState();
     }
 };

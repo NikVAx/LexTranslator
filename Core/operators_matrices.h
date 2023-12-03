@@ -1,6 +1,7 @@
 #pragma once
 
 #include "relations.h"
+
 #include <vector>
 
 const std::vector<std::vector<Relations>> MATRIX_1 =
@@ -15,4 +16,19 @@ const std::vector<std::vector<Relations>> MATRIX_1 =
     { Relations::NONE, Relations::NEXT, Relations::NONE, Relations::NEXT, Relations::NEXT, Relations::NONE, Relations::NONE, Relations::NEXT, Relations::NEXT, Relations::NONE} ,
     { Relations::NEXT, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE} ,
     { Relations::NONE, Relations::PREV, Relations::PREV, Relations::PREV, Relations::PREV, Relations::PREV, Relations::PREV, Relations::NONE, Relations::BASE, Relations::NONE} ,
+};
+
+const std::vector<std::vector<Relations>> MATRIX_2 =
+{
+    { Relations::NONE } ,
+};
+
+const std::vector<std::vector<Relations>> MATRIX_3 =
+{
+    { Relations::NONE } ,
+};
+
+const std::vector<std::vector<Relations>> MATRIX_4 =
+{
+    { Relations::NONE } ,
 };

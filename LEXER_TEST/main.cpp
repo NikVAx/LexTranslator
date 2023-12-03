@@ -39,7 +39,7 @@ int main() {
 
         if (command.isValid) {  
             auto scanner = SyntaxScanner(MathGrammarConfig);
-            auto syntaxNodes = scanner.build(command).proccess();           
+            auto syntaxNodes = scanner.proccess(command);
             //auto tree = TreeBuilder(syntaxNodes).build();
             //tree.print();            
         }
