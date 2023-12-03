@@ -142,9 +142,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="constants.h" />
-    <ClInclude Include="stack_item.h" />
     <ClInclude Include="syntax.h" />
-    <ClInclude Include="syntax_node.h" />
     <ClInclude Include="tree_builder.h" />
   </ItemGroup>
   <ItemGroup>

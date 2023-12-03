@@ -156,6 +156,7 @@
     <ClInclude Include="parse_result.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="relations.h" />
+    <ClInclude Include="stack_item.h" />
     <ClInclude Include="syntax_chars.h" />
     <ClInclude Include="state_machine.h" />
     <ClInclude Include="state_machine_configuration.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="syntax_config.h" />
     <ClInclude Include="syntax_config_5.h" />
     <ClInclude Include="operators_matrices.h" />
+    <ClInclude Include="syntax_node.h" />
     <ClInclude Include="syntax_rule.h" />
     <ClInclude Include="syntax_value.h" />
     <ClInclude Include="term_types.h" />

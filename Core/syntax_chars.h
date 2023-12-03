@@ -17,3 +17,4 @@ namespace SyntaxChars {
     const SyntaxChar ASSIGNMENT(9, ":=", TokenType::TERMINAL);
     const SyntaxChar NONTERMINAL(10, "S", TokenType::NONTERMINAL);
 }
+

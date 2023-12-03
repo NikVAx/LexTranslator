@@ -4,11 +4,11 @@
 #include <sstream>
 #include <list>
 
-#include "stack_item.h"
-#include "syntax_node.h"
+#include "../Core/stack_item.h"
+#include "../Core/syntax_node.h"
 #include "../Core/syntax_rule.h"
-#include "constants.h"
 #include "../Core/command.h"
+#include "constants.h"
 
 std::map<TermType, SyntaxChar> TOKEN_TO_SYNTAX_CHAR
 {
@@ -85,6 +85,8 @@ public:
 
         std::string ruleString = popIfLaterOrNotTerminal(baseIndex);
 
+        std::cout << "  #RULE-STRING: " << ruleString << "\n";
+
         SyntaxRule syntaxRule = syntaxConfig.getRuleByString(ruleString);
         
         SyntaxNode node = SyntaxNode(syntaxRule, values.size() != 0 ? values[values.size() - 1] : SyntaxValue());
@@ -130,6 +132,8 @@ public:
         do {
             Token currentToken = items[head];
 
+            std::cout << " #IN >> " << currentToken.value << "\n";
+
             int topStackTermIndex = getTerminalIndex(stack.size() - 1);
 
             int top = stack.at(topStackTermIndex).code;
@@ -146,21 +150,33 @@ public:
 #pragma region  debug
             std::cout
                 << (relation == Relations::NEXT ? "#REDUCE" : "#SHIFT ")
-                << "\n  STACK: " << stack_str(stack) << " " << (char) relation << "\n";
+                << "\n  STACK: " << stack_str(stack) << " R[" << (char) relation << "]\n";
 #pragma endregion         
 
             if (relation == Relations::PREV || relation == Relations::BASE) {
                 shift(currentToken);
+#pragma region  debug
+                std::cout
+                    << "  #AFTER SHIFT: "
+                    << "\n    STACK: " << stack_str(stack) << " R[" << (char)relation << "]\n";
+#pragma endregion  
                 continue;
             }
             if (relation == Relations::NEXT) {
-                reduce(input, currentToken);             
+                reduce(input, currentToken);      
+#pragma region  debug
+                std::cout
+                    << "  #AFTER REDUCE: "
+                    << "\n    STACK: " << stack_str(stack) << " R[" << (char)relation << "]\n";
+#pragma endregion  
                 continue;
             }
             if (relation == Relations::NONE) {
                 end(input, currentToken);
                 break;
             }
+
+
 
         } while (head < items.size());
 

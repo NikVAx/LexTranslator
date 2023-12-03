@@ -5,6 +5,34 @@
 
 #include "token_types.h"
 
+/*
+Символ алфавита:
+  struct AlphabetChar {
+    bool isNotTerm() {
+      return type == NONTERMINAL;
+    }
+
+    AlphabetChar(Type type)
+        : type(type)
+    { }
+    
+    type: term | nonterm;
+  }
+
+  struct Token : AlphabetChar
+  {
+      Token()
+        : AlphabetChar(TERMINAL)
+      { }
+  }
+
+
+  Терминальный
+  Нетерминальный
+
+
+*/
+
 struct SyntaxChar {
     SyntaxChar() {}
 

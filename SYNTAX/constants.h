@@ -1,21 +1,14 @@
 #pragma once
 
-#include "../Core/relations.h"
-#include "../Core/term_type.h"
-#include "../Core/term_types.h"
-#include "../Core/relations.h"
-#include "../Core/syntax_char.h"
-#include "../Core/syntax_value.h"
-#include "../Core/syntax_rule.h"
-#include "../Core/syntax_chars.h"
-#include "../Core/build_rule.h"
 
+#include "../Core/term_types.h"
+#include "../Core/syntax_chars.h"
 
 #include <vector>
 #include <string>
 #include <map>
 #include <algorithm>
-#include <iostream>
+
 
 
 std::map<int, std::string> MAP_INPUT_STRING = {

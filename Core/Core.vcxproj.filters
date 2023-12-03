@@ -25,9 +25,6 @@
     <Filter Include="Файлы заголовков\src\syntax">
       <UniqueIdentifier>{0b090d9c-6687-4f3e-b970-e2798ed70e77}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы заголовков\src\shared">
-      <UniqueIdentifier>{8df6902b-deeb-45ab-9db6-f3c081cfd596}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Файлы заголовков\src\data structures">
       <UniqueIdentifier>{b7120098-8dda-4dd4-afdd-b4644ea03044}</UniqueIdentifier>
     </Filter>
@@ -43,23 +40,17 @@
     <Filter Include="Файлы заголовков\configs\constants">
       <UniqueIdentifier>{85ccdb10-167a-462c-b319-a694d1f635dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы заголовков\src\value types">
-      <UniqueIdentifier>{a42954fd-4b7b-4c31-b2e1-9ba35faf1840}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Файлы заголовков\src\value types\values">
-      <UniqueIdentifier>{fdb808d2-b86c-4bc7-bd41-ccd4f7cd80a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Файлы заголовков\src\value types\types">
-      <UniqueIdentifier>{c555f647-dd31-429e-a6c1-156a0cca7207}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Файлы заголовков\src\value types\enums">
-      <UniqueIdentifier>{44d9bbcb-03f7-4d37-bc32-11c9dd639b01}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Файлы заголовков\configs\constants\syntax">
       <UniqueIdentifier>{dc9c673c-53f1-41f3-b23e-33101634770a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Файлы заголовков\configs\constants\parser">
       <UniqueIdentifier>{53dcee25-9ded-4f4d-babc-4749234b8275}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\src\shared types">
+      <UniqueIdentifier>{8df6902b-deeb-45ab-9db6-f3c081cfd596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\src\constants">
+      <UniqueIdentifier>{a42954fd-4b7b-4c31-b2e1-9ba35faf1840}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -70,7 +61,7 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="token.h">
-      <Filter>Файлы заголовков\src\shared</Filter>
+      <Filter>Файлы заголовков\src\shared types</Filter>
     </ClInclude>
     <ClInclude Include="transition_info.h">
       <Filter>Файлы заголовков\src\lexer</Filter>
@@ -111,30 +102,6 @@
     <ClInclude Include="syntax_config.h">
       <Filter>Файлы заголовков\configs\types</Filter>
     </ClInclude>
-    <ClInclude Include="syntax_chars.h">
-      <Filter>Файлы заголовков\src\value types\values</Filter>
-    </ClInclude>
-    <ClInclude Include="token_types.h">
-      <Filter>Файлы заголовков\src\value types\values</Filter>
-    </ClInclude>
-    <ClInclude Include="term_types.h">
-      <Filter>Файлы заголовков\src\value types\values</Filter>
-    </ClInclude>
-    <ClInclude Include="term_type.h">
-      <Filter>Файлы заголовков\src\value types\types</Filter>
-    </ClInclude>
-    <ClInclude Include="enum_struct.h">
-      <Filter>Файлы заголовков\src\value types\types</Filter>
-    </ClInclude>
-    <ClInclude Include="relations.h">
-      <Filter>Файлы заголовков\src\value types\enums</Filter>
-    </ClInclude>
-    <ClInclude Include="syntax_char.h">
-      <Filter>Файлы заголовков\src\value types\types</Filter>
-    </ClInclude>
-    <ClInclude Include="syntax_value.h">
-      <Filter>Файлы заголовков\src\value types\types</Filter>
-    </ClInclude>
     <ClInclude Include="current_config.h">
       <Filter>Файлы заголовков\configs\base config</Filter>
     </ClInclude>
@@ -142,7 +109,7 @@
       <Filter>Файлы заголовков\src\syntax</Filter>
     </ClInclude>
     <ClInclude Include="funcs.h">
-      <Filter>Файлы заголовков\src\shared</Filter>
+      <Filter>Файлы заголовков\src\shared types</Filter>
     </ClInclude>
     <ClInclude Include="parser_config_5.h">
       <Filter>Файлы заголовков\configs\constants\parser</Filter>
@@ -158,6 +125,36 @@
     </ClInclude>
     <ClInclude Include="operators_matrices.h">
       <Filter>Файлы заголовков\configs\constants</Filter>
+    </ClInclude>
+    <ClInclude Include="enum_struct.h">
+      <Filter>Файлы заголовков\src\constants</Filter>
+    </ClInclude>
+    <ClInclude Include="term_type.h">
+      <Filter>Файлы заголовков\src\shared types</Filter>
+    </ClInclude>
+    <ClInclude Include="syntax_value.h">
+      <Filter>Файлы заголовков\src\shared types</Filter>
+    </ClInclude>
+    <ClInclude Include="syntax_char.h">
+      <Filter>Файлы заголовков\src\shared types</Filter>
+    </ClInclude>
+    <ClInclude Include="relations.h">
+      <Filter>Файлы заголовков\src\constants</Filter>
+    </ClInclude>
+    <ClInclude Include="syntax_chars.h">
+      <Filter>Файлы заголовков\src\constants</Filter>
+    </ClInclude>
+    <ClInclude Include="term_types.h">
+      <Filter>Файлы заголовков\src\constants</Filter>
+    </ClInclude>
+    <ClInclude Include="token_types.h">
+      <Filter>Файлы заголовков\src\constants</Filter>
+    </ClInclude>
+    <ClInclude Include="stack_item.h">
+      <Filter>Файлы заголовков\src\syntax</Filter>
+    </ClInclude>
+    <ClInclude Include="syntax_node.h">
+      <Filter>Файлы заголовков\src\syntax</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

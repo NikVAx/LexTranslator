@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Core/term_types.h"
-#include "../Core/syntax_chars.h"
+#include "term_types.h"
+#include "syntax_chars.h"
 
 #include <string>
 

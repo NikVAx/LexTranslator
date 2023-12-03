@@ -18,7 +18,6 @@
 #include "../Core/command.h"
 
 
-#include "stack_item.h"
 #include "constants.h"
 #include "syntax.h"
 
