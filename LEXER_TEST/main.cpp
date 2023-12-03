@@ -25,7 +25,7 @@ int main() {
     std::cout << "ВВОД: " << line << "\n";
 
     auto parseResult = lexer.parse(line);  
-    auto commands = CommandSplitter()
+    auto commands = MathCommandSplitter()
         .split(parseResult);
     
     for (auto& command : commands) {

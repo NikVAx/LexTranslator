@@ -5,7 +5,7 @@
 #include "parse_result.h"
 #include "command.h"
 
-class CommandSplitter {
+class MathCommandSplitter {
 public:
     std::vector<Command> split(ParseResult& parseResult) {
         int index = 0;

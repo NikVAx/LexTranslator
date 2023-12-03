@@ -6,10 +6,11 @@
 #include "../Core/command_splitter.h"
 #include "../Core/token.h"
 
-#include "../SYNTAX/syntax.h"
-
 #include "../Core/current_config.h"
 
+#include "../SYNTAX/syntax.h"
+
+#include "SyntaxTreeViewBuilder.h"
 
 
 #include <msclr/marshal_cppstd.h>
@@ -17,6 +18,8 @@
 #include <string>
 #include <sstream>
 #include <list>
+
+
 
 namespace GUI {
 
@@ -26,6 +29,62 @@ namespace GUI {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+
+
+//public ref class SyntaxTreeViewBuilder
+//{
+//public: TreeView^ treeView;
+//
+//public:	SyntaxTreeViewBuilder(TreeView^ treeView)
+//		: treeView(treeView)
+//	{
+//
+//	}
+//
+//	void build(std::list<SyntaxNode>& ruleNodes, std::list<::Token>& tokens) {
+//		TreeNode^ root = gcnew TreeNode(L"S");
+//
+//		buildCascade(root, ruleNodes, tokens, 0);
+//
+//		treeView->Nodes->Add(root);
+//	}
+//
+//	void buildCascade(TreeNode^ parent, std::list<SyntaxNode>& rnodes, std::list<::Token>& tokens, int depth) {
+//		if (rnodes.empty())
+//			return;
+//		
+//		auto& rnode = rnodes.back();
+//		auto items = rnode.syntaxRule.buildRule.items;
+//
+//		System::Collections::Generic::List<TreeNode^> treenodes;
+//
+//		for (int i = items.size() - 1; i >= 0; --i) {
+//			std::cout << i << " is i index on depth " << depth << "\n";
+//
+//			if (items[i] == SyntaxChars::IDENTIFIER && !rnodes.empty()) {
+//				String^ text = gcnew String(tokens.back().value.c_str());
+//				tokens.pop_back();
+//				TreeNode^ node = gcnew TreeNode(text);
+//				treenodes.Add(node);
+//			}
+//			else {
+//				String^ text = gcnew String(items[i].tokenString.c_str());
+//				TreeNode^ node = gcnew TreeNode(text);
+//				treenodes.Add(node);
+//				if (items[i] == SyntaxChars::NONTERMINAL && !rnodes.empty()) {
+//					rnodes.pop_back();
+//					buildCascade(node, rnodes, tokens, depth + 1);
+//				}
+//			}
+//		}
+//
+//		for (int i = treenodes.Count - 1; i >= 0; --i) {
+//			parent->Nodes->Add(treenodes[i]);
+//		}
+//	}
+//
+//};
+
 
 	/// <summary>
 	/// Сводка для MainForm
@@ -352,11 +411,12 @@ namespace GUI {
 				TokensTable->Rows->Add(System::Int32(i + 1), tokenString, typeNameString);
 			}
 
-			auto commands = CommandSplitter().split(result);
+			auto commands = MathCommandSplitter().split(result);
 
 			for (auto& command : commands) {
 
 				std::cout << "COMMAND STATUS: " << (command.isValid ? "VALID" : "INVALID") << "\n";
+				
 				for (auto& item : command.tokens) {
 					std::cout
 						<< item.value << "\t"
@@ -365,29 +425,24 @@ namespace GUI {
 				}
 
 				if (command.isValid) {
-					TreeNode^ root = gcnew TreeNode(L"S");
 					
 					SyntaxScanner syntax = SyntaxScanner(CurrentSyntaxConfig);
 
-					auto syntaxNodes = syntax.build(command).proccess();
+					auto syntaxResult = syntax.proccess(command);
 
-					std::cout 
-						<< "\n\n-----------------\n" 
-						<< command.toString()
-						<< "\n-----------------\n\n";
+					std::cout << command.toString() << "\n";
 
-					std::list<SyntaxNode> rnodes = syntaxNodes;
+					std::list<SyntaxNode> rnodes = syntaxResult;
 
-					for (auto& it = syntaxNodes.rbegin(); it != syntaxNodes.rend(); it++) {
+					for (auto& it = syntaxResult.rbegin(); it != syntaxResult.rend(); it++) {
 						std::cout << it->syntaxRule.buildRule << "\t" 
 							<< it->syntaxRule.buildRule.ruleString  << "\n";
 					}
 
 					std::list<::Token> tokens = command.getValues();
 
-					buildSyntaxTree(root, rnodes, tokens, 0);
-					
-					SyntaxTreeView->Nodes->Add(root);
+					SyntaxTreeViewBuilder(SyntaxTreeView)
+						.build(rnodes, tokens);
 				}
 			}
 
@@ -410,36 +465,10 @@ namespace GUI {
 
 	private: System::Int32 k = 0;
 
-	private: void buildSyntaxTree(TreeNode^ parent,
-		std::list<SyntaxNode>& rnodes, std::list<::Token>& tokens, int depth) {
-		auto& rnode = rnodes.back();
-		auto items = rnode.syntaxRule.buildRule.items;
-		    
-		System::Collections::Generic::List<TreeNode^> treenodes;
-
-		for (int i = items.size() - 1; i >= 0; --i) {
-			std::cout << i << " is i index on depth " << depth << "\n";
-			
-			if (items[i] == SyntaxChars::IDENTIFIER && !rnodes.empty()) {
-				String^ text = gcnew String(tokens.back().value.c_str());
-				tokens.pop_back();
-				TreeNode^ node = gcnew TreeNode(text);
-				treenodes.Add(node);
-			}
-			else {
-				String^ text = gcnew String(items[i].tokenString.c_str());
-				TreeNode^ node = gcnew TreeNode(text);
-				treenodes.Add(node);
-				if (items[i] == SyntaxChars::NONTERMINAL && !rnodes.empty()) {
-					rnodes.pop_back();
-					buildSyntaxTree(node, rnodes, tokens, depth + 1);
-				}
-			}
-		}
-
-		for (int i = treenodes.Count - 1; i >= 0; --i) {
-			parent->Nodes->Add(treenodes[i]);
-		}
-	}
+	
 	};
+
+	
+
 }
+

@@ -41,11 +41,6 @@ public:
     std::vector<StackItem> stack;
     std::vector<SyntaxValue> values;
 
-    SyntaxScanner& build(Command command) {
-        items = command.tokens;
-        return *this;
-    }
-
     int getTerminalIndex(int end) {
         for (int i = end; i >= 0; --i) {
             if (stack.at(i).isNotTerm()) {
@@ -122,7 +117,10 @@ public:
         return ss.str();
     }
 
-    std::list<SyntaxNode> proccess() {
+    std::list<SyntaxNode> proccess(Command command) {
+        // setup
+
+        items = command.tokens;
         std::cout << "COMMAND.BEGIN\n";
         stack.push_back(START_LIMIT);
 
@@ -154,7 +152,7 @@ public:
 #pragma endregion         
 
             if (relation == Relations::PREV || relation == Relations::BASE) {
-                shift(currentToken);
+                shift(input, currentToken);
 #pragma region  debug
                 std::cout
                     << "  #AFTER SHIFT: "
@@ -183,7 +181,7 @@ public:
         return syntaxNodes;
     }
 
-    void shift(Token token) {
+    void shift(int input, Token token) {
         stack.push_back(
             StackItem(
                 syntaxConfig.getIndex(token.termType), 
@@ -194,9 +192,12 @@ public:
 
     void end(int input, Token token) {
         if (input == START_LIMIT.code && head != 0) {
+
             std::cout << "COMMAND.END: SUCCESS\n";
         }
         else {
+
+
             std::cout << "COMMAND.END: ERROR\n";
         }
     }
