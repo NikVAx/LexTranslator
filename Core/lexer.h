@@ -13,7 +13,7 @@ class Lexer {
 private:
     StateMachine _sm;
 public:
-    Lexer() : _sm(CurrentStateMachineConfig) { }
+    Lexer() : _sm(CurrentParserConfig) { }
 
     ParseResult parse(std::string input) {
         ParseResult result;
@@ -35,7 +35,7 @@ public:
             }
 
             if (info.isTokenBoundary() && !tokenString.empty()) {
-                TermType tokenType = CurrentStateMachineConfig.mapTokenType(_sm.currentState);
+                TermType tokenType = CurrentParserConfig.mapTokenType(_sm.currentState);
 
 
                 if (tokenType != TermTypes::COMMENT) {

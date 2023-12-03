@@ -31,9 +31,6 @@
     <Filter Include="Файлы заголовков\configs">
       <UniqueIdentifier>{bc037c2b-1b95-4a00-986d-73461c161758}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы заголовков\configs\base config">
-      <UniqueIdentifier>{dbd09955-f5c9-4937-8074-b26b55138530}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Файлы заголовков\configs\constants">
       <UniqueIdentifier>{85ccdb10-167a-462c-b319-a694d1f635dd}</UniqueIdentifier>
     </Filter>
@@ -51,6 +48,9 @@
     </Filter>
     <Filter Include="Файлы заголовков\configs\config objects">
       <UniqueIdentifier>{91820848-fc9c-4c2d-8029-b606afea82ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\configs\current configuration">
+      <UniqueIdentifier>{dbd09955-f5c9-4937-8074-b26b55138530}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -97,7 +97,7 @@
       <Filter>Файлы заголовков\configs\config objects</Filter>
     </ClInclude>
     <ClInclude Include="current_config.h">
-      <Filter>Файлы заголовков\configs\base config</Filter>
+      <Filter>Файлы заголовков\configs\current configuration</Filter>
     </ClInclude>
     <ClInclude Include="build_rule.h">
       <Filter>Файлы заголовков\src\syntax</Filter>
