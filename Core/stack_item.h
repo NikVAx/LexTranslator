@@ -23,4 +23,4 @@ struct StackItem {
 };
 
 StackItem START_LIMIT = StackItem(SyntaxChars::LIMIT.code, "Í", SyntaxChars::LIMIT);
-StackItem NOT_TERM = StackItem(SyntaxChars::NONTERMINAL.code, SyntaxChars::NONTERMINAL.tokenString, SyntaxChars::NONTERMINAL);
+StackItem NONTERM = StackItem(SyntaxChars::NONTERMINAL.code, SyntaxChars::NONTERMINAL.tokenString, SyntaxChars::NONTERMINAL);

@@ -39,8 +39,8 @@ int main() {
 
         if (command.isValid) {  
             auto scanner = SyntaxScanner(MathGrammarConfig);
-            auto syntaxNodes = scanner.proccess(command);
-            //auto tree = TreeBuilder(syntaxNodes).build();
+            auto nodes = scanner.proccess(command);
+            //auto tree = TreeBuilder(nodes).build();
             //tree.print();            
         }
     }

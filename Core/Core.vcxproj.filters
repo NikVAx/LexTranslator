@@ -19,9 +19,6 @@
     <Filter Include="Файлы заголовков\src\lexer">
       <UniqueIdentifier>{0d9e6e17-a900-4863-93a0-b4d955d3d925}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы заголовков\src\code generation">
-      <UniqueIdentifier>{1989d152-4219-4a0b-9fc5-2eb2f738d6e6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Файлы заголовков\src\syntax">
       <UniqueIdentifier>{0b090d9c-6687-4f3e-b970-e2798ed70e77}</UniqueIdentifier>
     </Filter>
@@ -52,6 +49,9 @@
     <Filter Include="Файлы заголовков\configs\current configuration">
       <UniqueIdentifier>{dbd09955-f5c9-4937-8074-b26b55138530}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\src\triands">
+      <UniqueIdentifier>{1989d152-4219-4a0b-9fc5-2eb2f738d6e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -76,9 +76,6 @@
       <Filter>Файлы заголовков\src\lexer</Filter>
     </ClInclude>
     <ClInclude Include="parse_result.h">
-      <Filter>Файлы заголовков\src\lexer</Filter>
-    </ClInclude>
-    <ClInclude Include="status_codes.h">
       <Filter>Файлы заголовков\src\lexer</Filter>
     </ClInclude>
     <ClInclude Include="state_machine.h">
@@ -126,9 +123,6 @@
     <ClInclude Include="term_type.h">
       <Filter>Файлы заголовков\src\shared types</Filter>
     </ClInclude>
-    <ClInclude Include="syntax_value.h">
-      <Filter>Файлы заголовков\src\shared types</Filter>
-    </ClInclude>
     <ClInclude Include="syntax_char.h">
       <Filter>Файлы заголовков\src\shared types</Filter>
     </ClInclude>
@@ -152,6 +146,21 @@
     </ClInclude>
     <ClInclude Include="parser_config.h">
       <Filter>Файлы заголовков\configs\config objects</Filter>
+    </ClInclude>
+    <ClInclude Include="operator.h">
+      <Filter>Файлы заголовков\src\triands</Filter>
+    </ClInclude>
+    <ClInclude Include="operand.h">
+      <Filter>Файлы заголовков\src\triands</Filter>
+    </ClInclude>
+    <ClInclude Include="triad.h">
+      <Filter>Файлы заголовков\src\triands</Filter>
+    </ClInclude>
+    <ClInclude Include="syntax.h">
+      <Filter>Файлы заголовков\src\syntax</Filter>
+    </ClInclude>
+    <ClInclude Include="status_codes.h">
+      <Filter>Файлы заголовков\src\constants</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

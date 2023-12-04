@@ -1,12 +1,11 @@
 #pragma once
 
-#include "constants.h"
 #include "../Core/tree.h"
 
 #include <vector>; 
 
 //class TreeBuilder {
-//	std::list<SyntaxNode> syntaxNodes;
+//	std::list<SyntaxNode> nodes;
 //	std::list<SyntaxNode> rulesStack = {};
 //
 //	void buildTree(TreeNode<SyntaxNode>* current, TreeNode<SyntaxNode>* parent) {
@@ -37,12 +36,12 @@
 //	}
 //
 //public:
-//	TreeBuilder(std::list<SyntaxNode> syntaxNodes) : syntaxNodes(syntaxNodes) {};
+//	TreeBuilder(std::list<SyntaxNode> nodes) : nodes(nodes) {};
 //
 //	Tree<SyntaxNode> build() {
 //		Tree<SyntaxNode>* tree = new Tree<SyntaxNode>();
 //
-//		rulesStack = syntaxNodes;
+//		rulesStack = nodes;
 //
 //		SyntaxNode root = rulesStack.back();
 //		rulesStack.pop_back();

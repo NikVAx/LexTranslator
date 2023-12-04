@@ -149,6 +149,8 @@
     <ClInclude Include="funcs.h" />
     <ClInclude Include="iterator.h" />
     <ClInclude Include="lexer.h" />
+    <ClInclude Include="operand.h" />
+    <ClInclude Include="operator.h" />
     <ClInclude Include="parser_config_5.h" />
     <ClInclude Include="parser_config_5_old.h" />
     <ClInclude Include="parse_item.h" />
@@ -157,6 +159,7 @@
     <ClInclude Include="relations.h" />
     <ClInclude Include="stack_item.h" />
     <ClInclude Include="parser_config.h" />
+    <ClInclude Include="syntax.h" />
     <ClInclude Include="syntax_chars.h" />
     <ClInclude Include="state_machine.h" />
     <ClInclude Include="status_codes.h" />
@@ -166,13 +169,13 @@
     <ClInclude Include="operators_matrices.h" />
     <ClInclude Include="syntax_node.h" />
     <ClInclude Include="syntax_rule.h" />
-    <ClInclude Include="syntax_value.h" />
     <ClInclude Include="term_types.h" />
     <ClInclude Include="token.h" />
     <ClInclude Include="token_types.h" />
     <ClInclude Include="transition_info.h" />
     <ClInclude Include="tree.h" />
     <ClInclude Include="term_type.h" />
+    <ClInclude Include="triad.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core.cpp" />

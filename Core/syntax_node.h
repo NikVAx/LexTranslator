@@ -1,22 +1,18 @@
 #pragma once
 
 #include "syntax_rule.h"
-#include "syntax_value.h"
 
 struct SyntaxNode {
     // TODO: Если заменить "SyntaxRule syntaxRule" на "const SyntaxRule& syntaxRule" падает bad_alloc
-    SyntaxNode(SyntaxRule syntaxRule, SyntaxValue value)
+    SyntaxNode(SyntaxRule syntaxRule)
         : syntaxRule(syntaxRule)
-        , value(value)
     { };
 
     SyntaxRule syntaxRule;
 
-    SyntaxValue value;
-
-    friend std::ostream& operator<<(std::ostream& s, const SyntaxNode& token)
+    friend std::ostream& operator<<(std::ostream& s, const SyntaxNode& node)
     {
-        s << "[rule]: " << token.syntaxRule << "[value]: " << token.value << std::endl;
+        s << "[rule]: " << node.syntaxRule << std::endl;
         return s;
     }
 };

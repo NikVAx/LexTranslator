@@ -335,6 +335,7 @@ namespace GUI {
 	}
 
 	private: System::Void ExecuteBtn_Click(System::Object^ sender, System::EventArgs^ e) {
+		
 		setlocale(LC_ALL, "");
 		
 		if (String::IsNullOrWhiteSpace(SourceCodeTxt->Text)) {
@@ -342,52 +343,77 @@ namespace GUI {
 			return;
 		}
 
-		std::string srcStdString = msclr::interop::marshal_as<std::string>(SourceCodeTxt->Text);
+		std::string sourceCode = msclr::interop::marshal_as<std::string>(SourceCodeTxt->Text);
 
-		ParseResult result = Lexer().parse(srcStdString);
+		ParseResult result = Lexer()
+			.parse(sourceCode);
 
-		if (result.success()) {
-			fillDataGridViewWithTokens(result);
+		if (!result.isSuccess()) {
+			parseResultError(sourceCode, result);	
+			return;
+		}
+		
+		fillDataGridViewWithTokens(result);
 
-			auto commands = MathCommandSplitter()
-				.split(result);
+		auto commands = MathCommandSplitter().split(result);
 
-			for (auto& command : commands) {
-				if (command.isValid) {
-					
-					SyntaxScanner syntax = SyntaxScanner(CurrentSyntaxConfig);
-
-					auto syntaxResult = syntax.proccess(command);
-
-					std::list<SyntaxNode> rnodes = syntaxResult;
-
-					for (auto& it = syntaxResult.rbegin(); it != syntaxResult.rend(); it++) {
-						std::cout << it->syntaxRule.buildRule << "\t" 
-							<< it->syntaxRule.buildRule.ruleString  << "\n";
-					}
-
-					SyntaxTreeViewBuilder(SyntaxTreeView)
-						.build(rnodes, command.getValueTokens());
+		for (auto& command : commands) {
+			if (command.isValid) {
+				SyntaxScanner syntax = SyntaxScanner(CurrentSyntaxConfig);
+				
+				auto syntaxResult = syntax.proccess(command);
+				
+				if (!syntaxResult.isSuccess()) {
+					std::cout << syntaxResult.message << "\n";
+					syntaxResultError(syntaxResult.message);
+					return;
 				}
+				
+				std::list<SyntaxNode> ruleNodes = syntaxResult.nodes;
+
+				for (auto& it = ruleNodes.rbegin(); it != ruleNodes.rend(); it++) {
+					std::cout << it->syntaxRule.buildRule << "\t" 
+						<< it->syntaxRule.buildRule.ruleString  << "\n";
+				}
+
+				SyntaxTreeViewBuilder(SyntaxTreeView)
+					.build(ruleNodes, command.getValueTokens());
 			}
-
-			MessageBox::Show(this, "Анализ текста выполнен успешно!", "Сообщение");
 		}
-		else {
-			std::stringstream ss;
-			char inputChar = srcStdString[result.current.index];
-			;
 
-			ss  << "Встречена ошибка на этапе \"Лексический анализ\":\n\n"
-				<< "В символе: " <<  result.current.index << ";\n"
-				<< "Входной симол \'" << inputChar << " \'(ASCII:" << (int)inputChar << ")\n\n"
-				<< "Сообщение: " << result.items.at(result.items.size() - 1).statusCode.toString() << ".";
+		MessageBox::Show(this, "Анализ текста выполнен успешно!", "Сообщение");
 
-			String^ message = gcnew String(ss.str().c_str());
-
-			MessageBox::Show(message);
-		}
 	}
+
+	private: void parseResultError(std::string& source, ParseResult& result) {
+		std::stringstream ss;
+
+		int index = source.size() > result.current.index
+			? result.current.index
+			: source.size() - 1;
+
+		char inputChar = source.at(index);
+
+		ss << "Встречена ошибка на этапе \"Лексический анализ\":\n\n"
+			<< "В символе: " << index << ";\n"
+			<< "Входной симол \'" << inputChar << " \'(ASCII:" << (int)inputChar << ")\n\n"
+			<< "Сообщение: " << result.items.at(result.items.size() - 1).statusCode.toString() << ".";
+
+		String^ message = gcnew String(ss.str().c_str());
+
+		MessageBox::Show(message);
+	}
+
+	private: void syntaxResultError(std::string stdMessage) {
+		std::stringstream ss;
+
+			ss << "Встречена ошибка на этапе \"Синтаксический анализ\":\n\n"
+			   << "Сообщение: " << stdMessage << ".";
+
+			   String^ message = gcnew String(ss.str().c_str());
+
+			   MessageBox::Show(message);
+		   }
 
     private: void fillDataGridViewWithTokens(ParseResult& result) {
 			TokensTable->Rows->Clear();

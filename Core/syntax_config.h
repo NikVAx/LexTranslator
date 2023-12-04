@@ -6,9 +6,13 @@
 
 class SyntaxConfig {
 public:
-    SyntaxConfig(const std::vector<std::vector<Relations>> matrix, const std::map<TermType, int> termTypeToMatrixIndex, std::vector<SyntaxRule> rules, const std::vector<std::vector<StatusCode>> errors)
+    SyntaxConfig(
+        const std::vector<std::vector<Relations>> matrix, 
+        const std::map<TermType, SyntaxChar> termTypeToSyntaxChar, 
+        std::vector<SyntaxRule> rules, 
+        const std::vector<std::vector<StatusCode>> errors)   
         : matrix(matrix)
-        , termTypeToMatrixIndex(termTypeToMatrixIndex)
+        , termTypeToSyntaxChar(termTypeToSyntaxChar)
         , errors(errors)
     {
         if (matrix.size() != matrix.at(0).size()) {
@@ -34,8 +38,12 @@ public:
         return errors.at(leftTermIndex).at(rightTermIndex);
     }
     
+    SyntaxChar getSyntaxChar(TermType tokenType) const {
+        return termTypeToSyntaxChar.at(tokenType);
+    }
+
     int getIndex(TermType tokenType) const {
-        return termTypeToMatrixIndex.at(tokenType);
+        return termTypeToSyntaxChar.at(tokenType).code;
     }
 
     SyntaxRule getRuleByString(std::string ruleString) {
@@ -45,7 +53,7 @@ public:
 private:
     const std::vector<std::vector<Relations>> matrix;
     const std::vector<std::vector<StatusCode>> errors;
-    const std::map<TermType, int> termTypeToMatrixIndex;
+    const std::map<TermType, SyntaxChar> termTypeToSyntaxChar;
 
     std::map<std::string, SyntaxRule> stringRuleMap;
 };

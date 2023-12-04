@@ -4,7 +4,7 @@
 
 #include <string>
 
-typedef struct TermType : EnumStruct {
+struct TermType : EnumStruct {
 public:
     TermType(const int code, const std::string string)
         : EnumStruct(code, string)

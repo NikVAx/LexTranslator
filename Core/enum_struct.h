@@ -10,6 +10,7 @@ public:
 	{ }
 
 	std::string toString() const {
+
 		return _string;
 	}
 
@@ -18,6 +19,6 @@ public:
 	}
 
 protected:
-	const int _code;
-	const std::string _string;
+	int _code;
+	std::string _string;
 };
