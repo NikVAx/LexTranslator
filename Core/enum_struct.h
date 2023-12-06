@@ -10,8 +10,11 @@ public:
 	{ }
 
 	std::string toString() const {
-
 		return _string;
+	}
+
+	int toInt() const {
+		return _code;
 	}
 
 	operator int() const {

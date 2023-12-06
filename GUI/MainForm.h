@@ -345,7 +345,7 @@ namespace GUI {
 
 		std::string sourceCode = msclr::interop::marshal_as<std::string>(SourceCodeTxt->Text);
 
-		ParseResult result = Lexer()
+		ParseResult result = Parser()
 			.parse(sourceCode);
 
 		if (!result.isSuccess()) {
@@ -359,7 +359,7 @@ namespace GUI {
 
 		for (auto& command : commands) {
 			if (command.isValid) {
-				SyntaxScanner syntax = SyntaxScanner(CurrentSyntaxConfig);
+				Syntax syntax = Syntax(CurrentSyntaxConfig);
 				
 				auto syntaxResult = syntax.proccess(command);
 				

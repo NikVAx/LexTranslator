@@ -1,11 +1,12 @@
 #pragma once
 
+#include "parser_config.h"
+
+#include "term_type.h"
 #include "term_types.h"
 
 #include <vector>
 
-
-static const int INPUT_ALPHABET_SIZE = 128;
 const std::vector<int> INPUT_ALPHABET_MAP =
 {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 21, 19, 0, 0, 20, 0, 0,
@@ -248,3 +249,11 @@ const std::vector<TermType> TOKEN_TYPE_MAP =
     TermTypes::COMMENT
 };
 
+ParserConfig SmConfigVariant5(
+    INITIAL_STATE,
+    INPUT_ALPHABET_MAP,
+    STATES_MATRIX,
+    BOUNDS_MATRIX,
+    ERRORS_MATRIX,
+    TOKEN_TYPE_MAP
+);

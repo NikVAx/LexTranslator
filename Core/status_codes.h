@@ -28,10 +28,21 @@ private:
 
 namespace StatusCodes {
     static const StatusCode SUCCESS__(0, "Успешно");
-    static const StatusCode LEX_INVALID_INPUT_CHAR(1, "Недопустимый входной символ");
-    static const StatusCode LEX_INVALID_OPERATOR(2, "Неизвестный оператор");
-    static const StatusCode LEX_INVALID_IDENTIFIER(3, "Недопустимый формат идентификатора");
-    static const StatusCode LEX_ENDLESS_COMMENT(4, "Незакрытый комментарий");
+    static const StatusCode LEX_1(1, "Неизвестная ошибка");
+    static const StatusCode LEX_2(2, "Недопустимый входной символ");
+    static const StatusCode LEX_3(3, "Неожиданный конец файла");
+    static const StatusCode LEX_4(4, "Встречен незавершенный комментарий");
+    static const StatusCode LEX_5(5, "Ожидалось присваивание");
+    static const StatusCode LEX_6(6, "Недопустимый формат идентификатора");
+    static const StatusCode LEX_7(7, "Незавершенный оператор присванивания");
+    static const StatusCode LEX_8(8, "Ожидалось выражение");
+    static const StatusCode LEX_9(9, "Ожидался оператор");
+    static const StatusCode LEX_10(10, "Ожидался идентификатор");
+
+    static const StatusCode LEX_INVALID_INPUT_CHAR(51, "Недопустимый входной символ");
+    static const StatusCode LEX_INVALID_OPERATOR(52, "Неизвестный оператор");
+    static const StatusCode LEX_INVALID_IDENTIFIER(53, "Недопустимый формат идентификатора");
+    static const StatusCode LEX_ENDLESS_COMMENT(54, "Незакрытый комментарий");
 
     static const StatusCode SYN_END_OF_STATEMENT(100, "Незавершенный блок");
     static const StatusCode SYN_ERROR(101, "Синтаксическая ошибка");

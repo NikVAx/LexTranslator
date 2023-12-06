@@ -10,21 +10,6 @@
 #include "../Core/command.h"
 #include "../Core/status_codes.h"
 
-std::map<TermType, SyntaxChar> TOKEN_TO_SYNTAX_CHAR
-{
-    { TermTypes::PLUS, SyntaxChars::PLUS },
-    { TermTypes::MINUS, SyntaxChars::MINUS },
-    { TermTypes::MULTIPLY, SyntaxChars::MULTIPLY },
-    { TermTypes::DIVIDE,  SyntaxChars::DIVIDE },
-    { TermTypes::IDENTIFIER,  SyntaxChars::IDENTIFIER },
-    { TermTypes::NUMBER,  SyntaxChars::IDENTIFIER },
-    { TermTypes::OPEN_BRACKET,  SyntaxChars::OPEN_BRACKET },
-    { TermTypes::CLOSE_BRACKET,  SyntaxChars::CLOSE_BRACKET },
-    { TermTypes::SEMICOLON,  SyntaxChars::SEMICOLON },
-    { TermTypes::ASSIGNMENT,  SyntaxChars::ASSIGNMENT },
-    { TermTypes::LIMIT,  SyntaxChars::LIMIT },
-};
-
 std::map<int, std::string> MAP_INPUT_STRING = {
     { SyntaxChars::PLUS.code, SyntaxChars::PLUS.tokenString }, // +
     { SyntaxChars::MINUS.code, SyntaxChars::MINUS.tokenString }, // -
@@ -43,22 +28,25 @@ class SyntaxResult {
 public:
     std::list<SyntaxNode> nodes;
     
+    std::string message; 
     bool error = false;
-    std::string message;
+    int tokenIndex;
 
     bool isSuccess() {
         return !error;
     }
 
-    void err(std::string message) {
+    void setError(std::string message, int tokenIndex) {
         this->message = message;
-        error = true;
+        this->error = true;
+        this->tokenIndex = tokenIndex;
     }
 
+    
 
 };
 
-class SyntaxScanner {
+class Syntax {
 private:
     SyntaxConfig& syntaxConfig;
     int head = 0;
@@ -68,7 +56,7 @@ private:
     bool error;
 
 public:
-    SyntaxScanner(SyntaxConfig& syntaxConfig)
+    Syntax(SyntaxConfig& syntaxConfig)
         : syntaxConfig(syntaxConfig)
     { }
 
@@ -153,13 +141,12 @@ public:
     std::string stack_str(std::vector<StackItem> stackItem) {
         std::stringstream ss;
         for (auto& el : stackItem) {
-            ss << MAP_INPUT_STRING[el.code];
+            ss << el.currentChar.tokenString;
         }
         return ss.str();
     }
 
-    SyntaxResult proccess(Command command) {
-        
+    SyntaxResult proccess(Command command) {     
         setup(command);
         
         stack.push_back(START_LIMIT);
@@ -175,12 +162,12 @@ public:
             Token currentToken = items[head];
 
             if (tokenIndex == 1 && currentToken.termType != TermTypes::IDENTIFIER) {
-                result.err(StatusCodes::SEM_ASSIGNTOCONST.toString());
+                result.setError(StatusCodes::SEM_ASSIGNTOCONST.toString(), tokenIndex);
                 break;
             }
 
             if (tokenIndex == 2 && currentToken.termType != TermTypes::ASSIGNMENT) {
-                result.err(StatusCodes::SYN_ASSIGNMENT_EXPECTED.toString());
+                result.setError(StatusCodes::SYN_ASSIGNMENT_EXPECTED.toString(), tokenIndex);
                 break;
             }
 
@@ -207,7 +194,7 @@ public:
                 reduce(input, currentToken);  
 
                 if (error) {
-                    result.err(StatusCodes::SYN_EXPR_EXPECT.toString());
+                    result.setError(StatusCodes::SYN_EXPR_EXPECT.toString(), tokenIndex);
                     break;
                 }
 
@@ -224,7 +211,7 @@ public:
                     result.nodes = nodes;
                 }
                 else {
-                    result.err(syntaxConfig.getStatusCode(top, input));
+                    result.setError(syntaxConfig.getStatusCode(top, input), tokenIndex);
                 }
                 end = true;
                 break;
@@ -232,7 +219,7 @@ public:
         } while (head < items.size());
 
         if (!end && !error) {
-            result.err(StatusCodes::SYN_END_OF_STATEMENT.toString());
+            result.setError(StatusCodes::SYN_END_OF_STATEMENT.toString(), tokenIndex);
         }
 
         return result;

@@ -9,11 +9,11 @@
 #include <sstream>
 #include <vector>
 
-class Lexer {
+class Parser {
 private:
     StateMachine _sm;
 public:
-    Lexer() : _sm(CurrentParserConfig) { }
+    Parser() : _sm(CurrentParserConfig) { }
 
     ParseResult parse(std::string input) {
         ParseResult result;

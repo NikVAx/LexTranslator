@@ -18,7 +18,7 @@
 int main() {
     setlocale(LC_ALL, "");
 
-    Lexer lexer;
+    Parser lexer;
      
     std::string line = "_assign:=_1+((_2-_x1-x2)+(_3+XX)+(_4+IV));b:=c*(I*-(g+a));";
     
@@ -38,7 +38,7 @@ int main() {
         }
 
         if (command.isValid) {  
-            auto scanner = SyntaxScanner(MathGrammarConfig);
+            auto scanner = Syntax(MathGrammarConfig);
             auto nodes = scanner.proccess(command);
             //auto tree = TreeBuilder(nodes).build();
             //tree.print();            
