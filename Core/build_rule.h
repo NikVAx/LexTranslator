@@ -75,7 +75,7 @@ public:
         return _getTerminalItems(items);
     };
 
-    friend std::ostream& operator<<(std::ostream& s, const BuildRule buildRule) {
+    friend std::ostream& operator<<(std::ostream& s, const BuildRule& buildRule) {
         s << buildRule.ruleString << std::endl;
         return s;
     }

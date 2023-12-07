@@ -10,20 +10,6 @@
 #include "../Core/command.h"
 #include "../Core/status_codes.h"
 
-std::map<int, std::string> MAP_INPUT_STRING = {
-    { SyntaxChars::PLUS.code, SyntaxChars::PLUS.tokenString }, // +
-    { SyntaxChars::MINUS.code, SyntaxChars::MINUS.tokenString }, // -
-    { SyntaxChars::MULTIPLY.code, SyntaxChars::MULTIPLY.tokenString }, // *
-    { SyntaxChars::DIVIDE.code,  SyntaxChars::DIVIDE.tokenString }, // /
-    { SyntaxChars::IDENTIFIER.code,  SyntaxChars::IDENTIFIER.tokenString }, // идентификатор
-    { SyntaxChars::OPEN_BRACKET.code,  SyntaxChars::OPEN_BRACKET.tokenString }, // (
-    { SyntaxChars::CLOSE_BRACKET.code,  SyntaxChars::CLOSE_BRACKET.tokenString }, // )
-    { SyntaxChars::SEMICOLON.code,  SyntaxChars::SEMICOLON.tokenString }, // ;
-    { SyntaxChars::ASSIGNMENT.code,  SyntaxChars::ASSIGNMENT.tokenString }, // :=
-    { SyntaxChars::LIMIT.code,  SyntaxChars::LIMIT.tokenString }, // #
-    { SyntaxChars::NONTERMINAL.code,  SyntaxChars::NONTERMINAL.tokenString}, // S
-};
-
 class SyntaxResult {
 public:
     std::list<SyntaxNode> nodes;
@@ -41,9 +27,6 @@ public:
         this->error = true;
         this->tokenIndex = tokenIndex;
     }
-
-    
-
 };
 
 class Syntax {
@@ -126,8 +109,7 @@ public:
         std::stack<std::string> revert;
 
         for (int i = stack.size() - 1; (i >= baseIndex || stack.back().isNotTerm()); --i) {
-           
-            revert.push(MAP_INPUT_STRING[stack.back().code]);
+            revert.push(stack.back().currentChar.tokenString);
             stack.pop_back();
         }
 
@@ -183,11 +165,11 @@ public:
             
             if (relation == Relations::PREV || relation == Relations::BASE) {
                 shift(input, currentToken);
-#pragma region  debug
-                std::cout
-                    << "  #AFTER SHIFT: "
-                    << "\n    STACK: " << stack_str(stack) << " R[" << (char)relation << "]\n";
-#pragma endregion  
+//#pragma region  debug
+//                std::cout
+//                    << "  #AFTER SHIFT: "
+//                    << "\n    STACK: " << stack_str(stack) << " R[" << (char)relation << "]\n";
+//#pragma endregion  
                 continue;
             }
             if (relation == Relations::NEXT) {
@@ -198,11 +180,11 @@ public:
                     break;
                 }
 
-#pragma region  debug
-                std::cout
-                    << "  #AFTER REDUCE: "
-                    << "\n    STACK: " << stack_str(stack) << " R[" << (char)relation << "]\n";
-#pragma endregion  
+//#pragma region  debug
+//                std::cout
+//                    << "  #AFTER REDUCE: "
+//                    << "\n    STACK: " << stack_str(stack) << " R[" << (char)relation << "]\n";
+//#pragma endregion  
                 continue;
             }
             if (relation == Relations::NONE) {

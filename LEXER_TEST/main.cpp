@@ -1,6 +1,5 @@
 ﻿
 #include "../SYNTAX/syntax.cpp"
-#include "../SYNTAX/tree_builder.h"
 #include "../Core/lexer.h"
 #include "../Core/token.h"
 #include "../Core/command_splitter.h"
@@ -38,7 +37,7 @@ int main() {
         }
 
         if (command.isValid) {  
-            auto scanner = Syntax(MathGrammarConfig);
+            Syntax scanner(MathGrammarConfig);
             auto nodes = scanner.proccess(command);
             //auto tree = TreeBuilder(nodes).build();
             //tree.print();            

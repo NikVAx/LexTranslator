@@ -13,11 +13,11 @@ struct Command {
     std::vector<Token> tokens;
     std::list<Token> values;
 
-    std::string toString() {
+    std::string toString(int lt = 0) {
         std::stringstream ss;
 
-        for (auto& token : tokens) {
-            ss << token.value;
+        for (int i = 0; i < tokens.size() - lt; ++i) {
+            ss << tokens[i].value;
         }
 
         return ss.str();

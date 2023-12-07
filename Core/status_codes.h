@@ -48,8 +48,8 @@ namespace StatusCodes {
     static const StatusCode SYN_ERROR(101, "Синтаксическая ошибка");
     static const StatusCode SYN_ASSIGNMENT_EXPECTED(102, "Ожидалось присваивание (:=)");
     static const StatusCode SYN_OPEXP(103, "Ожидался оператор (*, /)"); // Ожидался 
-    static const StatusCode SYN_UNCBR(104, "Скобка не закрыта"); // Незакрытая скобка
-    static const StatusCode SYN_UEXBR(105, "Неожиданная скобка"); // Неожиданная скобка
+    static const StatusCode SYN_UNCLOSED_BRACKET(104, "Скобка не закрыта"); // Незакрытая скобка
+    static const StatusCode SYN_UEXPECTED_BRACKET(105, "Неожиданная скобка"); // Неожиданная скобка
     static const StatusCode SYN_EXPR_EXPECT(106, "Ожидалось выражение");
     static const StatusCode SEM_ASSIGNTOCONST(107, "Присваивание к литералу"); // Присваивание к литералу
 }

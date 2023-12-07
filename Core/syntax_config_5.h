@@ -22,20 +22,17 @@ const std::map<TermType, SyntaxChar> TERM_TYPE_TO_MATRIX_INDEX = {
     { TermTypes::LIMIT, SyntaxChars::LIMIT },
 };
 
-namespace SyntaxRules
-{
-    const SyntaxRule R0 = SyntaxRule(BuildRule({ SyntaxChars::IDENTIFIER }));
-    const SyntaxRule R1 = SyntaxRule(BuildRule({ SyntaxChars::IDENTIFIER, SyntaxChars::ASSIGNMENT, SyntaxChars::NONTERMINAL, SyntaxChars::SEMICOLON }));
-    const SyntaxRule R2 = SyntaxRule(BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::PLUS, SyntaxChars::NONTERMINAL }));
-    const SyntaxRule R3 = SyntaxRule(BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::MINUS, SyntaxChars::NONTERMINAL }));
-    const SyntaxRule R5 = SyntaxRule(BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::MULTIPLY, SyntaxChars::NONTERMINAL }));
-    const SyntaxRule R6 = SyntaxRule(BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::DIVIDE, SyntaxChars::NONTERMINAL }));
-    const SyntaxRule R8 = SyntaxRule(BuildRule({ SyntaxChars::OPEN_BRACKET, SyntaxChars::NONTERMINAL, SyntaxChars::CLOSE_BRACKET }));
-    const SyntaxRule R10 = SyntaxRule(BuildRule({ SyntaxChars::IDENTIFIER }));
+namespace SyntaxRules {
+    const SyntaxRule R1 = SyntaxRule(1, BuildRule({ SyntaxChars::IDENTIFIER, SyntaxChars::ASSIGNMENT, SyntaxChars::NONTERMINAL, SyntaxChars::SEMICOLON }));
+    const SyntaxRule R2 = SyntaxRule(2, BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::PLUS, SyntaxChars::NONTERMINAL }));
+    const SyntaxRule R3 = SyntaxRule(3, BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::MINUS, SyntaxChars::NONTERMINAL }));
+    const SyntaxRule R5 = SyntaxRule(5, BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::MULTIPLY, SyntaxChars::NONTERMINAL }));
+    const SyntaxRule R6 = SyntaxRule(6, BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::DIVIDE, SyntaxChars::NONTERMINAL }));
+    const SyntaxRule R8 = SyntaxRule(8, BuildRule({ SyntaxChars::OPEN_BRACKET, SyntaxChars::NONTERMINAL, SyntaxChars::CLOSE_BRACKET }));
+    const SyntaxRule R10 = SyntaxRule(10, BuildRule({ SyntaxChars::IDENTIFIER }));
 }
 
 const std::vector<SyntaxRule> RULES = {
-    SyntaxRules::R0,
     SyntaxRules::R1,
     SyntaxRules::R2,
     SyntaxRules::R3,

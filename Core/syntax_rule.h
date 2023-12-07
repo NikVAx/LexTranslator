@@ -5,11 +5,12 @@
 
 struct SyntaxRule {
     SyntaxRule()
-        : SyntaxRule(BuildRule())
+        : SyntaxRule(-1, BuildRule())
     { };
 
-    SyntaxRule(BuildRule buildRule)
-        : buildRule(buildRule)
+    SyntaxRule(int code, BuildRule buildRule)
+        : code(code)
+        , buildRule(buildRule)
     { }
 
     friend std::ostream& operator<<(std::ostream& s, const SyntaxRule& syntaxRule)
@@ -19,4 +20,5 @@ struct SyntaxRule {
     }
 
     BuildRule buildRule;
+    int code;
 };

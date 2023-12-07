@@ -365,7 +365,7 @@ namespace GUI {
 				
 				if (!syntaxResult.isSuccess()) {
 					std::cout << syntaxResult.message << "\n";
-					syntaxResultError(syntaxResult.message);
+					syntaxResultError(syntaxResult);
 					return;
 				}
 				
@@ -404,11 +404,11 @@ namespace GUI {
 		MessageBox::Show(message);
 	}
 
-	private: void syntaxResultError(std::string stdMessage) {
+	private: void syntaxResultError(SyntaxResult& result) {
 		std::stringstream ss;
 
 			ss << "Встречена ошибка на этапе \"Синтаксический анализ\":\n\n"
-			   << "Сообщение: " << stdMessage << ".";
+			   << "Сообщение: " << result.message << ".";
 
 			   String^ message = gcnew String(ss.str().c_str());
 
