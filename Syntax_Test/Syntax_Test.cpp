@@ -31,7 +31,7 @@ public:
 
 		int ignore = 0;
 
-		ss << "                " << line;
+		ss << line;
 
 		while (true) {
 			size_t pos = rfind_rule(line, ignore);
@@ -44,19 +44,21 @@ public:
 					auto node = nodes.back();
 
 					std::string rString = node.syntaxRule.buildRule.ruleString;
+
+					
+
 					line.replace(pos, 1, rString);
 					nodes.pop_back();
 
 					if (node.syntaxRule.code != 10) {
-						ss << "\n" << node.syntaxRule.code
-							<< "\t[" << node.syntaxRule.buildRule.ruleString <<
-							"]\t" << line;
+						ss << "\n ПРАВИЛО: " << node.syntaxRule.code <<
+							"  -> " << line;
 					}
 				}
 				else if (line.at(pos) == 'I') {
 					std::string value = terms.back().value;
 					line.replace(pos, 1, value);
-					ss << "\n" << "10\t[I]\t" << line;
+					ss << "\n ПРАВИЛО: " << "10 [I]" << " -> " << line;
 					size_t n = std::count(value.begin(), value.end(), 'I');
 
 					ignore += n;
@@ -68,6 +70,7 @@ public:
 
 		return std::pair<std::string, std::string>(line, ss.str());
 	}
+
 };
 
 
@@ -93,15 +96,9 @@ std::pair<bool, std::string> run_syntax(Command& command) {
 	auto syntaxResult = syntax.proccess(command);
 	
 	if (syntaxResult.isSuccess()) {
-		std::cout << "10; ";
-		for (auto r : syntaxResult.nodes) {
-			std::cout << r.syntaxRule.code << "; ";
-		}
-		std::cout << "\n";
-
 		auto generated = SyntaxLineBuilder().buildline(syntaxResult, command);
 
-		std::cout << "ПОРЯДОК РАЗБОРА:\n" << generated.second << "\n";
+		//std::cout << "ПОРЯДОК РАЗБОРА:\n" << generated.second << "\n";
 
 		return std::pair<bool, std::string>(true, generated.first);
 
@@ -111,9 +108,9 @@ std::pair<bool, std::string> run_syntax(Command& command) {
 }
 
 void on_result(std::string expected, std::string actual, std::string input) {
-	//std::cout << "ВХОДНАЯ СТРОКА:  " << input << "\n";
-	//std::cout << "ОЖИДАЕМЫЙ ВЫВОД: " << expected << "\n";
-	//std::cout << "РЕАЛЬНЫЙ ВЫВОД:  " << actual << "\n\n";
+	std::cout << "ВХОДНАЯ СТРОКА:  " << input << "\n";
+	std::cout << "ОЖИДАЕМЫЙ ВЫВОД: " << expected << "\n";
+	std::cout << "РЕАЛЬНЫЙ ВЫВОД:  " << actual << "\n\n";
 
 	if (expected == actual) {
 		std::cout << "СТАТУС: ПРОЙДЕН\n";
@@ -206,6 +203,9 @@ void unexpected_bracket() {
 	on_result(expected, actual, input);
 }
 
+
+
+
 int main() {
 	setlocale(LC_ALL, "");
 
@@ -215,5 +215,23 @@ int main() {
 	unclosed_bracket();
 	unexpected_bracket();
 
+
+
+	//std::string input = "a:=XXV-(III*x+y/(b-(I+III))-VI));";
+	//
+	//auto b_command = prepare_command(input);
+	//
+	//if (b_command.first != true)
+	//	return -1;
+	//
+	//auto b_actual = run_syntax(b_command.second);
+	//
+	//if (b_actual.first != true) {
+	//	std::cout << b_actual.second << "\n";
+	//}
+	//
+
+	//success_base(input, 1);
+	
 	return 0;
 }

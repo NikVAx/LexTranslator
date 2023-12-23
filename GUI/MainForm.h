@@ -18,6 +18,11 @@
 #include <string>
 #include <sstream>
 #include <list>
+#include "../Core/ref_tree.h"
+#include "../Core/ref_value.h"
+#include "../Core/syntax_tree_by_char_builder.h"
+#include "../Core/operators_tree_builder.h"
+#include "OperatorsTreeViewBuilder.h"
 
 
 
@@ -76,6 +81,9 @@ namespace GUI {
 	private: System::Windows::Forms::TabPage^ lab2Page;
 
 	private: System::Windows::Forms::TreeView^ SyntaxTreeView;
+	private: System::Windows::Forms::TabPage^ OpersPage;
+	private: System::Windows::Forms::TabPage^ TriadsPage;
+	private: System::Windows::Forms::TreeView^ OpersTreeView;
 
 
 
@@ -110,11 +118,15 @@ namespace GUI {
 			this->TokenType = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->lab2Page = (gcnew System::Windows::Forms::TabPage());
 			this->SyntaxTreeView = (gcnew System::Windows::Forms::TreeView());
+			this->OpersPage = (gcnew System::Windows::Forms::TabPage());
+			this->TriadsPage = (gcnew System::Windows::Forms::TabPage());
+			this->OpersTreeView = (gcnew System::Windows::Forms::TreeView());
 			this->Tabs->SuspendLayout();
 			this->PageSource->SuspendLayout();
 			this->PageLab1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TokensTable))->BeginInit();
 			this->lab2Page->SuspendLayout();
+			this->OpersPage->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// Tabs
@@ -125,6 +137,8 @@ namespace GUI {
 			this->Tabs->Controls->Add(this->PageSource);
 			this->Tabs->Controls->Add(this->PageLab1);
 			this->Tabs->Controls->Add(this->lab2Page);
+			this->Tabs->Controls->Add(this->OpersPage);
+			this->Tabs->Controls->Add(this->TriadsPage);
 			this->Tabs->Location = System::Drawing::Point(22, 22);
 			this->Tabs->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->Tabs->Name = L"Tabs";
@@ -144,7 +158,7 @@ namespace GUI {
 			this->PageSource->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->PageSource->Name = L"PageSource";
 			this->PageSource->Padding = System::Windows::Forms::Padding(6, 7, 6, 7);
-			this->PageSource->Size = System::Drawing::Size(816, 492);
+			this->PageSource->Size = System::Drawing::Size(917, 552);
 			this->PageSource->TabIndex = 0;
 			this->PageSource->Text = L"Исходный код";
 			// 
@@ -223,7 +237,7 @@ namespace GUI {
 			this->PageLab1->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->PageLab1->Name = L"PageLab1";
 			this->PageLab1->Padding = System::Windows::Forms::Padding(6, 7, 6, 7);
-			this->PageLab1->Size = System::Drawing::Size(816, 492);
+			this->PageLab1->Size = System::Drawing::Size(917, 552);
 			this->PageLab1->TabIndex = 1;
 			this->PageLab1->Text = L"Таблица лексем";
 			this->PageLab1->UseVisualStyleBackColor = true;
@@ -287,6 +301,37 @@ namespace GUI {
 			this->SyntaxTreeView->Size = System::Drawing::Size(908, 543);
 			this->SyntaxTreeView->TabIndex = 0;
 			// 
+			// OpersPage
+			// 
+			this->OpersPage->Controls->Add(this->OpersTreeView);
+			this->OpersPage->Location = System::Drawing::Point(4, 34);
+			this->OpersPage->Name = L"OpersPage";
+			this->OpersPage->Padding = System::Windows::Forms::Padding(3);
+			this->OpersPage->Size = System::Drawing::Size(917, 552);
+			this->OpersPage->TabIndex = 3;
+			this->OpersPage->Text = L"Дерево операций";
+			this->OpersPage->UseVisualStyleBackColor = true;
+			// 
+			// TriadsPage
+			// 
+			this->TriadsPage->Location = System::Drawing::Point(4, 34);
+			this->TriadsPage->Name = L"TriadsPage";
+			this->TriadsPage->Padding = System::Windows::Forms::Padding(3);
+			this->TriadsPage->Size = System::Drawing::Size(917, 552);
+			this->TriadsPage->TabIndex = 4;
+			this->TriadsPage->Text = L"Триады";
+			this->TriadsPage->UseVisualStyleBackColor = true;
+			// 
+			// OpersTreeView
+			// 
+			this->OpersTreeView->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->OpersTreeView->Location = System::Drawing::Point(4, 5);
+			this->OpersTreeView->Name = L"OpersTreeView";
+			this->OpersTreeView->Size = System::Drawing::Size(908, 543);
+			this->OpersTreeView->TabIndex = 1;
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(11, 25);
@@ -305,6 +350,7 @@ namespace GUI {
 			this->PageLab1->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TokensTable))->EndInit();
 			this->lab2Page->ResumeLayout(false);
+			this->OpersPage->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}
@@ -377,7 +423,20 @@ namespace GUI {
 				}
 
 				SyntaxTreeViewBuilder(SyntaxTreeView)
-					.build(ruleNodes, command.getValueTokens());
+					.build(ruleNodes, command.getValueTokens());	
+
+				// Построение дерева операций
+				std::list<SyntaxNode> ruleNodes2 = syntaxResult.nodes;
+				RefTree<RefValue> myTreeRefView;
+				
+				SyntaxTreeByCharBuilder(myTreeRefView)
+					.build(ruleNodes2, command.getValueTokens());
+				
+				OperatorsTreeBuilder(myTreeRefView)
+					.build();
+
+				OperatorsTreeViewBuilder(OpersTreeView)
+					.build(myTreeRefView);
 			}
 		}
 

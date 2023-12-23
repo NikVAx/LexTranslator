@@ -147,20 +147,23 @@
     <ClInclude Include="parser_config.h">
       <Filter>Файлы заголовков\configs\config objects</Filter>
     </ClInclude>
-    <ClInclude Include="operator.h">
-      <Filter>Файлы заголовков\src\triands</Filter>
-    </ClInclude>
-    <ClInclude Include="operand.h">
-      <Filter>Файлы заголовков\src\triands</Filter>
-    </ClInclude>
-    <ClInclude Include="triad.h">
-      <Filter>Файлы заголовков\src\triands</Filter>
-    </ClInclude>
     <ClInclude Include="syntax.h">
       <Filter>Файлы заголовков\src\syntax</Filter>
     </ClInclude>
     <ClInclude Include="status_codes.h">
       <Filter>Файлы заголовков\src\constants</Filter>
+    </ClInclude>
+    <ClInclude Include="syntax_tree_builder.h">
+      <Filter>Файлы заголовков\src\triands</Filter>
+    </ClInclude>
+    <ClInclude Include="syntax_tree_by_char_builder.h">
+      <Filter>Файлы заголовков\src\triands</Filter>
+    </ClInclude>
+    <ClInclude Include="ref_value.h">
+      <Filter>Файлы заголовков\src\triands</Filter>
+    </ClInclude>
+    <ClInclude Include="operators_tree_builder.h">
+      <Filter>Файлы заголовков\src\triands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="status_codes.cpp">
       <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="ref_tree.h">
+      <Filter>Файлы заголовков\src\data structures</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

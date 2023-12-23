@@ -13,7 +13,7 @@ namespace TermTypes {
     static const TermType SEMICOLON(7, "Точка с запятой");
     static const TermType COMMENT(8, "Комментарий");
     static const TermType KEYWORD(9, "Ключевое слово");
-    static const TermType MINUS(10, "Минус");
+    static const TermType MINUS(10, "Оператор \"-\"");
     static const TermType MULTIPLY(11, "Оператор \"*\"");
     static const TermType DIVIDE(12, "Оператор \"/\"");
     static const TermType OR(13, "Оператор OR");

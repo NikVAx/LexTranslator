@@ -26,5 +26,8 @@
     <ClInclude Include="SyntaxTreeViewBuilder.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="OperatorsTreeViewBuilder.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

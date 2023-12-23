@@ -149,13 +149,13 @@
     <ClInclude Include="funcs.h" />
     <ClInclude Include="iterator.h" />
     <ClInclude Include="lexer.h" />
-    <ClInclude Include="operand.h" />
-    <ClInclude Include="operator.h" />
+    <ClInclude Include="operators_tree_builder.h" />
     <ClInclude Include="parser_config_5.h" />
     <ClInclude Include="parser_config_5_old.h" />
     <ClInclude Include="parse_item.h" />
     <ClInclude Include="parse_result.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="ref_value.h" />
     <ClInclude Include="relations.h" />
     <ClInclude Include="stack_item.h" />
     <ClInclude Include="parser_config.h" />
@@ -169,13 +169,14 @@
     <ClInclude Include="operators_matrices.h" />
     <ClInclude Include="syntax_node.h" />
     <ClInclude Include="syntax_rule.h" />
+    <ClInclude Include="syntax_tree_builder.h" />
+    <ClInclude Include="syntax_tree_by_char_builder.h" />
     <ClInclude Include="term_types.h" />
     <ClInclude Include="token.h" />
     <ClInclude Include="token_types.h" />
     <ClInclude Include="transition_info.h" />
     <ClInclude Include="tree.h" />
     <ClInclude Include="term_type.h" />
-    <ClInclude Include="triad.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core.cpp" />
@@ -185,6 +186,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ref_tree.h" />
     <ClCompile Include="status_codes.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

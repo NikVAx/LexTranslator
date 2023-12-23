@@ -34,13 +34,13 @@ struct TreeNode {
 };
 
 template <class T>
-class Tree {
+class RefTree {
 public:
     TreeNode<T>* root;
 
-    Tree() : root(NULL) {}
+    RefTree() : root(NULL) {}
 
-    ~Tree() {
+    ~RefTree() {
         freeCascade(root);
     }
 

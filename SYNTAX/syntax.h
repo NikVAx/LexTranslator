@@ -9,6 +9,9 @@
 #include "../Core/syntax_rule.h"
 #include "../Core/command.h"
 #include "../Core/status_codes.h"
+#include "../Core/syntax_config.h"
+#include "../Core/relations.h"
+
 
 class SyntaxResult {
 public:
@@ -36,7 +39,7 @@ private:
     std::vector<Token> items;
     std::vector<StackItem> stack;
     std::list<SyntaxNode> nodes;
-    bool error;
+    bool error = false;
 
 public:
     Syntax(SyntaxConfig& syntaxConfig)
