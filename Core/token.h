@@ -7,17 +7,17 @@
 #include <iostream>
 
 struct Token {
-    Token(std::string value, TermType termType) 
+    Token(std::string value, TermType type) 
         : value(value)
-        , termType(termType)
+        , type(type)
     { }
 
     std::string value = "";
-    TermType termType = TermTypes::UNDEFINED;
+    TermType type = TermTypes::UNDEFINED;
 
     friend bool operator==(const Token& t1, const Token& t2) {
         return t1.value == t2.value &&
-            t1.termType == t2.termType;
+            t1.type == t2.type;
     }
 
     friend bool operator!=(const Token& t1, const Token& t2) {
@@ -26,7 +26,7 @@ struct Token {
 
     friend std::ostream& operator<<(std::ostream& s, const Token& token)
     {
-        s << "code: " << token.termType.code() << " typeName: " << token.termType.toString() << " value: " << token.value;
+        s << "code: " << token.type.code() << " typeName: " << token.type.toString() << " value: " << token.value;
         return s;
     }
 };

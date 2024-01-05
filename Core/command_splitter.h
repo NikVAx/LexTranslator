@@ -25,7 +25,7 @@ public:
                 command.tokens.push_back(item.token);
 
                 // TODO: add list of value-types
-                if (item.token.termType == TermTypes::NUMBER || item.token.termType == TermTypes::IDENTIFIER) {
+                if (item.token.type == TermTypes::NUMBER || item.token.type == TermTypes::IDENTIFIER) {
                     command.values.push_back(item.token);
                 }
                 

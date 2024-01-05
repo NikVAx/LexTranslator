@@ -1,127 +1,128 @@
 ﻿
-#include "../Core/lexer.h"
-#include "../Core/token.h"
-#include "../Core/command_splitter.h"
 #include "../Core/command.h"
-#include "../Core/parse_result.h"
-#include "../Core/parse_item.h"
+#include "../Core/command_splitter.h"
 #include "../Core/current_config.h"
-#include "../Core/syntax_tree_builder.h"
+#include "../Core/lexer.h"
+#include "../Core/parse_item.h"
+#include "../Core/parse_result.h"
 #include "../Core/ref_value.h"
+#include "../Core/syntax_tree_builder.h"
 #include "../Core/syntax_tree_by_char_builder.h"
+#include "../Core/token.h"
 
 #include "../SYNTAX/syntax.h"
 
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <iomanip>
-#include <stack>
-#include <functional>
+#include "../Core/operators_tree_builder.h"
+#include "../Core/triads_builder.h"
+
 #include <algorithm>
+#include <fstream>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <stack>
 #include <string>
 #include <vector>
-#include "../Core/operators_tree_builder.h"
 
+static void print_triads(std::list<Triad*>& triads) {
+    for (Triad* triad : triads) {
+        std::cout 
+            << " | " 
+            << std::setw(2) << (triad->id)    << "  | " 
+            << triad->toString()  << " \n";
+    }
+}
 
-struct Triad {
-    RefValue* oper;
-    RefValue* arg1;
-    RefValue* arg2;
+struct ReNode {
+    int value;
+    std::vector<ReNode> nodes;
 };
-
 
 int main() {
     setlocale(LC_ALL, "");
 
     Parser lexer;
      
-    std::string line = "A:=B+((C-D-E)+(F+G)+(H+I));";
+    std::string line = "a:=X;\n"
+                       "b:=X+I-I;\n"
+                       "c:=II+((C-IX-VI)/(XVI+b)+(a+I))*(II+II)+(z*(II+II));\n"
+                       "f:=UNDEF*b+b;\n"
+                       "d:=(c+IV)+(z*(II+II)-(II+II+c));\n" 
+                       "c:=(z*IV+(a+c))+V+(c+d)-(z*(II*II)+(a+c));\n"
+                       "e:=c+d;\n";
     
-    std::cout << "ВВОД: " << line << "\n";
+   
+    std::cout << "ВХОДНЫЕ ДАННЫЕ:\n" 
+        << std::string(32, '-') << "\n" 
+        << line << "\n" 
+        << std::string(32, '-') << "\n";
 
     auto parseResult = lexer.parse(line);  
-    auto commands = MathCommandSplitter()
-        .split(parseResult);
+
+    auto commands = MathCommandSplitter().split(parseResult);
     
+    int tCount = 0;
+
+    std::list<Triad*> triads__;
+
     for (auto& command : commands) {
-        std::cout << "СТАТУС КОМАНДЫ: " << 
-            (command.isValid ? "ВЕРНА" : "НЕ ВЕРНА") << "\n";
-
-        for (auto& item : command.tokens) {
-            std::cout
-                << item.value << "\t"
-                << item.termType.toString() << "\t"
-                << item.termType << "\n"
-                ;
-        }
-
         if (command.isValid) {  
             Syntax syntax = Syntax(CurrentSyntaxConfig);
             SyntaxResult syntaxResult = syntax.proccess(command);
 
-            std::list<SyntaxNode> ruleNodes1 = syntaxResult.nodes;
             std::list<SyntaxNode> ruleNodes2 = syntaxResult.nodes;
 
-            RefTree<std::string> myTreeView;
-            
-            SyntaxTreeBuilder(myTreeView)
-                .build(ruleNodes1, command.getValueTokens());
-            
-            myTreeView.print([&](RefTreeNode<std::string>* item, int depth) {
-                std::cout << std::setw(3) << depth << ": " << std::string(depth + 1, '-') << "" << (*(item->value)) << "\n";
-                }
-            );
-
-
             RefTree<RefValue> myTreeRefView;
+
             SyntaxTreeByCharBuilder(myTreeRefView)
-                .build(ruleNodes2, command.getValueTokens());
+                .build(ruleNodes2, command.getValueTokens());                    
+            OperatorsTreeBuilder(myTreeRefView)
+                .build();
+            std::list<Triad*> triads = TriadBuilderV2(myTreeRefView)
+                .build(tCount);
+           
+            tCount += triads.size();
 
-      
-
-            std::cout << "\n";
-            std::cout << " --- \n";
-            std::cout << "\n";
-
-            
-            myTreeRefView.print([&](RefTreeNode<RefValue>* item, int depth) {
-                std::cout << std::setw(3) << depth << ": " << std::string(depth + 1, '#');
-                    
-                if (*item->value->syntaxChar == SyntaxChars::IDENTIFIER) {
-                    std::cout << item->value->value->value;
-                }
-                else {
-                    std::cout << item->value->syntaxChar->tokenString;
-                }
-
-                std::cout << "\n";
-            });
-         
-            
-            OperatorsTreeBuilder(myTreeRefView).build();
-
-            std::cout << "\n";
-            std::cout << " --- \n";
-            std::cout << "\n";
-
-      
-            myTreeRefView.print([&](RefTreeNode<RefValue>* item, int depth) {
-                std::cout << std::setw(3) << depth << ": " << std::string(depth + 1, '#');
-
-                if (*item->value->syntaxChar == SyntaxChars::IDENTIFIER) {
-                    std::cout << item->value->value->value;
-                }
-                else {
-                    std::cout << item->value->syntaxChar->tokenString;
-                }
-
-                std::cout << " <-> " << item->items.size();
-
-                std::cout << "\n";
-                });
-
+            for (Triad* triad : triads) {
+                triads__.push_back(triad);
+            }
         }
     }
+
+    std::cout << "\n";
+    std::cout << "\n";
+
+    print_triads(triads__);
+
+    TriadOpt1(triads__).reduce();
+
+    TriadOpt2 triadOpt2(triads__);
+
+    triadOpt2.setDepValues();
+
+    std::cout << "\n";
+
+    for (Triad* triad : triads__) {
+        std::cout
+            << " | "
+            << std::setw(2) << (triad->id) << "  | "
+            << triad->toString() <<  " DEP="
+            << triad->dep << " \n";
+    }
+   
+    std::cout << "\n";
+
+    triadOpt2.clearSameTriads();
+
+    for (Triad* triad : triads__) {
+        std::cout
+            << " | "
+            << std::setw(2) << (triad->id) << "  | "
+            << triad->toString() << " ";
+
+        std::cout << "\n";
+    }
 }
+

@@ -49,7 +49,7 @@
     <Filter Include="Файлы заголовков\configs\current configuration">
       <UniqueIdentifier>{dbd09955-f5c9-4937-8074-b26b55138530}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы заголовков\src\triands">
+    <Filter Include="Файлы заголовков\src\triads">
       <UniqueIdentifier>{1989d152-4219-4a0b-9fc5-2eb2f738d6e6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -154,16 +154,40 @@
       <Filter>Файлы заголовков\src\constants</Filter>
     </ClInclude>
     <ClInclude Include="syntax_tree_builder.h">
-      <Filter>Файлы заголовков\src\triands</Filter>
+      <Filter>Файлы заголовков\src\triads</Filter>
     </ClInclude>
     <ClInclude Include="syntax_tree_by_char_builder.h">
-      <Filter>Файлы заголовков\src\triands</Filter>
+      <Filter>Файлы заголовков\src\triads</Filter>
     </ClInclude>
     <ClInclude Include="ref_value.h">
-      <Filter>Файлы заголовков\src\triands</Filter>
+      <Filter>Файлы заголовков\src\triads</Filter>
     </ClInclude>
     <ClInclude Include="operators_tree_builder.h">
-      <Filter>Файлы заголовков\src\triands</Filter>
+      <Filter>Файлы заголовков\src\triads</Filter>
+    </ClInclude>
+    <ClInclude Include="triads_builder.h">
+      <Filter>Файлы заголовков\src\triads</Filter>
+    </ClInclude>
+    <ClInclude Include="triad.h">
+      <Filter>Файлы заголовков\src\triads</Filter>
+    </ClInclude>
+    <ClInclude Include="roman.h">
+      <Filter>Файлы заголовков\src\triads</Filter>
+    </ClInclude>
+    <ClInclude Include="triadopt2.h">
+      <Filter>Файлы заголовков\src\triads</Filter>
+    </ClInclude>
+    <ClInclude Include="triadopt1.h">
+      <Filter>Файлы заголовков\src\triads</Filter>
+    </ClInclude>
+    <ClInclude Include="table_of_vars.h">
+      <Filter>Файлы заголовков\src\triads</Filter>
+    </ClInclude>
+    <ClInclude Include="table_of_constants.h">
+      <Filter>Файлы заголовков\src\triads</Filter>
+    </ClInclude>
+    <ClInclude Include="triad_h.h">
+      <Filter>Файлы заголовков\src\triads</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
