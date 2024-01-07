@@ -35,6 +35,7 @@ public:
 
         for (int i = items.size() - 1; i >= 0; --i) {
             if (items[i] == SyntaxChars::IDENTIFIER && !rnodes.empty()) { // TODO: not only for IDENTIFIER
+                
                 std::string text = tokens.back().value;
                 tokens.pop_back();
                 RefTreeNode<std::string>* node = new RefTreeNode<std::string>(parent, new std::string(text));

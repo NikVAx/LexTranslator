@@ -26,7 +26,7 @@ struct Token {
 
     friend std::ostream& operator<<(std::ostream& s, const Token& token)
     {
-        s << "code: " << token.termType.code() << " typeName: " << token.termType.toString() << " value: " << token.value;
+        s << "{code: " << token.termType.code() << ",typeName: " << token.termType.toString() << ",value: " << token.value << "}";
         return s;
     }
 };

@@ -5,7 +5,13 @@
 #include "parse_result.h"
 #include "command.h"
 
-class MathCommandSplitter {
+class CommandSplitter {
+private:
+    std::list<TermType> VALUES_TO_INCLUDE = { TermTypes::TRUE, TermTypes::FALSE, TermTypes::IDENTIFIER };
+
+    bool shouldAddToValue(ParseItem& item) {
+        return std::find(VALUES_TO_INCLUDE.begin(), VALUES_TO_INCLUDE.end(), item.token.termType) != VALUES_TO_INCLUDE.end();
+    }
 public:
     std::vector<Command> split(ParseResult& parseResult) {
         int index = 0;
@@ -25,7 +31,7 @@ public:
                 command.tokens.push_back(item.token);
 
                 // TODO: add list of value-types
-                if (item.token.termType == TermTypes::NUMBER || item.token.termType == TermTypes::IDENTIFIER) {
+                if (this->shouldAddToValue(item)) {
                     command.values.push_back(item.token);
                 }
                 

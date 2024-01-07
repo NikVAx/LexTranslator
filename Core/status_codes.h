@@ -19,7 +19,7 @@ typedef struct StatusCode : EnumStruct {
     }
 
     bool operator==(const StatusCode& a) const {
-        return a._code == _code;
+        return a._code == this->_code;
     }
 
 private:

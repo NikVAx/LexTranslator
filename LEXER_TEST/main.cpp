@@ -24,11 +24,83 @@
 #include <vector>
 #include "../Core/operators_tree_builder.h"
 
+class TestError {
+public:
+    std::string message;
+    int code;
+    TestError(int code, std::string message) : code(code), message(message) {}
+};
 
-struct Triad {
-    RefValue* oper;
-    RefValue* arg1;
-    RefValue* arg2;
+class StreamUtils {
+    std::stringbuf sbuf;
+    std::streambuf* oldbuf;
+
+    void update_state() {
+        this->sbuf = std::stringbuf(std::ios::out);
+        this->oldbuf = std::cout.rdbuf(std::addressof(this->sbuf));
+    }
+
+public:
+    void capture_stream() {
+        this->update_state();
+    }
+    bool out_stream_to_be(std::string expect) {
+
+        std::cout.rdbuf(this->oldbuf);
+
+        std::string output = this->sbuf.str();
+
+        return output == expect;
+    }
+};
+
+
+
+class CompareUtils {
+private:
+    TestError ERROR = TestError(1, "Invalid type");
+public:
+    template<class C1>
+    void are_equal(C1 c1, C1 c2){    
+        try {
+            bool equal = c1 == c2;
+            if (!equal) throw ERROR;
+            std::cout << "Успешно";
+        }
+        catch (TestError& error) {
+            std::cout << "Ошибка: " << error.message << "\n";
+            std::cout << "Фактический результат: \n" << c1 << "\nОжидаемый результат: " << "\n" << c2 << "\n";
+        }
+        catch (...) {
+            std::cout << "Неизвестная ошибка: \n";
+            std::cout << "Фактический результат: \n" << c1 << "\nОжидаемый результат: " << "\n" << c2 << "\n";
+        }
+    }
+};
+
+class TestDescriptionArgs {
+public:
+    StreamUtils s_u = StreamUtils();
+    CompareUtils c_u = CompareUtils();
+};
+
+class TestUtils {
+public:
+    void it(std::string testName, std::function<void(TestDescriptionArgs utils)> description) {
+        std::cout << testName << ": ";
+        description(TestDescriptionArgs());
+        std::cout << "\n";
+    }
+};
+
+class Test {
+public:
+    void describe(std::string testName, std::function<void(TestUtils utils)> description) {
+        std::cout << "------------------ start " << testName << "------------------\n";
+        description(TestUtils());
+        std::cout << "------------------ end " << testName << "------------------\n";
+        std::cout << "\n";
+    }
 };
 
 
@@ -36,92 +108,178 @@ int main() {
     setlocale(LC_ALL, "");
 
     Parser lexer;
-     
-    std::string line = "A:=B+((C-D-E)+(F+G)+(H+I));";
-    
-    std::cout << "ВВОД: " << line << "\n";
 
-    auto parseResult = lexer.parse(line);  
-    auto commands = MathCommandSplitter()
-        .split(parseResult);
-    
-    for (auto& command : commands) {
-        std::cout << "СТАТУС КОМАНДЫ: " << 
-            (command.isValid ? "ВЕРНА" : "НЕ ВЕРНА") << "\n";
-
-        for (auto& item : command.tokens) {
-            std::cout
-                << item.value << "\t"
-                << item.termType.toString() << "\t"
-                << item.termType << "\n"
-                ;
-        }
-
-        if (command.isValid) {  
-            Syntax syntax = Syntax(CurrentSyntaxConfig);
-            SyntaxResult syntaxResult = syntax.proccess(command);
-
-            std::list<SyntaxNode> ruleNodes1 = syntaxResult.nodes;
-            std::list<SyntaxNode> ruleNodes2 = syntaxResult.nodes;
-
-            RefTree<std::string> myTreeView;
-            
-            SyntaxTreeBuilder(myTreeView)
-                .build(ruleNodes1, command.getValueTokens());
-            
-            myTreeView.print([&](RefTreeNode<std::string>* item, int depth) {
-                std::cout << std::setw(3) << depth << ": " << std::string(depth + 1, '-') << "" << (*(item->value)) << "\n";
-                }
-            );
-
-
-            RefTree<RefValue> myTreeRefView;
-            SyntaxTreeByCharBuilder(myTreeRefView)
-                .build(ruleNodes2, command.getValueTokens());
-
-      
-
-            std::cout << "\n";
-            std::cout << " --- \n";
-            std::cout << "\n";
-
-            
-            myTreeRefView.print([&](RefTreeNode<RefValue>* item, int depth) {
-                std::cout << std::setw(3) << depth << ": " << std::string(depth + 1, '#');
-                    
-                if (*item->value->syntaxChar == SyntaxChars::IDENTIFIER) {
-                    std::cout << item->value->value->value;
-                }
-                else {
-                    std::cout << item->value->syntaxChar->tokenString;
-                }
-
-                std::cout << "\n";
+    Test t = Test();
+    t.describe("Test 1",
+        [&](TestUtils utils) {
+            /*utils.it("parse True value", [&](TestDescriptionArgs args) {
+                std::string line = "A:=T;";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult{
+                        Location{ 6, 0 },
+                        {
+                          ParseItem{Token{"A", TermTypes::IDENTIFIER}, StatusCodes::SUCCESS__},
+                          ParseItem{Token{":=", TermTypes::ASSIGNMENT}, StatusCodes::SUCCESS__},
+                          ParseItem{Token{"T", TermTypes::TRUE}, StatusCodes::SUCCESS__ },
+                          ParseItem{Token{ ";", TermTypes::SEMICOLON }, StatusCodes::SUCCESS__}
+                        },
+                        false
+                    }
+                );
             });
-         
-            
-            OperatorsTreeBuilder(myTreeRefView).build();
-
-            std::cout << "\n";
-            std::cout << " --- \n";
-            std::cout << "\n";
-
-      
-            myTreeRefView.print([&](RefTreeNode<RefValue>* item, int depth) {
-                std::cout << std::setw(3) << depth << ": " << std::string(depth + 1, '#');
-
-                if (*item->value->syntaxChar == SyntaxChars::IDENTIFIER) {
-                    std::cout << item->value->value->value;
-                }
-                else {
-                    std::cout << item->value->syntaxChar->tokenString;
-                }
-
-                std::cout << " <-> " << item->items.size();
-
-                std::cout << "\n";
+            utils.it("parse False value", [&](TestDescriptionArgs args) {
+                std::string line = "A:=F;";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult{
+                        Location{ 6, 0 },
+                        {
+                          ParseItem{Token{"A", TermTypes::IDENTIFIER}, StatusCodes::SUCCESS__},
+                          ParseItem{Token{":=", TermTypes::ASSIGNMENT}, StatusCodes::SUCCESS__},
+                          ParseItem{Token{"F", TermTypes::TRUE}, StatusCodes::SUCCESS__ },
+                          ParseItem{Token{ ";", TermTypes::SEMICOLON }, StatusCodes::SUCCESS__}
+                        },
+                        false
+                    }
+                );
                 });
-
-        }
-    }
+            utils.it("parse or operator", [&](TestDescriptionArgs args) {
+                std::string line = "A:=T or F;";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult(
+                        Location(11, 0),
+                        {
+                          ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                          ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                          ParseItem(Token("T", TermTypes::TRUE), StatusCodes::SUCCESS__),
+                          ParseItem(Token("or", TermTypes::OR), StatusCodes::SUCCESS__),
+                          ParseItem(Token("F", TermTypes::FALSE), StatusCodes::SUCCESS__),
+                          ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                        },
+                        false
+                    )
+                );
+            });
+            utils.it("parse and operator", [&](TestDescriptionArgs args) {
+                std::string line = "A:=T and F;";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult(
+                        Location(12, 0),
+                        {
+                          ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                          ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                          ParseItem(Token("T", TermTypes::TRUE), StatusCodes::SUCCESS__),
+                          ParseItem(Token("and", TermTypes::AND), StatusCodes::SUCCESS__),
+                          ParseItem(Token("F", TermTypes::FALSE), StatusCodes::SUCCESS__),
+                          ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                        },
+                        false
+                    )
+                );
+            });
+            utils.it("parse xor operator", [&](TestDescriptionArgs args) {
+                std::string line = "A:=T xor F;";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult(
+                        Location(12, 0),
+                        {
+                          ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                          ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                          ParseItem(Token("T", TermTypes::TRUE), StatusCodes::SUCCESS__),
+                          ParseItem(Token("xor", TermTypes::XOR), StatusCodes::SUCCESS__),
+                          ParseItem(Token("F", TermTypes::FALSE), StatusCodes::SUCCESS__),
+                          ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                        },
+                        false
+                    )
+                );
+            });
+            utils.it("parse not operator", [&](TestDescriptionArgs args) {
+                std::string line = "A:= not F;";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult(
+                        Location(11, 0),
+                        {
+                          ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                          ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                          ParseItem(Token("not", TermTypes::NOT), StatusCodes::SUCCESS__),
+                          ParseItem(Token("F", TermTypes::FALSE), StatusCodes::SUCCESS__),
+                          ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                        },
+                        false
+                    )
+                );
+            });
+            utils.it("parse identifier operator", [&](TestDescriptionArgs args) {
+                std::string line = "A:=c;";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult(
+                        Location(6, 0),
+                        {
+                          ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                          ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                          ParseItem(Token("c", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                          ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                        },
+                        false
+                    )
+                );
+            });
+            utils.it("parse brackets operator", [&](TestDescriptionArgs args) {
+                std::string line = "A:=(T or F);";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult(
+                        Location(13, 0),
+                        {
+                          ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                          ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                          ParseItem(Token("(", TermTypes::OPEN_BRACKET), StatusCodes::SUCCESS__),
+                          ParseItem(Token("T", TermTypes::TRUE), StatusCodes::SUCCESS__),
+                          ParseItem(Token("or", TermTypes::OR), StatusCodes::SUCCESS__),
+                          ParseItem(Token("F", TermTypes::FALSE), StatusCodes::SUCCESS__),
+                          ParseItem(Token(")", TermTypes::CLOSE_BRACKET), StatusCodes::SUCCESS__),
+                          ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                        },
+                        false
+                    )
+                );
+            });
+            utils.it("parse invalid assigment", [&](TestDescriptionArgs args) {
+                std::string line = "A:B;";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult(
+                        Location(3, 0),
+                        {
+                          ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                          ParseItem(Token(":", TermTypes::UNDEFINED), StatusCodes::LEX_1)
+                        },
+                        true
+                    )
+                );
+            });*/
+            utils.it("parse comment", [&](TestDescriptionArgs args) {
+                std::string line = "A:=T;//TRUE";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult(
+                        Location(14, 0),
+                        {
+                          ParseItem{Token{"A", TermTypes::IDENTIFIER}, StatusCodes::SUCCESS__},
+                          ParseItem{Token{":=", TermTypes::ASSIGNMENT}, StatusCodes::SUCCESS__},
+                          ParseItem{Token{"T", TermTypes::TRUE}, StatusCodes::SUCCESS__ },
+                          ParseItem{Token{ ";", TermTypes::SEMICOLON }, StatusCodes::SUCCESS__}
+                        },
+                        false
+                    )
+                );
+                });
+        });
 }

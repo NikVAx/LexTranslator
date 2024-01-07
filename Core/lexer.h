@@ -45,7 +45,7 @@ public:
 
                 tokenString.clear();
             }
-
+            
             if (!info.isEmptyChar()) {
                 tokenString.append(1, ch);
             }

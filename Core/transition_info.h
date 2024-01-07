@@ -48,4 +48,10 @@ public:
     bool isEmptyChar() {
         return input == '\n' || input == '\t' || input == ' ' || input == '\r';
     }
+
+    friend std::ostream& operator<<(std::ostream& s, const TransitionInfo& transitionInfo)
+    {
+        s << "code: " << transitionInfo.code << " input: " << transitionInfo.input << " next: " << transitionInfo.nextState << " status: " << transitionInfo.statusCode;
+        return s;
+    }
 };

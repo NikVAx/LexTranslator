@@ -4,7 +4,7 @@
 
 namespace TermTypes {
     static const TermType UNDEFINED(0, "Неопределено");
-    static const TermType IDENTIFIER(1, "Идентификатор");;
+    static const TermType IDENTIFIER(1, "Идентификатор");
     static const TermType NUMBER(2, "Числовой литерал");
     static const TermType ASSIGNMENT(3, "Оператор присваивания");
     static const TermType OPEN_BRACKET(4, "Открывающая скобка");
@@ -31,4 +31,5 @@ namespace TermTypes {
     static const TermType EQUAL(25, "Оператор =");
     static const TermType TRUE(26, "ИСТИНА");
     static const TermType FALSE(27, "ЛОЖЬ");
+    static const TermType BOOL(28, "Логический тип");
 }
