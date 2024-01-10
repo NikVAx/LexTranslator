@@ -61,7 +61,11 @@ struct TriadBuilderV2 {
 
 
 struct TriadOpt1 {
+public:
+    bool error = false;
+    std::string message = "";
 private:
+
     TableOfContants tableOfContants;
     
     std::list<Triad*>& triads;
@@ -93,8 +97,11 @@ private:
         }
 
         if (result <= 0 || result >= 4000) {
-            throw new std::exception("Переполнение типа 'Римское число'");
-           // std::cerr << "Roman Number Owerflow [" << a << op.tokenString << b  << "=" << result << "]\n";
+
+            error = true;
+            message = "Семантическая ошибка: \nПереполнение типа 'Римское число' [1-3999] при выполнении операции: " 
+                + Roman::to_roman(a) + " " + op.tokenString + " " + Roman::to_roman(b);
+            return Roman::to_roman(1);
         }
 
         return Roman::to_roman(result);

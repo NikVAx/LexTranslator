@@ -85,9 +85,9 @@ namespace GUI {
 
 
 	private: System::Windows::Forms::TreeView^ SyntaxTreeView;
-	private: System::Windows::Forms::TabPage^ OpersPage;
+
 	private: System::Windows::Forms::TabPage^ TriadsPage;
-	private: System::Windows::Forms::TreeView^ OpersTreeView;
+
 	private: System::Windows::Forms::DataGridView^ Triads3;
 	private: System::Windows::Forms::DataGridView^ Triads2;
 	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
@@ -143,8 +143,6 @@ namespace GUI {
 			this->TokenType = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->SyntaxPage = (gcnew System::Windows::Forms::TabPage());
 			this->SyntaxTreeView = (gcnew System::Windows::Forms::TreeView());
-			this->OpersPage = (gcnew System::Windows::Forms::TabPage());
-			this->OpersTreeView = (gcnew System::Windows::Forms::TreeView());
 			this->TriadsPage = (gcnew System::Windows::Forms::TabPage());
 			this->tableLayoutPanel1 = (gcnew System::Windows::Forms::TableLayoutPanel());
 			this->Triads1 = (gcnew System::Windows::Forms::DataGridView());
@@ -164,7 +162,6 @@ namespace GUI {
 			this->TokensPage->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TokensTable))->BeginInit();
 			this->SyntaxPage->SuspendLayout();
-			this->OpersPage->SuspendLayout();
 			this->TriadsPage->SuspendLayout();
 			this->tableLayoutPanel1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Triads1))->BeginInit();
@@ -180,7 +177,6 @@ namespace GUI {
 			this->Tabs->Controls->Add(this->PageSource);
 			this->Tabs->Controls->Add(this->TokensPage);
 			this->Tabs->Controls->Add(this->SyntaxPage);
-			this->Tabs->Controls->Add(this->OpersPage);
 			this->Tabs->Controls->Add(this->TriadsPage);
 			this->Tabs->Location = System::Drawing::Point(22, 22);
 			this->Tabs->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
@@ -339,25 +335,6 @@ namespace GUI {
 			this->SyntaxTreeView->Name = L"SyntaxTreeView";
 			this->SyntaxTreeView->Size = System::Drawing::Size(820, 470);
 			this->SyntaxTreeView->TabIndex = 0;
-			// 
-			// OpersPage
-			// 
-			this->OpersPage->Controls->Add(this->OpersTreeView);
-			this->OpersPage->Location = System::Drawing::Point(4, 34);
-			this->OpersPage->Name = L"OpersPage";
-			this->OpersPage->Padding = System::Windows::Forms::Padding(3);
-			this->OpersPage->Size = System::Drawing::Size(826, 476);
-			this->OpersPage->TabIndex = 3;
-			this->OpersPage->Text = L"Дерево операций";
-			this->OpersPage->UseVisualStyleBackColor = true;
-			// 
-			// OpersTreeView
-			// 
-			this->OpersTreeView->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->OpersTreeView->Location = System::Drawing::Point(3, 3);
-			this->OpersTreeView->Name = L"OpersTreeView";
-			this->OpersTreeView->Size = System::Drawing::Size(820, 470);
-			this->OpersTreeView->TabIndex = 1;
 			// 
 			// TriadsPage
 			// 
@@ -519,7 +496,6 @@ namespace GUI {
 			this->TokensPage->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TokensTable))->EndInit();
 			this->SyntaxPage->ResumeLayout(false);
-			this->OpersPage->ResumeLayout(false);
 			this->TriadsPage->ResumeLayout(false);
 			this->tableLayoutPanel1->ResumeLayout(false);
 			this->tableLayoutPanel1->PerformLayout();
@@ -553,7 +529,7 @@ namespace GUI {
 		SourceCodeTxt->Clear();
 		TokensTable->Rows->Clear();
 		SyntaxTreeView->Nodes->Clear();
-		OpersTreeView->Nodes->Clear();
+		//OpersTreeView->Nodes->Clear();
 		Triads1->Rows->Clear();
 		Triads2->Rows->Clear();
 		Triads3->Rows->Clear();
@@ -563,6 +539,7 @@ namespace GUI {
 		
 		setlocale(LC_ALL, "");
 		
+
 		if (String::IsNullOrWhiteSpace(SourceCodeTxt->Text)) {
 			MessageBox::Show(this, "Нет данных для распознавания!", "Сообщение");
 			return;
@@ -620,10 +597,10 @@ namespace GUI {
 				
 				OperatorsTreeBuilder(myTreeRefView)
 					.build();
-
-				OperatorsTreeViewBuilder(OpersTreeView)
-					.build(myTreeRefView);
-
+				
+				//OperatorsTreeViewBuilder(OpersTreeView)
+				//	.build(myTreeRefView);
+				
 				std::list<Triad*> triads = TriadBuilderV2(myTreeRefView)
 					.build(tcount);
 
@@ -637,7 +614,14 @@ namespace GUI {
 
 		fillTriadsTable(Triads1, all_triads);
 
-		TriadOpt1(all_triads).reduce();
+		
+		TriadOpt1 triadOpt1(all_triads);
+		triadOpt1.reduce();
+		if (triadOpt1.error) {
+			MessageBox::Show(this, gcnew String(triadOpt1.message.c_str()), "Ошибка");
+			return;
+		}
+		
 
 		fillTriadsTable(Triads2, all_triads);
 
