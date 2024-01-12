@@ -108,9 +108,17 @@ int main() {
     setlocale(LC_ALL, "");
 
     Parser lexer;
-    std::string line = "if A=5 then B=10.56e-2;";
+    //std::string line = "if A=5 then B=10.56e-2;";
+    std::string line = "if A>5 then        \n"
+                       "  if B>100 then    \n"
+                       "    B:= 10.56e-2;  \n"
+                       "  else             \n"
+                       "  B:= 5.255e+2;    \n"
+                       "else if A<25 then  \n"
+                       "  B:=20.0;         \n";
+    
     auto parseResult = lexer.parse(line);
-    for (auto item : parseResult.items) {
+    for (auto& item : parseResult.items) {
         std::cout << item << std::endl;
     }
 

@@ -401,44 +401,44 @@ namespace GUI {
 		
 		fillDataGridViewWithTokens(result);
 
-		auto commands = MathCommandSplitter().split(result);
-
-		for (auto& command : commands) {
-			if (command.isValid) {
-				Syntax syntax = Syntax(CurrentSyntaxConfig);
-				
-				auto syntaxResult = syntax.proccess(command);
-				
-				if (!syntaxResult.isSuccess()) {
-					std::cout << syntaxResult.message << "\n";
-					syntaxResultError(syntaxResult);
-					return;
-				}
-				
-				std::list<SyntaxNode> ruleNodes = syntaxResult.nodes;
-
-				for (auto& it = ruleNodes.rbegin(); it != ruleNodes.rend(); it++) {
-					std::cout << it->syntaxRule.buildRule << "\t" 
-						<< it->syntaxRule.buildRule.ruleString  << "\n";
-				}
-
-				SyntaxTreeViewBuilder(SyntaxTreeView)
-					.build(ruleNodes, command.getValueTokens());	
-
-				// Построение дерева операций
-				std::list<SyntaxNode> ruleNodes2 = syntaxResult.nodes;
-				RefTree<RefValue> myTreeRefView;
-				
-				SyntaxTreeByCharBuilder(myTreeRefView)
-					.build(ruleNodes2, command.getValueTokens());
-				
-				OperatorsTreeBuilder(myTreeRefView)
-					.build();
-
-				OperatorsTreeViewBuilder(OpersTreeView)
-					.build(myTreeRefView);
-			}
-		}
+		//auto commands = CommandSplitter().split(result);
+		//
+		//for (auto& command : commands) {
+		//	if (command.isValid) {
+		//		Syntax syntax = Syntax(CurrentSyntaxConfig);
+		//		
+		//		auto syntaxResult = syntax.proccess(command);
+		//		
+		//		if (!syntaxResult.isSuccess()) {
+		//			std::cout << syntaxResult.message << "\n";
+		//			syntaxResultError(syntaxResult);
+		//			return;
+		//		}
+		//		
+		//		std::list<SyntaxNode> ruleNodes = syntaxResult.nodes;
+		//
+		//		for (auto& it = ruleNodes.rbegin(); it != ruleNodes.rend(); it++) {
+		//			std::cout << it->syntaxRule.buildRule << "\t" 
+		//				<< it->syntaxRule.buildRule.ruleString  << "\n";
+		//		}
+		//
+		//		SyntaxTreeViewBuilder(SyntaxTreeView)
+		//			.build(ruleNodes, command.getValueTokens());	
+		//
+		//		// Построение дерева операций
+		//		std::list<SyntaxNode> ruleNodes2 = syntaxResult.nodes;
+		//		RefTree<RefValue> myTreeRefView;
+		//		
+		//		SyntaxTreeByCharBuilder(myTreeRefView)
+		//			.build(ruleNodes2, command.getValueTokens());
+		//		
+		//		OperatorsTreeBuilder(myTreeRefView)
+		//			.build();
+		//
+		//		OperatorsTreeViewBuilder(OpersTreeView)
+		//			.build(myTreeRefView);
+		//	}
+		//}
 
 		MessageBox::Show(this, "Анализ текста выполнен успешно!", "Сообщение");
 
