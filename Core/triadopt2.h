@@ -54,20 +54,42 @@ struct TriadOpt2 {
                 }
                 Triad* b = bTriad->tryGetSame();
 
-                if (TriadH::isSame(a, b)) {
+                if (a->same == nullptr && TriadH::isSame(a, b)) {
                     a->same = b;
                     onRemove.push_back(a);
                     isMarkedToRemove = true;
                 }
             }
 
-            if (!isMarkedToRemove) {
-                aTriad->id = i++;
+            //if (!isMarkedToRemove) {
+            //    aTriad->id = i++;
+            //}
+        }
+
+        i = 1;
+        for (Triad* triad : triads) {
+            triad->id = i++;
+        }
+
+        for (Triad* triad : triads) {
+            std::cout << " | " << std::setw(2) << triad->id << "  | " << std::setw(18) << triad->toString() <<
+                " DEP = " << std::setw(2) << triad->dep << ";";
+            
+            if (triad->same != nullptr) {
+                
+                std::cout << " -> SAME(^" << triad->tryGetSame()->id <<",0)";
             }
+                
+            std::cout << "\n";
         }
 
         for (Triad* triad : onRemove) {
             triads.remove(triad);
+        }
+
+        i = 1;
+        for (Triad* triad : triads) {
+            triad->id = i++;
         }
 
         for (Triad* triad : triads) {

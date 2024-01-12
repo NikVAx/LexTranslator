@@ -99,8 +99,8 @@ private:
         if (result <= 0 || result >= 4000) {
 
             error = true;
-            message = "Семантическая ошибка: \nПереполнение типа 'Римское число' [1-3999] при выполнении операции: " 
-                + Roman::to_roman(a) + " " + op.tokenString + " " + Roman::to_roman(b);
+            message = "Семантическая ошибка: \nПереполнение типа 'Римское число' [1-3999] при выполнении операции: `" 
+                + Roman::to_roman(a) + " " + op.tokenString + " " + Roman::to_roman(b) + "`";
             return Roman::to_roman(1);
         }
 
@@ -152,6 +152,8 @@ public:
             }
 
             if (!triad->isValue() && *triad->op == SyntaxChars::ASSIGNMENT) {
+
+                std::cout << " | " << std::setw(2) << triad->id << "  | " << std::setw(18) << triad->toString() << "\n";
                 saveIfConst(triad);
             }
             else if (!triad->isValue() && triad->isOperandsNumbersOrVars()) {
@@ -171,6 +173,9 @@ public:
                     std::string roman = getTriadValue(*triad->op,
                         elements.at(0).value, elements.at(1).value);
 
+                    std::cout << " | " << std::setw(2) << triad->id << "  | " << std::setw(18) << triad->toString() << " -> C("
+                        << roman << ", 0)\n";
+                    
                     triad->operands.clear();
                     triad->op = nullptr;
                     triad->value = new RefValue(
@@ -180,7 +185,13 @@ public:
 
                     onRemove.push_back(triad);
                     isMarkedToRemove = true;
-                }           
+                }
+                else {
+                    std::cout << " | " << std::setw(2) << triad->id << "  | " << std::setw(18) << triad->toString() << "\n";
+                }
+            }
+            else {
+                std::cout << " | " << std::setw(2) << triad->id << "  | " << std::setw(18) << triad->toString() << "\n";
             }
 
             if (!isMarkedToRemove) {
