@@ -27,9 +27,9 @@ namespace SyntaxRules {
     const SyntaxRule R2 = SyntaxRule(2, BuildRule({ SyntaxChars::IF, SyntaxChars::IDENTIFIER, SyntaxChars::THEN, SyntaxChars::IDENTIFIER, SyntaxChars::ELSE, SyntaxChars::IDENTIFIER }));
     const SyntaxRule R3 = SyntaxRule(3, BuildRule({ SyntaxChars::IF, SyntaxChars::IDENTIFIER, SyntaxChars::THEN, SyntaxChars::IDENTIFIER }));
     const SyntaxRule R4 = SyntaxRule(4, BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::ASSIGNMENT, SyntaxChars::IDENTIFIER }));
-    const SyntaxRule R5 = SyntaxRule(4, BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::LESS, SyntaxChars::IDENTIFIER }));
-    const SyntaxRule R6 = SyntaxRule(4, BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::GREATER, SyntaxChars::IDENTIFIER }));
-    const SyntaxRule R7 = SyntaxRule(4, BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::EQUAL, SyntaxChars::IDENTIFIER }));
+    const SyntaxRule R5 = SyntaxRule(5, BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::LESS, SyntaxChars::IDENTIFIER }));
+    const SyntaxRule R6 = SyntaxRule(6, BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::GREATER, SyntaxChars::IDENTIFIER }));
+    const SyntaxRule R7 = SyntaxRule(7, BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::EQUAL, SyntaxChars::IDENTIFIER }));
 }
 
 const std::vector<SyntaxRule> RULES = {
