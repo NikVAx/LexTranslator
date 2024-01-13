@@ -334,39 +334,15 @@ public:
 
 int main() {
     setlocale(LC_ALL, "");
-  
-    //BlackBoxTriads::s_run();
-
-    WhiteBoxTriads::s_run();
     
-    //std::string line = "a:=X;\n"
-    //                   "b:=X+I-I;\n"
-    //                   "c:=II+((C-IX-VI)/(XVI+b)+(a+I))*(II+II)+(z*(II+II));\n"
-    //                   "f:=UNDEF*b+b;\n"
-    //                   "d:=(c+IV)+(z*(II+II)-(II+II+c));\n" 
-    //                   "c:=(z*IV+(a+c))+V+(c+d)-(z*(II*II)+(a+c));\n"
-    //                   "e:=c+d;\n";
-    //
-    //std::list<Triad*> triads__ = prepare_triads(line);
-    //std::cout << "\n";
-    //print_triads(triads__);
-    //TriadOpt1(triads__).reduce();
-    //TriadOpt2 triadOpt2(triads__);
-    //triadOpt2.setDepValues();
-    //std::cout << "\n";
-    //print_triads(triads__);
-    //std::cout << "\n";
-    //triadOpt2.clearSameTriads();
-    //print_triads(triads__);
+    Parser lexer;
+
+    std::string line = "for (a := 0; a < 10; a) do";
+    
+    auto parseResult = lexer.parse(line);
+
+    for (auto item : parseResult.items) {
+        std::cout << item.token.value << std::endl;
+    }
+
 }
-
-/*
-    //for (Triad* triad : triads__) {
-    //    std::cout
-    //        << " | "
-    //        << std::setw(2) << (triad->id) << "  | "
-    //        << triad->toString() <<  " DEP="
-    //        << triad->dep << " \n";
-    //}
-
-*/
