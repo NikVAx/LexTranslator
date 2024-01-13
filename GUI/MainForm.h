@@ -343,7 +343,7 @@ namespace GUI {
 				static_cast<System::Byte>(0)));
 			this->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->Name = L"MainForm";
-			this->Text = L"ИС-42. Василенко Н.А. Вариант №5";
+			this->Text = L"ИС-42. Корепанов А.А. Вариант №14";
 			this->Tabs->ResumeLayout(false);
 			this->PageSource->ResumeLayout(false);
 			this->PageSource->PerformLayout();
