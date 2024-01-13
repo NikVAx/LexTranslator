@@ -79,7 +79,7 @@ std::pair<bool, Command> prepare_command(std::string input) {
 	auto parseResult = parser.parse(input);
 
 	if (parseResult.isSuccess()) {
-		auto commands = MathCommandSplitter()
+		auto commands = CommandSplitter()
 			.split(parseResult);
 		auto command = commands[0];
 
@@ -98,10 +98,7 @@ std::pair<bool, std::string> run_syntax(Command& command) {
 	if (syntaxResult.isSuccess()) {
 		auto generated = SyntaxLineBuilder().buildline(syntaxResult, command);
 
-		//std::cout << "ПОРЯДОК РАЗБОРА:\n" << generated.second << "\n";
-
 		return std::pair<bool, std::string>(true, generated.first);
-
 	} else {
 		return std::pair<bool, std::string>(false, syntaxResult.message);
 	}
@@ -123,7 +120,7 @@ void on_result(std::string expected, std::string actual, std::string input) {
 void success_1() {
 	std::cout << "\nТЕСТ #1\n";
 	
-	std::string input = "a:=XXV-(III*x+y/(b-(I+III)-VI));";
+	std::string input = "a:=T;";
 	auto b_command = prepare_command(input);
 
 	if (b_command.first != true)
@@ -140,7 +137,7 @@ void success_1() {
 
 void success_2() {
 	std::cout << "\nТЕСТ #2\n";
-	std::string input = "arg:=I*(II+III);";
+	std::string input = "arg:=T or X and F;";
 	auto b_command = prepare_command(input);
 
 	if (b_command.first != true)
@@ -156,7 +153,7 @@ void success_2() {
 
 void success_3() {
 	std::cout << "\nТЕСТ #3\n";
-	std::string input = "arg:=I*II+III;";
+	std::string input = "arg:=(andor and T);";
 	auto b_command = prepare_command(input);
 
 	if (b_command.first != true)
@@ -172,7 +169,7 @@ void success_3() {
 
 void unclosed_bracket() {
 	std::cout << "\nТЕСТ #4\n";
-	std::string input = "a:=XXV-(III*x+y/(b-(I+III-VI));";
+	std::string input = "a:=T or (F and (not T and c);";
 	auto b_command = prepare_command(input);
 
 	if (b_command.first != true)
@@ -180,7 +177,7 @@ void unclosed_bracket() {
 
 	auto b_actual = run_syntax(b_command.second);
 
-	std::string expected = StatusCodes::SYN_UNCLOSED_BRACKET.toString();
+	std::string expected = StatusCodes::SYN_ERROR.toString();
 	std::string actual = b_actual.second;
 
 	on_result(expected, actual, input);
@@ -189,7 +186,7 @@ void unclosed_bracket() {
 void unexpected_bracket() {
 	std::cout << "\nТЕСТ #5\n";
 
-	std::string input = "a:=XXV-(III*x+y/(b-(I+III))-VI));";
+	std::string input = "a:=not a and c xor (b and T));";
 	auto b_command = prepare_command(input);
 
 	if (b_command.first != true)
@@ -197,7 +194,7 @@ void unexpected_bracket() {
 
 	auto b_actual = run_syntax(b_command.second);
 
-	std::string expected = StatusCodes::SYN_UEXPECTED_BRACKET.toString();
+	std::string expected = StatusCodes::SYN_ERROR.toString();
 	std::string actual = b_actual.second;
 
 	on_result(expected, actual, input);
@@ -214,24 +211,6 @@ int main() {
 	success_3();
 	unclosed_bracket();
 	unexpected_bracket();
-
-
-
-	//std::string input = "a:=XXV-(III*x+y/(b-(I+III))-VI));";
-	//
-	//auto b_command = prepare_command(input);
-	//
-	//if (b_command.first != true)
-	//	return -1;
-	//
-	//auto b_actual = run_syntax(b_command.second);
-	//
-	//if (b_actual.first != true) {
-	//	std::cout << b_actual.second << "\n";
-	//}
-	//
-
-	//success_base(input, 1);
 	
 	return 0;
 }

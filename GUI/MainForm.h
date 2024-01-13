@@ -401,7 +401,7 @@ namespace GUI {
 		
 		fillDataGridViewWithTokens(result);
 
-		auto commands = MathCommandSplitter().split(result);
+		auto commands = CommandSplitter().split(result);
 
 		for (auto& command : commands) {
 			if (command.isValid) {
