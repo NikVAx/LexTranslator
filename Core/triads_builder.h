@@ -5,7 +5,7 @@
 #include <list>
 #include "table_of_constants.h"
 #include "table_of_vars.h"
-#include "triad_h.h"
+#include "triad_math.h"
 #include <algorithm>
 
 struct TriadBuilderV2 {
