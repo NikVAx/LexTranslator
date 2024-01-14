@@ -83,26 +83,26 @@ private:
 
     std::string getTriadValue(SyntaxChar& op, int a, int b) {
         int result = 0;
-        if (op == SyntaxChars::PLUS) {
-            result = a + b;
-        }
-        else if (op == SyntaxChars::MINUS) {
-            result = a - b;
-        }
-        else if (op == SyntaxChars::MULTIPLY) {
-            result = a * b;
-        }
-        else if (op == SyntaxChars::DIVIDE) {
-            result = a / b;
-        }
+        //if (op == SyntaxChars::PLUS) {
+        //    result = a + b;
+        //}
+        //else if (op == SyntaxChars::MINUS) {
+        //    result = a - b;
+        //}
+        //else if (op == SyntaxChars::MULTIPLY) {
+        //    result = a * b;
+        //}
+        //else if (op == SyntaxChars::DIVIDE) {
+        //    result = a / b;
+        //}
 
-        if (result <= 0 || result >= 4000) {
+        //if (result <= 0 || result >= 4000) {
 
-            error = true;
-            message = "Семантическая ошибка: \nПереполнение типа 'Римское число' [1-3999] при выполнении операции: `" 
-                + Roman::to_roman(a) + " " + op.tokenString + " " + Roman::to_roman(b) + "`";
-            return Roman::to_roman(1);
-        }
+        //    error = true;
+        //    message = "Семантическая ошибка: \nПереполнение типа 'Римское число' [1-3999] при выполнении операции: `" 
+        //        + Roman::to_roman(a) + " " + op.tokenString + " " + Roman::to_roman(b) + "`";
+        //    return Roman::to_roman(1);
+        //}
 
         return Roman::to_roman(result);
     }

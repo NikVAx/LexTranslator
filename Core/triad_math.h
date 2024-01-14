@@ -31,12 +31,12 @@ struct TriadH {
         isSame0 = isSameValues(a->operands.at(0), b->operands.at(0), a->dep == b->dep);
         isSame1 = isSameValues(a->operands.at(1), b->operands.at(1), a->dep == b->dep);
 
-        if ((*a->op == SyntaxChars::PLUS || *a->op == SyntaxChars::MULTIPLY) &&
+        /*if ((*a->op == SyntaxChars::PLUS || *a->op == SyntaxChars::MULTIPLY) &&
             (!isSame0 && !isSame1)) {
 
             isSame0 = isSameValues(a->operands.at(0), b->operands.at(1), a->dep == b->dep);
             isSame1 = isSameValues(a->operands.at(1), b->operands.at(0), a->dep == b->dep);
-        }
+        }*/
 
         return isSame0 && isSame1;
     }

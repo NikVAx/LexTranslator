@@ -29,13 +29,10 @@ public:
                     command.values.push_back(item.token);
                 }
                 
-                if (item.token.value == ";") {
-                    command.tokens.push_back(Token("Ê", TermTypes::LIMIT));
-                    index += 1;
-                    break;
-                }
                 index += 1;
             }
+
+            command.tokens.push_back(Token("Ê", TermTypes::LIMIT));
             commands.push_back(command);
         }
         return commands;

@@ -346,7 +346,7 @@ void runParser(std::string line) {
 int main() {
     setlocale(LC_ALL, "");
     
-    runParser("for (a := 0, b:=a; a<10; a, b) do ,;");
+    runParser("for (a:=1; a < 1; a:=b) do for (a:=1; a < 1; a:=b) do c:=1;");
     /*runParser("for (a := 0; a<10; a) do b:= a\n; c:= b; eb:= c;");
     runParser("ec:=e10;num1:=1;num2:=2.;num3:=2.4;num5:=2.4e;num6:=2.4e-1;num7:=2.4e10;num8:=2e10;");*/
 

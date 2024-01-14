@@ -489,7 +489,7 @@ namespace GUI {
 				static_cast<System::Byte>(0)));
 			this->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->Name = L"MainForm";
-			this->Text = L"ИС-42. Василенко Н.А. Вариант №5";
+			this->Text = L"Вариант №6";
 			this->Tabs->ResumeLayout(false);
 			this->PageSource->ResumeLayout(false);
 			this->PageSource->PerformLayout();
@@ -559,12 +559,12 @@ namespace GUI {
 
 		auto commands = MathCommandSplitter().split(result);
 
-		int tcount = 0;
+		//int tcount = 0;
 
-		std::vector<Triad*> triads_;
-		std::map<std::string, Triad*> vars;
+		//std::vector<Triad*> triads_;
+		//std::map<std::string, Triad*> vars;
 
-		std::list<Triad*> all_triads;
+		//std::list<Triad*> all_triads;
 
 		for (auto& command : commands) {
 			if (command.isValid) {
@@ -598,39 +598,39 @@ namespace GUI {
 				OperatorsTreeBuilder(myTreeRefView)
 					.build();
 				
-				//OperatorsTreeViewBuilder(OpersTreeView)
-				//	.build(myTreeRefView);
-				
-				std::list<Triad*> triads = TriadBuilderV2(myTreeRefView)
-					.build(tcount);
+				////OperatorsTreeViewBuilder(OpersTreeView)
+				////	.build(myTreeRefView);
+				//
+				//std::list<Triad*> triads = TriadBuilderV2(myTreeRefView)
+				//	.build(tcount);
 
-				tcount += triads.size();
-				
-				for (Triad* triad : triads) {
-					all_triads.push_back(triad);
-				}
+				//tcount += triads.size();
+				//
+				//for (Triad* triad : triads) {
+				//	all_triads.push_back(triad);
+				//}
 			}
 		}
 
-		fillTriadsTable(Triads1, all_triads);
+		//fillTriadsTable(Triads1, all_triads);
 
-		
-		TriadOpt1 triadOpt1(all_triads);
-		triadOpt1.reduce();
-		if (triadOpt1.error) {
-			MessageBox::Show(this, gcnew String(triadOpt1.message.c_str()), "Ошибка");
-			return;
-		}
-		
+		//
+		//TriadOpt1 triadOpt1(all_triads);
+		//triadOpt1.reduce();
+		//if (triadOpt1.error) {
+		//	MessageBox::Show(this, gcnew String(triadOpt1.message.c_str()), "Ошибка");
+		//	return;
+		//}
+		//
 
-		fillTriadsTable(Triads2, all_triads);
+		//fillTriadsTable(Triads2, all_triads);
 
-		TriadOpt2 triadOpt2(all_triads);
+		//TriadOpt2 triadOpt2(all_triads);
 
-		triadOpt2.setDepValues();
-		triadOpt2.clearSameTriads();
+		//triadOpt2.setDepValues();
+		//triadOpt2.clearSameTriads();
 
-		fillTriadsTable(Triads3, all_triads);
+		//fillTriadsTable(Triads3, all_triads);
 
 		MessageBox::Show(this, "Анализ текста выполнен успешно!", "Сообщение");
 	}

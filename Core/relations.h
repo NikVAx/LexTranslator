@@ -6,3 +6,4 @@ enum class Relations : char {
     PREV = '<',
     NONE = '-'
 };
+

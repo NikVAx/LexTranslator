@@ -3,6 +3,7 @@
 #include <stack>
 #include <sstream>
 #include <list>
+#include <iomanip>
 
 #include "../Core/stack_item.h"
 #include "../Core/syntax_node.h"
@@ -94,6 +95,8 @@ public:
 
             std::string ruleString = extractFrom(baseIndex);
 
+            std::cout << "rule: " << ruleString << std::endl;
+
             SyntaxRule syntaxRule = syntaxConfig.getRuleByString(ruleString);
 
             SyntaxNode node = SyntaxNode(syntaxRule);
@@ -146,16 +149,6 @@ public:
             tokenIndex += 1;
             Token currentToken = items[head];
 
-            if (tokenIndex == 1 && currentToken.type != TermTypes::IDENTIFIER) {
-                result.setError(StatusCodes::SEM_ASSIGNTOCONST.toString(), tokenIndex);
-                break;
-            }
-
-            if (tokenIndex == 2 && currentToken.type != TermTypes::ASSIGNMENT) {
-                result.setError(StatusCodes::SYN_ASSIGNMENT_EXPECTED.toString(), tokenIndex);
-                break;
-            }
-
             //std::cout << " #IN >> " << currentToken.value << "\n";
 
             int topStackTermIndex = getTerminalIndex(stack.size() - 1);
@@ -163,16 +156,32 @@ public:
             int top = stack.at(topStackTermIndex).code;
             int input = syntaxConfig.getIndex(currentToken.type);
 
-
             Relations relation = syntaxConfig.getRelation(top, input);
+
+#pragma region  debug
+            std::cout << std::endl;
+
+            std::cout << static_cast<char> (relation);
+
+            std::cout << std::setw(10) << currentToken.value;
+
+            std::cout << std::setw(10);
+
+
+            for (auto item : stack) {
+                std::cout << item.currentChar.tokenString << ",";
+            }
+
+            std::cout << "\n\n";
+#pragma endregion 
             
             if (relation == Relations::PREV || relation == Relations::BASE) {
                 shift(input, currentToken);
-//#pragma region  debug
-//                std::cout
-//                    << "  #AFTER SHIFT: "
-//                    << "\n    STACK: " << stack_str(stack) << " R[" << (char)relation << "]\n";
-//#pragma endregion  
+#pragma region  debug
+                std::cout
+                    << "  #AFTER SHIFT: "
+                    << "\n    STACK: " << stack_str(stack) << " R[" << (char)relation << "]\n";
+#pragma endregion  
                 continue;
             }
             if (relation == Relations::NEXT) {
@@ -183,15 +192,15 @@ public:
                     break;
                 }
 
-//#pragma region  debug
-//                std::cout
-//                    << "  #AFTER REDUCE: "
-//                    << "\n    STACK: " << stack_str(stack) << " R[" << (char)relation << "]\n";
-//#pragma endregion  
+#pragma region  debug
+                std::cout
+                    << "  #AFTER REDUCE: "
+                    << "\n    STACK: " << stack_str(stack) << " R[" << (char)relation << "]\n";
+#pragma endregion  
                 continue;
             }
             if (relation == Relations::NONE) {
-                if (input == START_LIMIT.code && head != 0) {
+                if (input == START_LIMIT.code && head != 0 && stack.size() == 2) {
                     result.error = false;
                     result.nodes = nodes;
                 }

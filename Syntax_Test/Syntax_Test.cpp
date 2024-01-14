@@ -92,15 +92,20 @@ std::pair<bool, Command> prepare_command(std::string input) {
 std::pair<bool, std::string> run_syntax(Command& command) {
 	Syntax syntax(gmconf);
 	auto syntaxResult = syntax.proccess(command);
-	
+
+	for (auto& node : syntaxResult.nodes) {
+		std::cout << node.syntaxRule.code << " -> " << node.syntaxRule.buildRule.ruleString << " \n";
+	}
+
 	if (syntaxResult.isSuccess()) {
 		auto generated = SyntaxLineBuilder().buildline(syntaxResult, command);
 
-		//std::cout << "ПОРЯДОК РАЗБОРА:\n" << generated.second << "\n";
+		std::cout << "ПОРЯДОК РАЗБОРА:\n" << generated.second << "\n";
 
 		return std::pair<bool, std::string>(true, generated.first);
 
-	} else {
+	}
+	else {
 		return std::pair<bool, std::string>(false, syntaxResult.message);
 	}
 }
@@ -121,7 +126,7 @@ void on_result(std::string expected, std::string actual, std::string input) {
 void success_1() {
 	std::cout << "\nТЕСТ #1\n";
 	
-	std::string input = "a:=XXV-(III*x+y/(b-(I+III)-VI));";
+	std::string input = "for (a:=1; a < 1; a:=b) do ;";
 	auto b_command = prepare_command(input);
 
 	if (b_command.first != true)
@@ -201,17 +206,32 @@ void unexpected_bracket() {
 	on_result(expected, actual, input);
 }
 
+void runCommand(std::string line) {
+	auto b_command = prepare_command(line);
+
+	if (b_command.first != true)
+		return;
+
+	auto b_actual = run_syntax(b_command.second);
+
+	std::string actual = b_actual.second;
+
+	on_result(actual, actual, line);
+}
+
 
 
 
 int main() {
 	setlocale(LC_ALL, "");
 
+	//success_1();
+	//success_2();
+	//success_3();
+	//unclosed_bracket();
+	//unexpected_bracket();
+
 	success_1();
-	success_2();
-	success_3();
-	unclosed_bracket();
-	unexpected_bracket();
 
 
 

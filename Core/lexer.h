@@ -56,6 +56,7 @@ public:
         if (!tokenString.empty() && result.isSuccess()) {
             result.addError(tokenString, StatusCodes::LEX_ENDLESS_COMMENT);
         }
+
         return result;
     }
 };
