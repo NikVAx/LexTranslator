@@ -31,4 +31,5 @@ namespace TermTypes {
     static const TermType EQUAL(25, "Îïåğàòîğ =");
     static const TermType TRUE(26, "ÈÑÒÈÍÀ");
     static const TermType FALSE(27, "ËÎÆÜ");
+    static const TermType COMMA(28, "ÇÀÏßÒÀß");
 }
