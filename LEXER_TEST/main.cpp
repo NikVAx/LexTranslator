@@ -342,7 +342,7 @@ int main() {
     auto parseResult = lexer.parse(line);
 
     for (auto item : parseResult.items) {
-        std::cout << item.token.value << std::endl;
+        std::cout << item << std::endl;
     }
 
 }
