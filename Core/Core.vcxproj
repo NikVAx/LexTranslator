@@ -184,7 +184,7 @@
     <ClInclude Include="tree.h" />
     <ClInclude Include="term_type.h" />
     <ClInclude Include="triad.h" />
-    <ClInclude Include="triad_h.h" />
+    <ClInclude Include="triad_math.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core.cpp" />

@@ -2,7 +2,7 @@
 #include "table_of_vars.h"
 #include <list>
 #include "syntax_chars.h"
-#include "triad_h.h"
+#include "triad_math.h"
 
 struct TriadOpt2 {
     TableOfVars tableOfVars;

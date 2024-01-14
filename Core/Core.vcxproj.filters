@@ -186,7 +186,7 @@
     <ClInclude Include="table_of_constants.h">
       <Filter>Файлы заголовков\src\triads</Filter>
     </ClInclude>
-    <ClInclude Include="triad_h.h">
+    <ClInclude Include="triad_math.h">
       <Filter>Файлы заголовков\src\triads</Filter>
     </ClInclude>
   </ItemGroup>
