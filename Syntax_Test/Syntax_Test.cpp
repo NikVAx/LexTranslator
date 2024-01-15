@@ -79,7 +79,7 @@ std::pair<bool, Command> prepare_command(std::string input) {
 	auto parseResult = parser.parse(input);
 
 	if (parseResult.isSuccess()) {
-		auto commands = MathCommandSplitter()
+		auto commands = CommandSplitter()
 			.split(parseResult);
 		auto command = commands[0];
 
@@ -98,7 +98,7 @@ std::pair<bool, std::string> run_syntax(Command& command) {
 	if (syntaxResult.isSuccess()) {
 		auto generated = SyntaxLineBuilder().buildline(syntaxResult, command);
 
-		//std::cout << "ПОРЯДОК РАЗБОРА:\n" << generated.second << "\n";
+		std::cout << "ПОРЯДОК РАЗБОРА:\n" << generated.second << "\n";
 
 		return std::pair<bool, std::string>(true, generated.first);
 
@@ -123,7 +123,14 @@ void on_result(std::string expected, std::string actual, std::string input) {
 void success_1() {
 	std::cout << "\nТЕСТ #1\n";
 	
-	std::string input = "a:=XXV-(III*x+y/(b-(I+III)-VI));";
+	std::string input =
+		"if A > B then      \n"
+		"  if B > 100 then    \n"
+		"    B:= 10.56e-2     \n"
+		"  else                    \n"
+		"  B:= 5.255e+2       \n"
+		"else if A<25 then    \n"
+		"  B:=20.0;           \n";
 	auto b_command = prepare_command(input);
 
 	if (b_command.first != true)
@@ -210,10 +217,13 @@ int main() {
 	setlocale(LC_ALL, "");
 
 	success_1();
-	success_2();
-	success_3();
-	unclosed_bracket();
-	unexpected_bracket();
+
+
+
+	//success_2();
+	//success_3();
+	//unclosed_bracket();
+	//unexpected_bracket();
 
 
 

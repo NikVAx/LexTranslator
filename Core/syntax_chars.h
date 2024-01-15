@@ -11,10 +11,13 @@ namespace SyntaxChars {
     const SyntaxChar IF(3, "if", TokenType::TERMINAL);
     const SyntaxChar THEN(4, "then", TokenType::TERMINAL);
     const SyntaxChar ELSE(5, "else", TokenType::TERMINAL);
-    const SyntaxChar IDENTIFIER(6, "I", TokenType::NONTERMINAL);
+    const SyntaxChar IDENTIFIER(6, "I", TokenType::TERMINAL);
     const SyntaxChar NONTERMINAL(7, "S", TokenType::NONTERMINAL);
     const SyntaxChar ASSIGNMENT(8, ":=", TokenType::TERMINAL);
     const SyntaxChar SEMICOLON(9, ";", TokenType::TERMINAL);
     const SyntaxChar LIMIT(10, "#", TokenType::TERMINAL);
+
+    const SyntaxChar OPEN_BRACKET(101, "#", TokenType::TERMINAL);
+    const SyntaxChar CLOSE_BRACKET(102, "#", TokenType::TERMINAL);
 }
 

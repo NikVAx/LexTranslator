@@ -110,7 +110,7 @@ int main() {
     Parser lexer;
     //std::string line = "if A=5 then B=10.56e-2;";
     std::string line =
-        "if A > 5 then      \n"
+        "if A > B then      \n"
         "  if B > 100 then    \n"
         "    B:= 10.56e-2     \n"
         "  else                    \n"
