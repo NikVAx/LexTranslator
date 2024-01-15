@@ -153,12 +153,12 @@ void success_1() {
 	
 	std::string input =
 		"if A > B then      \n"
-		"  if B > 100 then    \n"
+		"  if B > Cl then    \n"
 		"    A := B   \n"
 		"  else                    \n"
-		"    B:= 5.255e+2       \n"
-		"else if A<25 then    \n"
-		"  B:=20.0;           \n";
+		"    B:= IX       \n"
+		"else if A<CL then    \n"
+		"  B:=MMM;           \n";
 	auto b_command = prepare_command(input);
 
 	if (b_command.first != true)
