@@ -81,9 +81,9 @@ namespace GUI {
 	private: System::Windows::Forms::TabPage^ lab2Page;
 
 	private: System::Windows::Forms::TreeView^ SyntaxTreeView;
-	private: System::Windows::Forms::TabPage^ OpersPage;
-	private: System::Windows::Forms::TabPage^ TriadsPage;
-	private: System::Windows::Forms::TreeView^ OpersTreeView;
+
+
+
 
 
 
@@ -118,15 +118,11 @@ namespace GUI {
 			this->TokenType = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->lab2Page = (gcnew System::Windows::Forms::TabPage());
 			this->SyntaxTreeView = (gcnew System::Windows::Forms::TreeView());
-			this->OpersPage = (gcnew System::Windows::Forms::TabPage());
-			this->TriadsPage = (gcnew System::Windows::Forms::TabPage());
-			this->OpersTreeView = (gcnew System::Windows::Forms::TreeView());
 			this->Tabs->SuspendLayout();
 			this->PageSource->SuspendLayout();
 			this->PageLab1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TokensTable))->BeginInit();
 			this->lab2Page->SuspendLayout();
-			this->OpersPage->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// Tabs
@@ -137,8 +133,6 @@ namespace GUI {
 			this->Tabs->Controls->Add(this->PageSource);
 			this->Tabs->Controls->Add(this->PageLab1);
 			this->Tabs->Controls->Add(this->lab2Page);
-			this->Tabs->Controls->Add(this->OpersPage);
-			this->Tabs->Controls->Add(this->TriadsPage);
 			this->Tabs->Location = System::Drawing::Point(22, 22);
 			this->Tabs->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->Tabs->Name = L"Tabs";
@@ -154,11 +148,11 @@ namespace GUI {
 			this->PageSource->Controls->Add(this->FileBtn);
 			this->PageSource->Controls->Add(this->SourceCodeTxt);
 			this->PageSource->Controls->Add(this->SourceFileTxt);
-			this->PageSource->Location = System::Drawing::Point(4, 34);
+			this->PageSource->Location = System::Drawing::Point(4, 41);
 			this->PageSource->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->PageSource->Name = L"PageSource";
 			this->PageSource->Padding = System::Windows::Forms::Padding(6, 7, 6, 7);
-			this->PageSource->Size = System::Drawing::Size(917, 552);
+			this->PageSource->Size = System::Drawing::Size(917, 545);
 			this->PageSource->TabIndex = 0;
 			this->PageSource->Text = L"Исходный код";
 			// 
@@ -225,7 +219,7 @@ namespace GUI {
 			this->SourceFileTxt->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->SourceFileTxt->Name = L"SourceFileTxt";
 			this->SourceFileTxt->ReadOnly = true;
-			this->SourceFileTxt->Size = System::Drawing::Size(384, 35);
+			this->SourceFileTxt->Size = System::Drawing::Size(384, 42);
 			this->SourceFileTxt->TabIndex = 0;
 			// 
 			// PageLab1
@@ -233,11 +227,11 @@ namespace GUI {
 			this->PageLab1->Controls->Add(this->TokensTable);
 			this->PageLab1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->PageLab1->Location = System::Drawing::Point(4, 34);
+			this->PageLab1->Location = System::Drawing::Point(4, 41);
 			this->PageLab1->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->PageLab1->Name = L"PageLab1";
 			this->PageLab1->Padding = System::Windows::Forms::Padding(6, 7, 6, 7);
-			this->PageLab1->Size = System::Drawing::Size(917, 552);
+			this->PageLab1->Size = System::Drawing::Size(917, 545);
 			this->PageLab1->TabIndex = 1;
 			this->PageLab1->Text = L"Таблица лексем";
 			this->PageLab1->UseVisualStyleBackColor = true;
@@ -257,6 +251,7 @@ namespace GUI {
 			});
 			this->TokensTable->Location = System::Drawing::Point(10, 9);
 			this->TokensTable->Name = L"TokensTable";
+			this->TokensTable->RowHeadersWidth = 51;
 			this->TokensTable->Size = System::Drawing::Size(798, 467);
 			this->TokensTable->TabIndex = 0;
 			// 
@@ -264,18 +259,21 @@ namespace GUI {
 			// 
 			this->Index->FillWeight = 10;
 			this->Index->HeaderText = L"№";
+			this->Index->MinimumWidth = 6;
 			this->Index->Name = L"Index";
 			this->Index->ReadOnly = true;
 			// 
 			// Token
 			// 
 			this->Token->HeaderText = L"Лексема";
+			this->Token->MinimumWidth = 6;
 			this->Token->Name = L"Token";
 			this->Token->ReadOnly = true;
 			// 
 			// TokenType
 			// 
 			this->TokenType->HeaderText = L"Тип лексемы";
+			this->TokenType->MinimumWidth = 6;
 			this->TokenType->Name = L"TokenType";
 			this->TokenType->ReadOnly = true;
 			this->TokenType->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
@@ -283,10 +281,10 @@ namespace GUI {
 			// lab2Page
 			// 
 			this->lab2Page->Controls->Add(this->SyntaxTreeView);
-			this->lab2Page->Location = System::Drawing::Point(4, 34);
+			this->lab2Page->Location = System::Drawing::Point(4, 41);
 			this->lab2Page->Name = L"lab2Page";
 			this->lab2Page->Padding = System::Windows::Forms::Padding(3);
-			this->lab2Page->Size = System::Drawing::Size(917, 552);
+			this->lab2Page->Size = System::Drawing::Size(917, 545);
 			this->lab2Page->TabIndex = 2;
 			this->lab2Page->Text = L"Синтаксическое дерево";
 			this->lab2Page->UseVisualStyleBackColor = true;
@@ -301,40 +299,9 @@ namespace GUI {
 			this->SyntaxTreeView->Size = System::Drawing::Size(908, 543);
 			this->SyntaxTreeView->TabIndex = 0;
 			// 
-			// OpersPage
-			// 
-			this->OpersPage->Controls->Add(this->OpersTreeView);
-			this->OpersPage->Location = System::Drawing::Point(4, 34);
-			this->OpersPage->Name = L"OpersPage";
-			this->OpersPage->Padding = System::Windows::Forms::Padding(3);
-			this->OpersPage->Size = System::Drawing::Size(917, 552);
-			this->OpersPage->TabIndex = 3;
-			this->OpersPage->Text = L"Дерево операций";
-			this->OpersPage->UseVisualStyleBackColor = true;
-			// 
-			// TriadsPage
-			// 
-			this->TriadsPage->Location = System::Drawing::Point(4, 34);
-			this->TriadsPage->Name = L"TriadsPage";
-			this->TriadsPage->Padding = System::Windows::Forms::Padding(3);
-			this->TriadsPage->Size = System::Drawing::Size(917, 552);
-			this->TriadsPage->TabIndex = 4;
-			this->TriadsPage->Text = L"Триады";
-			this->TriadsPage->UseVisualStyleBackColor = true;
-			// 
-			// OpersTreeView
-			// 
-			this->OpersTreeView->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-				| System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
-			this->OpersTreeView->Location = System::Drawing::Point(4, 5);
-			this->OpersTreeView->Name = L"OpersTreeView";
-			this->OpersTreeView->Size = System::Drawing::Size(908, 543);
-			this->OpersTreeView->TabIndex = 1;
-			// 
 			// MainForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(11, 25);
+			this->AutoScaleDimensions = System::Drawing::SizeF(13, 32);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::LightGray;
 			this->ClientSize = System::Drawing::Size(969, 636);
@@ -343,14 +310,14 @@ namespace GUI {
 				static_cast<System::Byte>(0)));
 			this->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->Name = L"MainForm";
-			this->Text = L"ИС-42. Василенко Н.А. Вариант №5";
+			this->Text = L"ИС-42. Владимирский А.Б. Вариант №7";
+			this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
 			this->Tabs->ResumeLayout(false);
 			this->PageSource->ResumeLayout(false);
 			this->PageSource->PerformLayout();
 			this->PageLab1->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TokensTable))->EndInit();
 			this->lab2Page->ResumeLayout(false);
-			this->OpersPage->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}
@@ -483,6 +450,8 @@ namespace GUI {
 				TokensTable->Rows->Add(System::Int32(i + 1), tokenString, typeNameString);
 			}
 	    }
-	};
+	private: System::Void MainForm_Load(System::Object^ sender, System::EventArgs^ e) {
+	}
+};
 }
 

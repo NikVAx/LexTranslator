@@ -30,9 +30,9 @@ namespace StatusCodes {
     static const StatusCode SUCCESS__(0, "Успешно");
     static const StatusCode LEX_1(1, "Неизвестная ошибка");
     static const StatusCode LEX_2(2, "Недопустимый входной символ");
-    static const StatusCode LEX_3(3, "Неожиданный конец файла");
-    static const StatusCode LEX_4(4, "Встречен незавершенный комментарий");
-    static const StatusCode LEX_5(5, "Ожидалось присваивание");
+    static const StatusCode LEX_3(3, "Недопустимый формат комментария");
+    static const StatusCode LEX_4(4, "Недопустимый формат идентификатора");
+    static const StatusCode LEX_5(5, "Недопустимый оператор");
     static const StatusCode LEX_6(6, "Недопустимый формат идентификатора");
     static const StatusCode LEX_7(7, "Незавершенный оператор присванивания");
     static const StatusCode LEX_8(8, "Ожидалось выражение");
