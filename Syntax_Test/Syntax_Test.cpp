@@ -154,7 +154,7 @@ void success_1() {
 	std::string input =
 		"if A > B then      \n"
 		"  if B > 100 then    \n"
-		"    B:= 10.56e-2     \n"
+		"    A := B   \n"
 		"  else                    \n"
 		"    B:= 5.255e+2       \n"
 		"else if A<25 then    \n"

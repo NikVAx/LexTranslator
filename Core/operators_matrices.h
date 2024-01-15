@@ -10,11 +10,11 @@ const std::vector<std::vector<Relations>> MATRIX_1 =
   { Relations::NONE, Relations::PREV, Relations::BASE, Relations::NONE, Relations::PREV, Relations::PREV, Relations::PREV, Relations::PREV, Relations::NONE, Relations::NONE },
   { Relations::NONE, Relations::PREV, Relations::NONE, Relations::BASE, Relations::PREV, Relations::NONE, Relations::NONE, Relations::NONE, Relations::PREV, Relations::NEXT },
   { Relations::NONE, Relations::PREV, Relations::NONE, Relations::NEXT, Relations::PREV, Relations::NONE, Relations::NONE, Relations::NONE, Relations::PREV, Relations::NEXT },
-  { Relations::NONE, Relations::NONE, Relations::NEXT, Relations::NEXT, Relations::NONE, Relations::NEXT, Relations::NEXT, Relations::NEXT, Relations::NEXT, Relations::NEXT },
-  { Relations::NONE, Relations::NONE, Relations::NEXT, Relations::NONE, Relations::PREV, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE },
-  { Relations::NONE, Relations::NONE, Relations::NEXT, Relations::NONE, Relations::PREV, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE },
-  { Relations::NONE, Relations::NONE, Relations::NEXT, Relations::NONE, Relations::PREV, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE },
-  { Relations::NONE, Relations::NONE, Relations::NONE, Relations::NEXT, Relations::PREV, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NEXT },
+  { Relations::NONE, Relations::NONE, Relations::NEXT, Relations::NEXT, Relations::NONE, Relations::BASE, Relations::BASE, Relations::BASE, Relations::BASE, Relations::NEXT },
+  { Relations::NONE, Relations::NONE, Relations::NEXT, Relations::NONE, Relations::BASE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE },
+  { Relations::NONE, Relations::NONE, Relations::NEXT, Relations::NONE, Relations::BASE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE },
+  { Relations::NONE, Relations::NONE, Relations::NEXT, Relations::NONE, Relations::BASE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE },
+  { Relations::NONE, Relations::NONE, Relations::NONE, Relations::NEXT, Relations::BASE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NEXT },
   { Relations::NEXT, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE, Relations::NONE }
 };
 
