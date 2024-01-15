@@ -114,7 +114,7 @@ int main() {
         "  if B > 100 then    \n"
         "    B:= 10.56e-2     \n"
         "  else                    \n"
-        "  B:= 5.255e+2       \n"
+        "    B:= 5.255e+2       \n"
         "else if A<25 then    \n"
         "  B:=20.0;           \n";
     

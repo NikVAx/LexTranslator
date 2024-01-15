@@ -45,8 +45,6 @@ public:
 
 					std::string rString = node.syntaxRule.buildRule.ruleString;
 
-					
-
 					line.replace(pos, 1, rString);
 					nodes.pop_back();
 
@@ -108,9 +106,9 @@ std::pair<bool, std::string> run_syntax(Command& command) {
 }
 
 void on_result(std::string expected, std::string actual, std::string input) {
-	std::cout << "ВХОДНАЯ СТРОКА:  " << input << "\n";
-	std::cout << "ОЖИДАЕМЫЙ ВЫВОД: " << expected << "\n";
-	std::cout << "РЕАЛЬНЫЙ ВЫВОД:  " << actual << "\n\n";
+	std::cout << "ВХОДНАЯ СТРОКА\:\n" << input << "\n";
+	std::cout << "ОЖИДАЕМЫЙ ВЫВОД:\n" << expected << "\n";
+	std::cout << "РЕАЛЬНЫЙ ВЫВОД:\n" << actual << "\n\n";
 
 	if (expected == actual) {
 		std::cout << "СТАТУС: ПРОЙДЕН\n";
@@ -118,6 +116,36 @@ void on_result(std::string expected, std::string actual, std::string input) {
 	else {
 		std::cout << "СТАТУС: ПРОВАЛЕН\n";
 	}
+}
+
+std::string replace(std::string input, std::string in, std::string out) {
+	size_t begin = 0;
+	while (true) {
+		size_t index = input.find(in, begin);
+
+		if (index == std::string::npos) {
+			break;
+		}
+
+		input = input.replace(index, in.size(), out);
+		begin = index + out.size();
+	}
+	return input;
+}
+
+std::string truncate(std::string input) {
+	std::string new_string;
+	for(auto& el : input) {
+		if (el != ' ' && el != '\n' && el != '\t' && el != '\r') {
+			new_string.append(1, el);
+		}
+	}
+	
+	new_string = replace(new_string, "if", "if ");
+	new_string = replace(new_string, "then"," then ");
+	new_string = replace(new_string, "else", " else ");
+
+	return new_string;
 }
 
 void success_1() {
@@ -128,7 +156,7 @@ void success_1() {
 		"  if B > 100 then    \n"
 		"    B:= 10.56e-2     \n"
 		"  else                    \n"
-		"  B:= 5.255e+2       \n"
+		"    B:= 5.255e+2       \n"
 		"else if A<25 then    \n"
 		"  B:=20.0;           \n";
 	auto b_command = prepare_command(input);
@@ -138,7 +166,7 @@ void success_1() {
 
 	auto b_actual = run_syntax(b_command.second);
 
-	std::string expected = input;
+	std::string expected = truncate(input);
 	std::string actual = b_actual.second;
 	
 	on_result(expected, actual, input);

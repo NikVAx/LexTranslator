@@ -5,17 +5,18 @@
 // TODO: не понятно, это часть конфигурации или глобальный набор значений
 // коды - индексы столбцов, т.е. часть конфигурации?
 namespace SyntaxChars {
-    const SyntaxChar LESS(0, "<", TokenType::TERMINAL);
-    const SyntaxChar GREATER(1, ">", TokenType::TERMINAL);
-    const SyntaxChar EQUAL(2, "=", TokenType::TERMINAL);
-    const SyntaxChar IF(3, "if", TokenType::TERMINAL);
-    const SyntaxChar THEN(4, "then", TokenType::TERMINAL);
-    const SyntaxChar ELSE(5, "else", TokenType::TERMINAL);
-    const SyntaxChar IDENTIFIER(6, "I", TokenType::TERMINAL);
-    const SyntaxChar NONTERMINAL(7, "S", TokenType::NONTERMINAL);
+    const SyntaxChar LIMIT(0, "#", TokenType::TERMINAL);
+    const SyntaxChar IF(1, "if ", TokenType::TERMINAL);
+    const SyntaxChar THEN(2, " then ", TokenType::TERMINAL);
+    const SyntaxChar ELSE(3, " else ", TokenType::TERMINAL);
+    const SyntaxChar IDENTIFIER(4, "I", TokenType::TERMINAL);
+    const SyntaxChar GREATER(5, ">", TokenType::TERMINAL);
+    const SyntaxChar LESS(6, "<", TokenType::TERMINAL);
+    const SyntaxChar EQUAL(7, "=", TokenType::TERMINAL);
     const SyntaxChar ASSIGNMENT(8, ":=", TokenType::TERMINAL);
     const SyntaxChar SEMICOLON(9, ";", TokenType::TERMINAL);
-    const SyntaxChar LIMIT(10, "#", TokenType::TERMINAL);
+    const SyntaxChar NONTERMINAL(10, "S", TokenType::NONTERMINAL);
+    
 
     const SyntaxChar OPEN_BRACKET(101, "#", TokenType::TERMINAL);
     const SyntaxChar CLOSE_BRACKET(102, "#", TokenType::TERMINAL);

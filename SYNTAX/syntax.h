@@ -3,6 +3,7 @@
 #include <stack>
 #include <sstream>
 #include <list>
+#include <iomanip>
 
 #include "../Core/stack_item.h"
 #include "../Core/syntax_node.h"
@@ -53,6 +54,7 @@ public:
             }
             return i;
         }
+        std::cerr << "err `int getTerminalIndex(int end)`\n";
         exit(-2);
     }
 
@@ -126,7 +128,7 @@ public:
     std::string stack_str(std::vector<StackItem> stackItem) {
         std::stringstream ss;
         for (auto& el : stackItem) {
-            ss << el.currentChar.tokenString;
+            ss << el.currentChar.tokenString << " ";
         }
         return ss.str();
     }
@@ -142,19 +144,12 @@ public:
 
         int tokenIndex = 0;
 
+        //std::cout << " | R |TOP TERM| C :INPUT | STACK\n";
+
+
         do {
             tokenIndex += 1;
             Token currentToken = items[head];
-
-            if (tokenIndex == 1 && currentToken.termType != TermTypes::IDENTIFIER) {
-                result.setError(StatusCodes::SEM_ASSIGNTOCONST.toString(), tokenIndex);
-                break;
-            }
-
-            if (tokenIndex == 2 && currentToken.termType != TermTypes::ASSIGNMENT) {
-                result.setError(StatusCodes::SYN_ASSIGNMENT_EXPECTED.toString(), tokenIndex);
-                break;
-            }
 
             //std::cout << " #IN >> " << currentToken.value << "\n";
 
@@ -163,9 +158,17 @@ public:
             int top = stack.at(topStackTermIndex).code;
             int input = syntaxConfig.getIndex(currentToken.termType);
 
-
             Relations relation = syntaxConfig.getRelation(top, input);
             
+            //std::cout << " | " << char(relation) << " | " 
+            //    << std::setw(6)
+            //    << stack.at(topStackTermIndex).currentChar.tokenString << " | "
+            //          << input << " : " << std::setw(4) << 
+            //          (currentToken.termType == TermTypes::IDENTIFIER ||
+            //           currentToken.termType == TermTypes::NUMBER ?
+            //              ("I") : currentToken.value) << " | " 
+            //          << stack_str(stack) << "\n";
+
             if (relation == Relations::PREV || relation == Relations::BASE) {
                 shift(input, currentToken);
 //#pragma region  debug
@@ -216,6 +219,7 @@ public:
                 syntaxConfig.getIndex(token.termType),
                 token.value, 
                 syntaxConfig.getSyntaxChar(token.termType)));
+
         head += 1;
     }
 };
