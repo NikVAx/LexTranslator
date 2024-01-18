@@ -32,4 +32,6 @@ namespace TermTypes {
     static const TermType TRUE(26, "ИСТИНА");
     static const TermType FALSE(27, "ЛОЖЬ");
     static const TermType COMMA(28, "ЗАПЯТАЯ");
+    static const TermType INC(29, "оператор ++");
+    static const TermType DEC(30, "оператор --");
 }
