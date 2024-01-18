@@ -104,6 +104,25 @@ std::pair<bool, std::string> run_syntax(Command& command) {
 	}
 }
 
+std::pair<bool, std::string> run_full_syntax(Command& command) {
+	Syntax syntax(gmconf);
+	auto syntaxResult = syntax.proccess(command);
+
+	if (syntaxResult.isSuccess()) {
+		for (auto rule : syntaxResult.nodes) {
+			std::cout << rule.syntaxRule.buildRule << "; ";
+		}
+		std::cout << "\n";
+		auto generated = SyntaxLineBuilder().buildline(syntaxResult, command);
+
+		return std::pair<bool, std::string>(true, generated.first);
+	}
+	else {
+		return std::pair<bool, std::string>(false, syntaxResult.message);
+	}
+}
+
+
 void on_result(std::string expected, std::string actual, std::string input) {
 	std::cout << "ВХОДНАЯ СТРОКА:  " << input << "\n";
 	std::cout << "ОЖИДАЕМЫЙ ВЫВОД: " << expected << "\n";
@@ -200,6 +219,89 @@ void unexpected_bracket() {
 	on_result(expected, actual, input);
 }
 
+void success_w1() {
+	std::cout << "\nТЕСТ #1\n";
+
+	std::string input = "a:=T;";
+	auto b_command = prepare_command(input);
+
+	if (b_command.first != true)
+		return;
+
+	auto b_actual = run_full_syntax(b_command.second);
+
+	std::string expected = input;
+	std::string actual = b_actual.second;
+
+	on_result(expected, actual, input);
+}
+
+
+void success_w2() {
+	std::cout << "\nТЕСТ #2\n";
+	std::string input = "arg:=T or X and F;";
+	auto b_command = prepare_command(input);
+
+	if (b_command.first != true)
+		return;
+
+	auto b_actual = run_full_syntax(b_command.second);
+
+	std::string expected = input;
+	std::string actual = b_actual.second;
+
+	on_result(expected, actual, input);
+}
+
+void success_w3() {
+	std::cout << "\nТЕСТ #3\n";
+	std::string input = "arg:=(andor and T);";
+	auto b_command = prepare_command(input);
+
+	if (b_command.first != true)
+		return;
+
+	auto b_actual = run_full_syntax(b_command.second);
+
+	std::string expected = input;
+	std::string actual = b_actual.second;
+
+	on_result(expected, actual, input);
+}
+
+void unclosed_bracket_w() {
+	std::cout << "\nТЕСТ #4\n";
+	std::string input = "a:=T or (F and (not T and c);";
+	auto b_command = prepare_command(input);
+
+	if (b_command.first != true)
+		return;
+
+	auto b_actual = run_full_syntax(b_command.second);
+
+	std::string expected = StatusCodes::SYN_ERROR.toString();
+	std::string actual = b_actual.second;
+
+	on_result(expected, actual, input);
+}
+
+void unexpected_bracket_w() {
+	std::cout << "\nТЕСТ #5\n";
+
+	std::string input = "a:=not a and c xor (b and T));";
+	auto b_command = prepare_command(input);
+
+	if (b_command.first != true)
+		return;
+
+	auto b_actual = run_full_syntax(b_command.second);
+
+	std::string expected = StatusCodes::SYN_ERROR.toString();
+	std::string actual = b_actual.second;
+
+	on_result(expected, actual, input);
+}
+
 
 
 
@@ -211,6 +313,12 @@ int main() {
 	success_3();
 	unclosed_bracket();
 	unexpected_bracket();
+
+	success_w1();
+	success_w2();
+	success_w3();
+	unclosed_bracket_w();
+	unexpected_bracket_w();
 	
 	return 0;
 }
