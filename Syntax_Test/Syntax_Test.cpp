@@ -126,7 +126,7 @@ void on_result(std::string expected, std::string actual, std::string input) {
 void success_1() {
 	std::cout << "\nТЕСТ #1\n";
 	
-	std::string input = "for (a:=1; a < 1; a:=b) do ;";
+	std::string input = "for (a:=1;a<100;a++) do x:=a;";
 	auto b_command = prepare_command(input);
 
 	if (b_command.first != true)

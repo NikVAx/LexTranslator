@@ -20,6 +20,8 @@ const std::map<TermType, SyntaxChar> TERM_TYPE_TO_MATRIX_INDEX = {
     { TermTypes::IDENTIFIER, SyntaxChars::IDENTIFIER },
     { TermTypes::NUMBER, SyntaxChars::IDENTIFIER },
     { TermTypes::SEMICOLON, SyntaxChars::SEMICOLON },
+    { TermTypes::INC, SyntaxChars::INC },
+    { TermTypes::DEC, SyntaxChars::DEC },
     { TermTypes::LIMIT, SyntaxChars::LIMIT },
 };
 
@@ -36,6 +38,8 @@ namespace SyntaxRules {
     const SyntaxRule R10 = SyntaxRule(9, BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::GREATER, SyntaxChars::NONTERMINAL }));
     const SyntaxRule R11 = SyntaxRule(10, BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::EQUAL, SyntaxChars::NONTERMINAL }));
     const SyntaxRule R12 = SyntaxRule(11, BuildRule({ SyntaxChars::IDENTIFIER }));
+    const SyntaxRule R13 = SyntaxRule(12, BuildRule({ SyntaxChars::IDENTIFIER, SyntaxChars::INC }));
+    const SyntaxRule R14 = SyntaxRule(13, BuildRule({ SyntaxChars::IDENTIFIER, SyntaxChars::DEC }));
 }
 
 const std::vector<SyntaxRule> RULES = {
@@ -50,7 +54,9 @@ const std::vector<SyntaxRule> RULES = {
     SyntaxRules::R9,
     SyntaxRules::R10,
     SyntaxRules::R11,
-    SyntaxRules::R12
+    SyntaxRules::R12,
+    SyntaxRules::R13,
+    SyntaxRules::R14
 };
 
 SyntaxConfig MathGrammarConfig(MATRIX_1, TERM_TYPE_TO_MATRIX_INDEX, RULES, MATRIX_1_ERRORS);
