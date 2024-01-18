@@ -38,7 +38,7 @@ namespace GUI {
 	using namespace System::Drawing;
 
 	/// <summary>
-	/// Сводка для MainForm
+	/// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ MainForm
 	/// </summary>
 	public ref class MainForm : public System::Windows::Forms::Form {
 	public:
@@ -46,13 +46,13 @@ namespace GUI {
 		{
 			InitializeComponent();
 			//
-			//TODO: добавьте код конструктора
+			//TODO: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			//
 		}
 
 	protected:
 		/// <summary>
-		/// Освободить все используемые ресурсы.
+		/// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 		/// </summary>
 		~MainForm()
 		{
@@ -118,14 +118,14 @@ namespace GUI {
 
 	private:
 		/// <summary>
-		/// Обязательная переменная конструктора.
+		/// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 		/// </summary>
 		System::ComponentModel::Container ^components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Требуемый метод для поддержки конструктора — не изменяйте 
-		/// содержимое этого метода с помощью редактора кода.
+		/// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
+		/// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -162,8 +162,6 @@ namespace GUI {
 			this->TokensPage->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TokensTable))->BeginInit();
 			this->SyntaxPage->SuspendLayout();
-			this->TriadsPage->SuspendLayout();
-			this->tableLayoutPanel1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Triads1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Triads3))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Triads2))->BeginInit();
@@ -199,42 +197,48 @@ namespace GUI {
 			this->PageSource->Padding = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->PageSource->Size = System::Drawing::Size(826, 476);
 			this->PageSource->TabIndex = 0;
-			this->PageSource->Text = L"Исходный код";
+			this->PageSource->Text = L"РСЃС…РѕРґРЅС‹Р№ РєРѕРґ";
 			// 
 			// ExecuteBtn
 			// 
 			this->ExecuteBtn->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
+			this->ExecuteBtn->BackColor = System::Drawing::Color::DarkBlue;
+			this->ExecuteBtn->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->ExecuteBtn->Location = System::Drawing::Point(679, 13);
 			this->ExecuteBtn->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->ExecuteBtn->Name = L"ExecuteBtn";
 			this->ExecuteBtn->Size = System::Drawing::Size(124, 33);
 			this->ExecuteBtn->TabIndex = 4;
-			this->ExecuteBtn->Text = L"Запустить";
-			this->ExecuteBtn->UseVisualStyleBackColor = true;
+			this->ExecuteBtn->Text = L"Р—Р°РїСѓСЃС‚РёС‚СЊ";
+			this->ExecuteBtn->UseVisualStyleBackColor = false;
 			this->ExecuteBtn->Click += gcnew System::EventHandler(this, &MainForm::ExecuteBtn_Click);
 			// 
 			// ClearSourceBtn
 			// 
 			this->ClearSourceBtn->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
+			this->ClearSourceBtn->BackColor = System::Drawing::Color::DarkBlue;
+			this->ClearSourceBtn->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->ClearSourceBtn->Location = System::Drawing::Point(543, 13);
 			this->ClearSourceBtn->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->ClearSourceBtn->Name = L"ClearSourceBtn";
 			this->ClearSourceBtn->Size = System::Drawing::Size(124, 33);
 			this->ClearSourceBtn->TabIndex = 3;
-			this->ClearSourceBtn->Text = L"Очистить";
-			this->ClearSourceBtn->UseVisualStyleBackColor = true;
+			this->ClearSourceBtn->Text = L"РћС‡РёСЃС‚РёС‚СЊ";
+			this->ClearSourceBtn->UseVisualStyleBackColor = false;
 			this->ClearSourceBtn->Click += gcnew System::EventHandler(this, &MainForm::ClearSourceBtn_Click);
 			// 
 			// FileBtn
 			// 
 			this->FileBtn->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
+			this->FileBtn->BackColor = System::Drawing::Color::DarkBlue;
+			this->FileBtn->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->FileBtn->Location = System::Drawing::Point(407, 13);
 			this->FileBtn->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->FileBtn->Name = L"FileBtn";
 			this->FileBtn->Size = System::Drawing::Size(124, 33);
 			this->FileBtn->TabIndex = 2;
-			this->FileBtn->Text = L"Файл";
-			this->FileBtn->UseVisualStyleBackColor = true;
+			this->FileBtn->Text = L"Р¤Р°Р№Р»";
+			this->FileBtn->UseVisualStyleBackColor = false;
 			this->FileBtn->Click += gcnew System::EventHandler(this, &MainForm::FileBtn_Click);
 			// 
 			// SourceCodeTxt
@@ -242,8 +246,10 @@ namespace GUI {
 			this->SourceCodeTxt->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
+			this->SourceCodeTxt->BackColor = System::Drawing::SystemColors::WindowText;
 			this->SourceCodeTxt->Font = (gcnew System::Drawing::Font(L"Courier New", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
+			this->SourceCodeTxt->ForeColor = System::Drawing::SystemColors::Window;
 			this->SourceCodeTxt->Location = System::Drawing::Point(12, 58);
 			this->SourceCodeTxt->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->SourceCodeTxt->Multiline = true;
@@ -278,7 +284,7 @@ namespace GUI {
 			this->TokensPage->Padding = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->TokensPage->Size = System::Drawing::Size(826, 476);
 			this->TokensPage->TabIndex = 1;
-			this->TokensPage->Text = L"Таблица лексем";
+			this->TokensPage->Text = L"РўР°Р±Р»РёС†Р° Р»РµРєСЃРµРј";
 			this->TokensPage->UseVisualStyleBackColor = true;
 			// 
 			// TokensTable
@@ -300,19 +306,19 @@ namespace GUI {
 			// Index
 			// 
 			this->Index->FillWeight = 10;
-			this->Index->HeaderText = L"№";
+			this->Index->HeaderText = L"в„–";
 			this->Index->Name = L"Index";
 			this->Index->ReadOnly = true;
 			// 
 			// Token
 			// 
-			this->Token->HeaderText = L"Лексема";
+			this->Token->HeaderText = L"Р›РµРєСЃРµРјР°";
 			this->Token->Name = L"Token";
 			this->Token->ReadOnly = true;
 			// 
 			// TokenType
 			// 
-			this->TokenType->HeaderText = L"Тип лексемы";
+			this->TokenType->HeaderText = L"РўРёРї Р»РµРєСЃРµРјС‹";
 			this->TokenType->Name = L"TokenType";
 			this->TokenType->ReadOnly = true;
 			this->TokenType->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
@@ -325,7 +331,7 @@ namespace GUI {
 			this->SyntaxPage->Padding = System::Windows::Forms::Padding(3);
 			this->SyntaxPage->Size = System::Drawing::Size(826, 476);
 			this->SyntaxPage->TabIndex = 2;
-			this->SyntaxPage->Text = L"Синтаксическое дерево";
+			this->SyntaxPage->Text = L"CРёРЅС‚Р°РєСЃРёС‡РµСЃРєРѕРµ РґРµСЂРµРІРѕ";
 			this->SyntaxPage->UseVisualStyleBackColor = true;
 			// 
 			// SyntaxTreeView
@@ -338,167 +344,102 @@ namespace GUI {
 			// 
 			// TriadsPage
 			// 
-			this->TriadsPage->Controls->Add(this->tableLayoutPanel1);
-			this->TriadsPage->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
 			this->TriadsPage->Location = System::Drawing::Point(4, 34);
 			this->TriadsPage->Name = L"TriadsPage";
-			this->TriadsPage->Padding = System::Windows::Forms::Padding(3);
 			this->TriadsPage->Size = System::Drawing::Size(826, 476);
-			this->TriadsPage->TabIndex = 4;
-			this->TriadsPage->Text = L"Триады";
-			this->TriadsPage->UseVisualStyleBackColor = true;
+			this->TriadsPage->TabIndex = 3;
 			// 
 			// tableLayoutPanel1
 			// 
-			this->tableLayoutPanel1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-				| System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
-			this->tableLayoutPanel1->ColumnCount = 3;
-			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				33.33333F)));
-			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				33.33334F)));
-			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				33.33334F)));
-			this->tableLayoutPanel1->Controls->Add(this->Triads1, 0, 1);
-			this->tableLayoutPanel1->Controls->Add(this->Triads3, 2, 1);
-			this->tableLayoutPanel1->Controls->Add(this->Triads2, 1, 1);
-			this->tableLayoutPanel1->Controls->Add(this->label1, 0, 0);
-			this->tableLayoutPanel1->Controls->Add(this->label2, 1, 0);
-			this->tableLayoutPanel1->Controls->Add(this->label3, 2, 0);
-			this->tableLayoutPanel1->Location = System::Drawing::Point(6, 6);
+			this->tableLayoutPanel1->Location = System::Drawing::Point(0, 0);
 			this->tableLayoutPanel1->Name = L"tableLayoutPanel1";
-			this->tableLayoutPanel1->RowCount = 2;
-			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 20)));
-			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 100)));
-			this->tableLayoutPanel1->Size = System::Drawing::Size(814, 464);
-			this->tableLayoutPanel1->TabIndex = 3;
+			this->tableLayoutPanel1->Size = System::Drawing::Size(200, 100);
+			this->tableLayoutPanel1->TabIndex = 0;
 			// 
 			// Triads1
 			// 
-			this->Triads1->AllowUserToAddRows = false;
-			this->Triads1->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::Fill;
-			this->Triads1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->Triads1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(2) { this->ColumnNum, this->Column1 });
-			this->Triads1->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->Triads1->Location = System::Drawing::Point(3, 23);
+			this->Triads1->Location = System::Drawing::Point(0, 0);
 			this->Triads1->Name = L"Triads1";
-			this->Triads1->Size = System::Drawing::Size(265, 438);
+			this->Triads1->Size = System::Drawing::Size(240, 150);
 			this->Triads1->TabIndex = 0;
 			// 
 			// ColumnNum
 			// 
-			this->ColumnNum->FillWeight = 36.54822F;
-			this->ColumnNum->HeaderText = L"№";
 			this->ColumnNum->Name = L"ColumnNum";
-			this->ColumnNum->ReadOnly = true;
-			this->ColumnNum->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
 			// 
 			// Column1
 			// 
-			this->Column1->FillWeight = 163.4518F;
-			this->Column1->HeaderText = L"Триады";
 			this->Column1->Name = L"Column1";
-			this->Column1->ReadOnly = true;
-			this->Column1->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
 			// 
 			// Triads3
 			// 
-			this->Triads3->AllowUserToAddRows = false;
-			this->Triads3->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::Fill;
-			this->Triads3->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->Triads3->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(2) { this->Column4, this->Column5 });
-			this->Triads3->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->Triads3->Location = System::Drawing::Point(545, 23);
+			this->Triads3->Location = System::Drawing::Point(0, 0);
 			this->Triads3->Name = L"Triads3";
-			this->Triads3->Size = System::Drawing::Size(266, 438);
-			this->Triads3->TabIndex = 2;
+			this->Triads3->Size = System::Drawing::Size(240, 150);
+			this->Triads3->TabIndex = 0;
 			// 
 			// Column4
 			// 
-			this->Column4->HeaderText = L"№";
 			this->Column4->Name = L"Column4";
-			this->Column4->ReadOnly = true;
 			// 
 			// Column5
 			// 
-			this->Column5->HeaderText = L"Триады";
 			this->Column5->Name = L"Column5";
-			this->Column5->ReadOnly = true;
 			// 
 			// Triads2
 			// 
-			this->Triads2->AllowUserToAddRows = false;
-			this->Triads2->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::Fill;
-			this->Triads2->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->Triads2->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(2) { this->Column2, this->Column3 });
-			this->Triads2->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->Triads2->Location = System::Drawing::Point(274, 23);
+			this->Triads2->Location = System::Drawing::Point(0, 0);
 			this->Triads2->Name = L"Triads2";
-			this->Triads2->Size = System::Drawing::Size(265, 438);
-			this->Triads2->TabIndex = 1;
+			this->Triads2->Size = System::Drawing::Size(240, 150);
+			this->Triads2->TabIndex = 0;
 			// 
 			// Column2
 			// 
-			this->Column2->HeaderText = L"№";
 			this->Column2->Name = L"Column2";
-			this->Column2->ReadOnly = true;
 			// 
 			// Column3
 			// 
-			this->Column3->HeaderText = L"Триады";
 			this->Column3->Name = L"Column3";
-			this->Column3->ReadOnly = true;
 			// 
 			// label1
 			// 
-			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(3, 0);
+			this->label1->Location = System::Drawing::Point(0, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(98, 16);
-			this->label1->TabIndex = 3;
-			this->label1->Text = L"Общий список";
+			this->label1->Size = System::Drawing::Size(100, 23);
+			this->label1->TabIndex = 0;
 			// 
 			// label2
 			// 
-			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(274, 0);
+			this->label2->Location = System::Drawing::Point(0, 0);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(104, 16);
-			this->label2->TabIndex = 4;
-			this->label2->Text = L"После свертки";
+			this->label2->Size = System::Drawing::Size(100, 23);
+			this->label2->TabIndex = 0;
 			// 
 			// label3
 			// 
-			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(545, 0);
+			this->label3->Location = System::Drawing::Point(0, 0);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(149, 16);
-			this->label3->TabIndex = 5;
-			this->label3->Text = L"Без лишних операций";
+			this->label3->Size = System::Drawing::Size(100, 23);
+			this->label3->TabIndex = 0;
 			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(11, 25);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackColor = System::Drawing::Color::LightGray;
+			this->BackColor = System::Drawing::Color::DarkBlue;
 			this->ClientSize = System::Drawing::Size(878, 560);
 			this->Controls->Add(this->Tabs);
 			this->Font = (gcnew System::Drawing::Font(L"Segoe UI", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->Name = L"MainForm";
-			this->Text = L"Вариант №6";
+			this->Text = L"РРЎ-42 Р’Р°РЅС‡СѓРіРѕРІ РЎ.Рњ. Р’Р°СЂРёР°РЅС‚ 4";
 			this->Tabs->ResumeLayout(false);
 			this->PageSource->ResumeLayout(false);
 			this->PageSource->PerformLayout();
 			this->TokensPage->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TokensTable))->EndInit();
 			this->SyntaxPage->ResumeLayout(false);
-			this->TriadsPage->ResumeLayout(false);
-			this->tableLayoutPanel1->ResumeLayout(false);
-			this->tableLayoutPanel1->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Triads1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Triads3))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Triads2))->EndInit();
@@ -508,8 +449,8 @@ namespace GUI {
 #pragma endregion
 	private: System::Void FileBtn_Click(System::Object^ sender, System::EventArgs^ e) {
 		OpenFileDialog openFileDialog;
-		openFileDialog.DefaultExt = "sсv5";
-		openFileDialog.Filter = "Файлы кода (*.scv5)|*.scv5";
+		openFileDialog.DefaultExt = "sСЃv5";
+		openFileDialog.Filter = "Р¤Р°Р№Р»С‹ РєРѕРґР° (*.scv5)|*.scv5";
 		openFileDialog.ShowDialog();
 
 		System::String^ fileName = openFileDialog.FileName;
@@ -520,7 +461,7 @@ namespace GUI {
 			SourceCodeTxt->Text = sourceCode;
 		}
 		else {
-			MessageBox::Show(this, "Выбор файла был отменен!", "Сообщение");
+			MessageBox::Show(this, "Р’С‹Р±РѕСЂ С„Р°Р№Р»Р° Р±С‹Р» РѕС‚РјРµРЅРµРЅ!", "CРѕРѕР±С‰РµРЅРёРµ");
 		}
 	}
 
@@ -541,7 +482,7 @@ namespace GUI {
 		
 
 		if (String::IsNullOrWhiteSpace(SourceCodeTxt->Text)) {
-			MessageBox::Show(this, "Нет данных для распознавания!", "Сообщение");
+			MessageBox::Show(this, "РќРµС‚ РґР°РЅРЅС‹С… РґР»СЏ СЂР°СЃРїРѕР·РЅР°РІР°РЅРёСЏ!", "РЎРѕРѕР±С‰РµРЅРёРµ");
 			return;
 		}
 
@@ -588,7 +529,7 @@ namespace GUI {
 				SyntaxTreeViewBuilder(SyntaxTreeView)
 					.build(ruleNodes, command.getValueTokens());	
 
-				// Построение дерева операций
+				// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				std::list<SyntaxNode> ruleNodes2 = syntaxResult.nodes;
 				RefTree<RefValue> myTreeRefView;
 				
@@ -618,7 +559,7 @@ namespace GUI {
 		//TriadOpt1 triadOpt1(all_triads);
 		//triadOpt1.reduce();
 		//if (triadOpt1.error) {
-		//	MessageBox::Show(this, gcnew String(triadOpt1.message.c_str()), "Ошибка");
+		//	MessageBox::Show(this, gcnew String(triadOpt1.message.c_str()), "пїЅпїЅпїЅпїЅпїЅпїЅ");
 		//	return;
 		//}
 		//
@@ -632,7 +573,7 @@ namespace GUI {
 
 		//fillTriadsTable(Triads3, all_triads);
 
-		MessageBox::Show(this, "Анализ текста выполнен успешно!", "Сообщение");
+		MessageBox::Show(this, "РђРЅР°Р»РёР· С‚РµРєСЃС‚Р° РІС‹РїРѕР»РЅРµРЅ СѓСЃРїРµС€РЅРѕ!", "РЎРѕРѕР±С‰РµРЅРёРµ");
 	}
 
 	private: void fillTriadsTable(DataGridView^ table, std::list<Triad*>& triads) {
@@ -653,10 +594,10 @@ namespace GUI {
 
 		char inputChar = source.at(index);
 
-		ss << "Встречена ошибка на этапе \"Лексический анализ\":\n\n"
-			<< "В символе: " << index << ";\n"
-			<< "Входной симол \'" << inputChar << " \'(ASCII:" << (int)inputChar << ")\n\n"
-			<< "Сообщение: " << result.items.at(result.items.size() - 1).statusCode.toString() << ".";
+		ss << "Р’СЃС‚СЂРµС‡РµРЅР° РѕС€РёР±РєР° РЅР° СЌС‚Р°РїРµ \"Р›РµРєСЃРёС‡РµСЃРєРёР№ Р°РЅР°Р»РёР·\":\n\n"
+			<< "Р’ СЃС‚РѕР»Р±С†Рµ: " << index << ";\n"
+			<< "Р’С…РѕРґРЅРѕР№ СЃРёРјРІРѕР» \'" << inputChar << " \'(ASCII:" << (int)inputChar << ")\n\n"
+			<< "РЎРѕРѕР±С‰РµРЅРёРµ: " << result.items.at(result.items.size() - 1).statusCode.toString() << ".";
 
 		String^ message = gcnew String(ss.str().c_str());
 
@@ -666,8 +607,8 @@ namespace GUI {
 	private: void syntaxResultError(SyntaxResult& result) {
 		std::stringstream ss;
 
-			ss << "Встречена ошибка на этапе \"Синтаксический анализ\":\n\n"
-			   << "Сообщение: " << result.message << ".";
+			ss << "Р’СЃС‚СЂРµС‡РµРЅР° РѕС€РёР±РєР° РЅР° СЌС‚Р°РїРµ \"РЎРёРЅС‚Р°РєСЃРёС‡РµСЃРєРёР№ Р°РЅР°Р»РёР·\":\n\n"
+			   << "РЎРѕРѕР±С‰РµРЅРёРµ: " << result.message << ".";
 
 			   String^ message = gcnew String(ss.str().c_str());
 

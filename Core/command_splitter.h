@@ -32,7 +32,7 @@ public:
                 index += 1;
             }
 
-            command.tokens.push_back(Token("Ê", TermTypes::LIMIT));
+            command.tokens.push_back(Token("Ðš", TermTypes::LIMIT));
             commands.push_back(command);
         }
         return commands;

@@ -27,310 +27,470 @@
 #include <vector>
 #include "../Core/triadopt2.h"
 
-static void print_triads(std::list<Triad*>& triads) {
-    for (Triad* triad : triads) {
-        std::cout 
-            << " | " 
-            << std::setw(2) << (triad->id)    << "  | " 
-            << triad->toString()  << " \n";
+
+class TestError {
+public:
+    std::string message;
+    int code;
+    TestError(int code, std::string message) : code(code), message(message) {}
+};
+
+class StreamUtils {
+    std::stringbuf sbuf;
+    std::streambuf* oldbuf;
+
+    void update_state() {
+        this->sbuf = std::stringbuf(std::ios::out);
+        this->oldbuf = std::cout.rdbuf(std::addressof(this->sbuf));
     }
-}
 
+public:
+    void capture_stream() {
+        this->update_state();
+    }
+    bool out_stream_to_be(std::string expect) {
 
+        std::cout.rdbuf(this->oldbuf);
 
-struct ReNode {
-    int value;
-    std::vector<ReNode> nodes;
+        std::string output = this->sbuf.str();
+
+        return output == expect;
+    }
 };
 
 
-std::list<Triad*> prepare_triads(std::string line) {
+
+class CompareUtils {
+private:
+    TestError ERROR = TestError(1, "Invalid type");
+public:
+    template<class C1>
+    void are_equal(C1 c1, C1 c2) {
+        try {
+            bool equal = c1 == c2;
+            if (!equal) throw ERROR;
+            std::cout << "Успешно";
+        }
+        catch (TestError& error) {
+            std::cout << "Ошибка: " << error.message << "\n";
+            std::cout << "Фактический результат: \n" << c1 << "\nОжидаемый результат: " << "\n" << c2 << "\n";
+        }
+        catch (...) {
+            std::cout << "Неизвестная ошибка: \n";
+            std::cout << "Фактический результат: \n" << c1 << "\nОжидаемый результат: " << "\n" << c2 << "\n";
+        }
+    }
+};
+
+class TestDescriptionArgs {
+public:
+    StreamUtils s_u = StreamUtils();
+    CompareUtils c_u = CompareUtils();
+};
+
+class TestUtils {
+public:
+    void it(std::string testName, std::function<void(TestDescriptionArgs utils)> description) {
+        std::cout << testName << ": ";
+        description(TestDescriptionArgs());
+        std::cout << "\n";
+    }
+};
+
+class Test {
+public:
+    void describe(std::string testName, std::function<void(TestUtils utils)> description) {
+        std::cout << "------------------ start " << testName << "------------------\n";
+        description(TestUtils());
+        std::cout << "------------------ end " << testName << "------------------\n";
+        std::cout << "\n";
+    }
+};
+
+
+int main() {
+    setlocale(LC_ALL, "");
+
     Parser lexer;
-    std::cout << "ВХОДНЫЕ ДАННЫЕ:\n"
-        << std::string(32, '-') << "\n"
-        << line << ""
-        << std::string(32, '-') << "\n";
-    std::cout << "Фактический вывод:\n";
-    std::cout << "Список триад:\n";
 
-    auto parseResult = lexer.parse(line);
+    Test t = Test();
+    t.describe("black box",
+        [&](TestUtils utils) {
+            utils.it("parse True value", [&](TestDescriptionArgs args) {
+                std::string line = "A:=T;";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult{
+                        Location{ 7, 0 },
+                        {
+                          ParseItem{Token{"A", TermTypes::IDENTIFIER}, StatusCodes::SUCCESS__},
+                          ParseItem{Token{":=", TermTypes::ASSIGNMENT}, StatusCodes::SUCCESS__},
+                          ParseItem{Token{"T", TermTypes::TRUE}, StatusCodes::SUCCESS__ },
+                          ParseItem{Token{ ";", TermTypes::SEMICOLON }, StatusCodes::SUCCESS__}
+                        },
+                        false
+                    }
+                );
+                });
+            utils.it("parse False value", [&](TestDescriptionArgs args) {
+                std::string line = "A:=F;";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult{
+                        Location{ 7, 0 },
+                        {
+                          ParseItem{Token{"A", TermTypes::IDENTIFIER}, StatusCodes::SUCCESS__},
+                          ParseItem{Token{":=", TermTypes::ASSIGNMENT}, StatusCodes::SUCCESS__},
+                          ParseItem{Token{"F", TermTypes::TRUE}, StatusCodes::SUCCESS__ },
+                          ParseItem{Token{ ";", TermTypes::SEMICOLON }, StatusCodes::SUCCESS__}
+                        },
+                        false
+                    }
+                );
+                });
+            utils.it("parse or operator", [&](TestDescriptionArgs args) {
+                std::string line = "A:=T or F;";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult(
+                        Location(12, 0),
+                        {
+                          ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                          ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                          ParseItem(Token("T", TermTypes::TRUE), StatusCodes::SUCCESS__),
+                          ParseItem(Token("or", TermTypes::OR), StatusCodes::SUCCESS__),
+                          ParseItem(Token("F", TermTypes::FALSE), StatusCodes::SUCCESS__),
+                          ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                        },
+                        false
+                    )
+                );
+                });
+            utils.it("parse and operator", [&](TestDescriptionArgs args) {
+                std::string line = "A:=T and F;";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult(
+                        Location(13, 0),
+                        {
+                          ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                          ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                          ParseItem(Token("T", TermTypes::TRUE), StatusCodes::SUCCESS__),
+                          ParseItem(Token("and", TermTypes::AND), StatusCodes::SUCCESS__),
+                          ParseItem(Token("F", TermTypes::FALSE), StatusCodes::SUCCESS__),
+                          ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                        },
+                        false
+                    )
+                );
+                });
+            utils.it("parse xor operator", [&](TestDescriptionArgs args) {
+                std::string line = "A:=T xor F;";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult(
+                        Location(13, 0),
+                        {
+                          ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                          ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                          ParseItem(Token("T", TermTypes::TRUE), StatusCodes::SUCCESS__),
+                          ParseItem(Token("xor", TermTypes::XOR), StatusCodes::SUCCESS__),
+                          ParseItem(Token("F", TermTypes::FALSE), StatusCodes::SUCCESS__),
+                          ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                        },
+                        false
+                    )
+                );
+                });
+            utils.it("parse not operator", [&](TestDescriptionArgs args) {
+                std::string line = "A:= not F;";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult(
+                        Location(12, 0),
+                        {
+                          ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                          ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                          ParseItem(Token("not", TermTypes::NOT), StatusCodes::SUCCESS__),
+                          ParseItem(Token("F", TermTypes::FALSE), StatusCodes::SUCCESS__),
+                          ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                        },
+                        false
+                    )
+                );
+                });
+            utils.it("parse identifier operator", [&](TestDescriptionArgs args) {
+                std::string line = "A:=c;";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult(
+                        Location(7, 0),
+                        {
+                          ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                          ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                          ParseItem(Token("c", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                          ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                        },
+                        false
+                    )
+                );
+                });
+            utils.it("parse brackets operator", [&](TestDescriptionArgs args) {
+                std::string line = "A:=(T or F);";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult(
+                        Location(14, 0),
+                        {
+                          ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                          ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                          ParseItem(Token("(", TermTypes::OPEN_BRACKET), StatusCodes::SUCCESS__),
+                          ParseItem(Token("T", TermTypes::TRUE), StatusCodes::SUCCESS__),
+                          ParseItem(Token("or", TermTypes::OR), StatusCodes::SUCCESS__),
+                          ParseItem(Token("F", TermTypes::FALSE), StatusCodes::SUCCESS__),
+                          ParseItem(Token(")", TermTypes::CLOSE_BRACKET), StatusCodes::SUCCESS__),
+                          ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                        },
+                        false
+                    )
+                );
+                });
+            utils.it("parse invalid assigment", [&](TestDescriptionArgs args) {
+                std::string line = "A:B;";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult(
+                        Location(3, 0),
+                        {
+                          ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                          ParseItem(Token(":", TermTypes::UNDEFINED), StatusCodes::LEX_1)
+                        },
+                        true
+                    )
+                );
+                });
+            utils.it("parse comment", [&](TestDescriptionArgs args) {
+                std::string line = "A:=T;//TRUE";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult(
+                        Location(13, 0),
+                        {
+                          ParseItem{Token{"A", TermTypes::IDENTIFIER}, StatusCodes::SUCCESS__},
+                          ParseItem{Token{":=", TermTypes::ASSIGNMENT}, StatusCodes::SUCCESS__},
+                          ParseItem{Token{"T", TermTypes::TRUE}, StatusCodes::SUCCESS__ },
+                          ParseItem{Token{ ";", TermTypes::SEMICOLON }, StatusCodes::SUCCESS__}
+                        },
+                        false
+                    )
+                );
+                });
+            utils.it("parse multiline comment", [&](TestDescriptionArgs args) {
+                std::string line = "A:=T;/*\nTRUE\n*/";
+                auto parseResult = lexer.parse(line);
+                args.c_u.are_equal(parseResult,
+                    ParseResult(
+                        Location(17, 0),
+                        {
+                          ParseItem{Token{"A", TermTypes::IDENTIFIER}, StatusCodes::SUCCESS__},
+                          ParseItem{Token{":=", TermTypes::ASSIGNMENT}, StatusCodes::SUCCESS__},
+                          ParseItem{Token{"T", TermTypes::TRUE}, StatusCodes::SUCCESS__ },
+                          ParseItem{Token{ ";", TermTypes::SEMICOLON }, StatusCodes::SUCCESS__}
+                        },
+                        false
+                    )
+                );
+                });
+        });
 
-    auto commands = MathCommandSplitter().split(parseResult);
-
-    int tCount = 0;
-
-    std::list<Triad*> triads__;
-
-    for (auto& command : commands) {
-        if (command.isValid) {
-            Syntax syntax = Syntax(CurrentSyntaxConfig);
-            SyntaxResult syntaxResult = syntax.proccess(command);
-
-            std::list<SyntaxNode> ruleNodes2 = syntaxResult.nodes;
-
-            RefTree<RefValue> myTreeRefView;
-
-            SyntaxTreeByCharBuilder(myTreeRefView)
-                .build(ruleNodes2, command.getValueTokens());
-            OperatorsTreeBuilder(myTreeRefView)
-                .build();
-            std::list<Triad*> triads = TriadBuilderV2(myTreeRefView)
-                .build(tCount);
-
-            tCount += triads.size();
-
-            for (Triad* triad : triads) {
-                triads__.push_back(triad);
-            }
-        }
-    }
-    return triads__;
+    t.describe("White box", [&](TestUtils utils) {
+        utils.it("parse True value", [&](TestDescriptionArgs args) {
+            std::string line = "A:=T;";
+            auto parseResult = lexer.parse(line);
+            ParseResult expected = ParseResult{
+                    Location{ 7, 0 },
+                    {
+                      ParseItem{Token{"A", TermTypes::IDENTIFIER}, StatusCodes::SUCCESS__},
+                      ParseItem{Token{":=", TermTypes::ASSIGNMENT}, StatusCodes::SUCCESS__},
+                      ParseItem{Token{"T", TermTypes::TRUE}, StatusCodes::SUCCESS__ },
+                      ParseItem{Token{ ";", TermTypes::SEMICOLON }, StatusCodes::SUCCESS__}
+                    },
+                    false
+            };
+            args.c_u.are_equal(parseResult, expected);
+            std::cout << "\nФактический: " << parseResult << "\nОжидаемый: " << expected;
+            });
+        utils.it("parse False value", [&](TestDescriptionArgs args) {
+            std::string line = "A:=F;";
+            auto parseResult = lexer.parse(line);
+            ParseResult expected = ParseResult{
+                    Location{ 7, 0 },
+                    {
+                      ParseItem{Token{"A", TermTypes::IDENTIFIER}, StatusCodes::SUCCESS__},
+                      ParseItem{Token{":=", TermTypes::ASSIGNMENT}, StatusCodes::SUCCESS__},
+                      ParseItem{Token{"F", TermTypes::TRUE}, StatusCodes::SUCCESS__ },
+                      ParseItem{Token{ ";", TermTypes::SEMICOLON }, StatusCodes::SUCCESS__}
+                    },
+                    false
+            };
+            args.c_u.are_equal(parseResult, expected);
+            std::cout << "\nФактический: " << parseResult << "\nОжидаемый: " << expected;
+            });
+        utils.it("parse or operator", [&](TestDescriptionArgs args) {
+            std::string line = "A:=T or F;";
+            auto parseResult = lexer.parse(line);
+            ParseResult expected = ParseResult(
+                Location(12, 0),
+                {
+                  ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                  ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                  ParseItem(Token("T", TermTypes::TRUE), StatusCodes::SUCCESS__),
+                  ParseItem(Token("or", TermTypes::OR), StatusCodes::SUCCESS__),
+                  ParseItem(Token("F", TermTypes::FALSE), StatusCodes::SUCCESS__),
+                  ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                },
+                false
+            );
+            args.c_u.are_equal(parseResult, expected);
+            std::cout << "\nФактический: " << parseResult << "\nОжидаемый: " << expected;
+            });
+        utils.it("parse and operator", [&](TestDescriptionArgs args) {
+            std::string line = "A:=T and F;";
+            auto parseResult = lexer.parse(line);
+            ParseResult expected = ParseResult(
+                Location(13, 0),
+                {
+                  ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                  ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                  ParseItem(Token("T", TermTypes::TRUE), StatusCodes::SUCCESS__),
+                  ParseItem(Token("and", TermTypes::AND), StatusCodes::SUCCESS__),
+                  ParseItem(Token("F", TermTypes::FALSE), StatusCodes::SUCCESS__),
+                  ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                },
+                false
+            );
+            args.c_u.are_equal(parseResult, expected);
+            std::cout << "\nФактический: " << parseResult << "\nОжидаемый: " << expected;
+            });
+        utils.it("parse xor operator", [&](TestDescriptionArgs args) {
+            std::string line = "A:=T xor F;";
+            auto parseResult = lexer.parse(line);
+            ParseResult expected = ParseResult(
+                Location(13, 0),
+                {
+                  ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                  ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                  ParseItem(Token("T", TermTypes::TRUE), StatusCodes::SUCCESS__),
+                  ParseItem(Token("xor", TermTypes::XOR), StatusCodes::SUCCESS__),
+                  ParseItem(Token("F", TermTypes::FALSE), StatusCodes::SUCCESS__),
+                  ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                },
+                false
+            );
+            args.c_u.are_equal(parseResult, expected);
+            std::cout << "\nФактический: " << parseResult << "\nОжидаемый: " << expected;
+            });
+        utils.it("parse not operator", [&](TestDescriptionArgs args) {
+            std::string line = "A:= not F;";
+            auto parseResult = lexer.parse(line);
+            ParseResult expected = ParseResult(
+                Location(12, 0),
+                {
+                  ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                  ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                  ParseItem(Token("not", TermTypes::NOT), StatusCodes::SUCCESS__),
+                  ParseItem(Token("F", TermTypes::FALSE), StatusCodes::SUCCESS__),
+                  ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                },
+                false
+            );
+            args.c_u.are_equal(parseResult, expected);
+            std::cout << "\nФактический: " << parseResult << "\nОжидаемый: " << expected;
+            });
+        utils.it("parse identifier operator", [&](TestDescriptionArgs args) {
+            std::string line = "A:=c;";
+            auto parseResult = lexer.parse(line);
+            ParseResult expected = ParseResult(
+                Location(7, 0),
+                {
+                  ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                  ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                  ParseItem(Token("c", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                  ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                },
+                false
+            );
+            args.c_u.are_equal(parseResult, expected);
+            std::cout << "\nФактический: " << parseResult << "\nОжидаемый: " << expected;
+            });
+        utils.it("parse brackets operator", [&](TestDescriptionArgs args) {
+            std::string line = "A:=(T or F);";
+            auto parseResult = lexer.parse(line);
+            ParseResult expected = ParseResult(
+                Location(14, 0),
+                {
+                  ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                  ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+                  ParseItem(Token("(", TermTypes::OPEN_BRACKET), StatusCodes::SUCCESS__),
+                  ParseItem(Token("T", TermTypes::TRUE), StatusCodes::SUCCESS__),
+                  ParseItem(Token("or", TermTypes::OR), StatusCodes::SUCCESS__),
+                  ParseItem(Token("F", TermTypes::FALSE), StatusCodes::SUCCESS__),
+                  ParseItem(Token(")", TermTypes::CLOSE_BRACKET), StatusCodes::SUCCESS__),
+                  ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__)
+                },
+                false
+            );
+            args.c_u.are_equal(parseResult, expected);
+            std::cout << "\nФактический: " << parseResult << "\nОжидаемый: " << expected;
+            });
+        utils.it("parse invalid assigment", [&](TestDescriptionArgs args) {
+            std::string line = "A:B;";
+            auto parseResult = lexer.parse(line);
+            ParseResult expected = ParseResult(
+                Location(3, 0),
+                {
+                  ParseItem(Token("A", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+                  ParseItem(Token(":", TermTypes::UNDEFINED), StatusCodes::LEX_1)
+                },
+                true
+            );
+            args.c_u.are_equal(parseResult, expected);
+            std::cout << "\nФактический: " << parseResult << "\nОжидаемый: " << expected;
+            });
+        utils.it("parse comment", [&](TestDescriptionArgs args) {
+            std::string line = "A:=T;//TRUE";
+            auto parseResult = lexer.parse(line);
+            ParseResult expected = ParseResult(
+                Location(13, 0),
+                {
+                  ParseItem{Token{"A", TermTypes::IDENTIFIER}, StatusCodes::SUCCESS__},
+                  ParseItem{Token{":=", TermTypes::ASSIGNMENT}, StatusCodes::SUCCESS__},
+                  ParseItem{Token{"T", TermTypes::TRUE}, StatusCodes::SUCCESS__ },
+                  ParseItem{Token{ ";", TermTypes::SEMICOLON }, StatusCodes::SUCCESS__}
+                },
+                false
+            );
+            args.c_u.are_equal(parseResult, expected);
+            std::cout << "\nФактический: " << parseResult << "\nОжидаемый: " << expected;
+            });
+        utils.it("parse multiline comment", [&](TestDescriptionArgs args) {
+            std::string line = "A:=T;/*\nTRUE\n*/";
+            auto parseResult = lexer.parse(line);
+            ParseResult expected = ParseResult(
+                Location(17, 0),
+                {
+                  ParseItem{Token{"A", TermTypes::IDENTIFIER}, StatusCodes::SUCCESS__},
+                  ParseItem{Token{":=", TermTypes::ASSIGNMENT}, StatusCodes::SUCCESS__},
+                  ParseItem{Token{"T", TermTypes::TRUE}, StatusCodes::SUCCESS__ },
+                  ParseItem{Token{ ";", TermTypes::SEMICOLON }, StatusCodes::SUCCESS__}
+                },
+                false
+            );
+            args.c_u.are_equal(parseResult, expected);
+            std::cout << "\nФактический: " << parseResult << "\nОжидаемый: " << expected;
+            });
+        });
 }
-
-
-std::string triads_to_string(std::list<Triad*>& triads, bool showDep = false, bool isShowConst = false) {
-    std::stringstream ss;
-
-    for (Triad* triad : triads) {
-        ss
-            << " | "
-            << std::setw(2) << (triad->id) << "  | "
-            << std::setw(18) << triad->toString(); 
-        if (showDep) {
-            ss << " DEP=" << triad->dep;
-        }
-
-        ss << " \n";
-    }
-
-    return ss.str();
-}
-
-class BlackBoxTriads {
-public:
-
-    std::string base_test(std::string input) {
-        std::list<Triad*> triads = prepare_triads(input); 
-        std::string table1 = triads_to_string(triads);
-        
-        TriadOpt1(triads).reduce();
-        std::string table2 = triads_to_string(triads);
-        
-        TriadOpt2 triadOpt2(triads);
-        triadOpt2.setDepValues();
-        triadOpt2.clearSameTriads();
-        std::string table3 = triads_to_string(triads);
-
-        return
-            "Список триад:\n" + table1 +
-            "После свертки:\n" + table2 +
-            "Без лишних операций:\n" + table3;
-    }
-
-    int N = 1;
-
-    void test1() {
-        std::cout << "Тест # " << N << "\n\n";
-
-        std::string input = "a:=X;\n"
-                            "b:=X+I-I;\n";
-        std::string expected = "Список триад:\n"
-                               " |  1  |  := ( a, X ); \n"
-                               " |  2  |   + ( X, I ); \n"
-                               " |  3  |   - ( ^2, I ); \n"
-                               " |  4  |  := ( b, ^3 ); \n"
-                               "После свертки:\n"
-                               " |  1  |  := ( a, X ); \n"
-                               " |  2  |  := ( b, X ); \n"
-                               "Без лишних операций:\n"
-                               " |  1  |  := ( a, X ); \n"
-                               " |  2  |  := ( b, X ); \n";
-        std::string actual =  base_test(input);
-
-        std::cout << "Фактический вывод:\n" << actual << "\n";
-        std::cout << "Ожидаемый вывод:\n" << expected << "\n";
-
-        if (actual == expected) {
-            std::cout << "Тест # " << N++ << " пройден!\n\n";
-        }
-        else {
-            std::cout << "Тест # " << N++ << " пройден!\n\n";
-        }
-    }
-
-    void test2() {
-        std::cout << "Тест # " << N << "\n\n";
-
-        std::string input = "a:=nil;\n"
-                            "b:=a-I;\n"
-                            "c:=V*(a-I);\n"
-                            "a:=(a-I)+(a-I);\n"
-                            "d:=a-I;\n";
-
-        std::string expected = "Список триад:\n"
-            " |  1  |  := ( a, nil ); \n"
-            " |  2  |   - ( a, I ); \n"
-            " |  3  |  := ( b, ^2 ); \n"
-            " |  4  |   - ( a, I ); \n"
-            " |  5  |   * ( V, ^4 ); \n"
-            " |  6  |  := ( c, ^5 ); \n"
-            " |  7  |   - ( a, I ); \n"
-            " |  8  |   - ( a, I ); \n"
-            " |  9  |   + ( ^8, ^7 ); \n"
-            " | 10  |  := ( a, ^9 ); \n"
-            " | 11  |   - ( a, I ); \n"
-            " | 12  |  := ( d, ^11 ); \n"
-            "После свертки:\n"
-            " |  1  |  := ( a, nil ); \n"
-            " |  2  |   - ( a, I ); \n"
-            " |  3  |  := ( b, ^2 ); \n"
-            " |  4  |   - ( a, I ); \n"
-            " |  5  |   * ( V, ^4 ); \n"
-            " |  6  |  := ( c, ^5 ); \n"
-            " |  7  |   - ( a, I ); \n"
-            " |  8  |   - ( a, I ); \n"
-            " |  9  |   + ( ^8, ^7 ); \n"
-            " | 10  |  := ( a, ^9 ); \n"
-            " | 11  |   - ( a, I ); \n"
-            " | 12  |  := ( d, ^11 ); \n"
-            "Без лишних операций:\n"
-            " |  1  |  := ( a, nil ); \n"
-            " |  2  |   - ( a, I ); \n"
-            " |  3  |  := ( b, ^2 ); \n"
-            " |  4  |   * ( V, ^2 ); \n"
-            " |  5  |  := ( c, ^4 ); \n"
-            " |  6  |   + ( ^2, ^2 ); \n"
-            " |  7  |  := ( a, ^6 ); \n"
-            " |  8  |   - ( a, I ); \n"
-            " |  9  |  := ( d, ^8 ); \n";
-        std::string actual = base_test(input);
-
-        std::cout << "Фактический вывод:\n" << actual << "\n";
-        std::cout << "Ожидаемый вывод:\n" << expected << "\n";
-
-        if (actual == expected) {
-            std::cout << "Тест # " << N++ << " пройден!\n\n";
-        }
-        else {
-            std::cout << "Тест # " << N++ << " провален!\n\n";
-        }
-    }
-
-    void roman_number_owerflow() {
-        std::cout << "Тест # " << N << "\n\n";
-
-        std::string input = "a:=X-M;\n";
-        std::string expected = "Семантическая ошибка: \nПереполнение типа 'Римское число' [1-3999] при выполнении операции: `X - M`";
-        std::string actual;
-
-        std::list<Triad*> triads = prepare_triads(input);
-        std::string table1 = triads_to_string(triads);
-        
-        TriadOpt1 triadOpt1(triads);
-
-        triadOpt1.reduce();
-
-        if (triadOpt1.error) {
-            actual = triadOpt1.message;
-        }
-        else {
-            actual = base_test(input);
-        }
-        
-        std::cout << "Фактический вывод:\n  " << actual << "\n";
-        std::cout << "Ожидаемый вывод:\n  " << expected << "\n";
-
-        if (actual == expected) {
-            std::cout << "Тест # " << N++ << " пройден!\n\n";
-        }
-        else {
-            std::cout << "Тест # " << N++ << " провален!\n\n";
-        }
-    }
-
-    void run() {
-        test1();
-        test2();
-        roman_number_owerflow();
-    }
-
-    static void s_run() {
-        BlackBoxTriads bbt;
-        bbt.run();
-    }
-
-};
-
-class WhiteBoxTriads {
-public:
-
-    std::string base_test(std::string input) {
-        
-        std::list<Triad*> triads = prepare_triads(input);
-        std::string table1 = triads_to_string(triads);
-        
-        
-        TriadOpt1(triads).reduce();
-        TriadOpt2 triadOpt2(triads);
-        triadOpt2.setDepValues();
-        std::cout << "После свертки:\n";
-        std::string table2 = triads_to_string(triads, true);
-
-        triadOpt2.clearSameTriads();
-        std::string table3 = triads_to_string(triads);
-
-        return "Без лишних операций:\n" + table3;
-    }
-
-    int N = 1;
-
-    void test1() {
-        std::cout << "Тест # " << N << "\n\n";
-
-        std::string input =
-            "a:=nil;\n"
-            "b:=a-I+(I+II+III);\n"
-            "c:=V*(a-I);\n"
-            "a:=(a-I)+(a-I)*(II*III);\n"
-            "d:=a-I;\n";
-
-        std::string expected = 
-            "Список триад:\n"
-            " |  1  |  := ( a, X ); \n"
-            " |  2  |   + ( X, I ); \n"
-            " |  3  |   - ( ^2, I ); \n"
-            " |  4  |  := ( b, ^3 ); \n"
-            "После свертки:\n"
-            " |  1  |  := ( a, X ); \n"
-            " |  2  |  := ( b, X ); \n"
-            "Без лишних операций:\n"
-            " |  1  |  := ( a, X ); \n"
-            " |  2  |  := ( b, X ); \n";
-
-        
-
-        std::string actual = base_test(input);
-        std::cout << actual << "\n";
-        
-        //std::cout << "Ожидаемый вывод:\n" << expected << "\n";
-
-        if (actual == expected) {
-            std::cout << "Тест # " << N++ << " пройден!\n\n";
-        }
-        else {
-            std::cout << "Тест # " << N++ << " провален!\n\n";
-        }
-    }
-
-    void run() {
-        test1();
-    }
-
-    static void s_run() {
-        WhiteBoxTriads bbt;
-        bbt.run();
-    }
-};
 
 void runParser(std::string line) {
     Parser lexer;
