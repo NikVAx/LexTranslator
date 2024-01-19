@@ -9,28 +9,27 @@
 #include <map>
 
 const std::map<TermType, SyntaxChar> TERM_TYPE_TO_MATRIX_INDEX = {
-    { TermTypes::OR, SyntaxChars::OR },
-    { TermTypes::XOR, SyntaxChars::XOR },
-    { TermTypes::AND, SyntaxChars::AND },
-    { TermTypes::NOT, SyntaxChars::NOT },
-    { TermTypes::OPEN_BRACKET, SyntaxChars::OPEN_BRACKET },
-    { TermTypes::CLOSE_BRACKET, SyntaxChars::CLOSE_BRACKET },
+    { TermTypes::LIMIT, SyntaxChars::LIMIT },
+    { TermTypes::IF, SyntaxChars::IF },
+    { TermTypes::THEN, SyntaxChars::THEN },
+    { TermTypes::ELSE, SyntaxChars::ELSE },
     { TermTypes::IDENTIFIER, SyntaxChars::IDENTIFIER },
-    { TermTypes::TRUE, SyntaxChars::IDENTIFIER },
-    { TermTypes::FALSE, SyntaxChars::IDENTIFIER },
+    { TermTypes::NUMBER, SyntaxChars::IDENTIFIER },
+    { TermTypes::GREATER, SyntaxChars::GREATER },
+    { TermTypes::LESS, SyntaxChars::LESS },
+    { TermTypes::EQUAL, SyntaxChars::EQUAL },
     { TermTypes::ASSIGNMENT, SyntaxChars::ASSIGNMENT },
     { TermTypes::SEMICOLON, SyntaxChars::SEMICOLON },
-    { TermTypes::LIMIT, SyntaxChars::LIMIT },
 };
 
 namespace SyntaxRules {
-    const SyntaxRule R1 = SyntaxRule(1, BuildRule({ SyntaxChars::IDENTIFIER, SyntaxChars::ASSIGNMENT, SyntaxChars::NONTERMINAL, SyntaxChars::SEMICOLON }));
-    const SyntaxRule R2 = SyntaxRule(2, BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::OR, SyntaxChars::NONTERMINAL }));
-    const SyntaxRule R3 = SyntaxRule(3, BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::XOR, SyntaxChars::NONTERMINAL }));
-    const SyntaxRule R4 = SyntaxRule(4, BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::AND, SyntaxChars::NONTERMINAL }));
-    const SyntaxRule R5 = SyntaxRule(5, BuildRule({ SyntaxChars::NOT, SyntaxChars::NONTERMINAL }));
-    const SyntaxRule R6 = SyntaxRule(6, BuildRule({ SyntaxChars::OPEN_BRACKET, SyntaxChars::NONTERMINAL, SyntaxChars::CLOSE_BRACKET }));
-    const SyntaxRule R7 = SyntaxRule(7, BuildRule({ SyntaxChars::IDENTIFIER }));
+    const SyntaxRule R1 = SyntaxRule(1, BuildRule({ SyntaxChars::NONTERMINAL, SyntaxChars::SEMICOLON }));
+    const SyntaxRule R2 = SyntaxRule(2, BuildRule({ SyntaxChars::IF, SyntaxChars::NONTERMINAL, SyntaxChars::THEN, SyntaxChars::NONTERMINAL, SyntaxChars::ELSE, SyntaxChars::NONTERMINAL }));
+    const SyntaxRule R3 = SyntaxRule(3, BuildRule({ SyntaxChars::IF, SyntaxChars::NONTERMINAL, SyntaxChars::THEN, SyntaxChars::NONTERMINAL }));
+    const SyntaxRule R4 = SyntaxRule(4, BuildRule({ SyntaxChars::IDENTIFIER, SyntaxChars::ASSIGNMENT, SyntaxChars::IDENTIFIER }));
+    const SyntaxRule R5 = SyntaxRule(5, BuildRule({ SyntaxChars::IDENTIFIER, SyntaxChars::LESS, SyntaxChars::IDENTIFIER }));
+    const SyntaxRule R6 = SyntaxRule(6, BuildRule({ SyntaxChars::IDENTIFIER, SyntaxChars::GREATER, SyntaxChars::IDENTIFIER }));
+    const SyntaxRule R7 = SyntaxRule(7, BuildRule({ SyntaxChars::IDENTIFIER, SyntaxChars::EQUAL, SyntaxChars::IDENTIFIER }));
 }
 
 const std::vector<SyntaxRule> RULES = {

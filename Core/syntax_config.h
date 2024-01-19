@@ -19,6 +19,7 @@ public:
             throw std::invalid_argument("SyntaxConfig `matrix` is not relation matrix.");
         }
 
+
         for (SyntaxRule rule : rules) {
             stringRuleMap.insert({ rule.buildRule.ruleString, rule });
         }

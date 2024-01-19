@@ -7,7 +7,7 @@
 
 class CommandSplitter {
 private:
-    std::list<TermType> VALUES_TO_INCLUDE = { TermTypes::TRUE, TermTypes::FALSE, TermTypes::IDENTIFIER };
+    std::list<TermType> VALUES_TO_INCLUDE = { TermTypes::TRUE, TermTypes::FALSE, TermTypes::IDENTIFIER, TermTypes::NUMBER };
 
     bool shouldAddToValue(ParseItem& item) {
         return std::find(VALUES_TO_INCLUDE.begin(), VALUES_TO_INCLUDE.end(), item.token.termType) != VALUES_TO_INCLUDE.end();
