@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include "../Core/lexer.h"
 #include "../Core/parse_result.h"
@@ -36,7 +36,7 @@ namespace GUI {
 	using namespace System::Drawing;
 
 	/// <summary>
-	/// Сводка для MainForm
+	/// РЎРІРѕРґРєР° РґР»СЏ MainForm
 	/// </summary>
 	public ref class MainForm : public System::Windows::Forms::Form {
 	public:
@@ -44,13 +44,13 @@ namespace GUI {
 		{
 			InitializeComponent();
 			//
-			//TODO: добавьте код конструктора
+			//TODO: РґРѕР±Р°РІСЊС‚Рµ РєРѕРґ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР°
 			//
 		}
 
 	protected:
 		/// <summary>
-		/// Освободить все используемые ресурсы.
+		/// РћСЃРІРѕР±РѕРґРёС‚СЊ РІСЃРµ РёСЃРїРѕР»СЊР·СѓРµРјС‹Рµ СЂРµСЃСѓСЂСЃС‹.
 		/// </summary>
 		~MainForm()
 		{
@@ -59,46 +59,31 @@ namespace GUI {
 				delete components;
 			}
 		}
-
+	private: System::Windows::Forms::TabControl^ Tabs;
 	protected:
+	private: System::Windows::Forms::TabPage^ PageSource;
+	private: System::Windows::Forms::TextBox^ SourceCodeTxt;
+
+	private: System::Windows::Forms::TextBox^ SourceFileTxt;
+
 
 	private: System::Windows::Forms::TabPage^ PageLab1;
+	private: System::Windows::Forms::Button^ ExecuteBtn;
+
+	private: System::Windows::Forms::Button^ ClearSourceBtn;
+
+
+	private: System::Windows::Forms::Button^ FileBtn;
 	private: System::Windows::Forms::DataGridView^ TokensTable;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Index;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Token;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ TokenType;
-	private: System::Windows::Forms::TabPage^ PageSource;
-	private: System::Windows::Forms::Button^ ExecuteBtn;
-	private: System::Windows::Forms::Button^ ClearSourceBtn;
-	private: System::Windows::Forms::Button^ FileBtn;
-	private: System::Windows::Forms::TextBox^ SourceCodeTxt;
-	private: System::Windows::Forms::TextBox^ SourceFileTxt;
-	private: System::Windows::Forms::TabControl^ Tabs;
+	private: System::Windows::Forms::TabPage^ lab2Page;
 
-	protected:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	private: System::Windows::Forms::TreeView^ SyntaxTreeView;
+	private: System::Windows::Forms::TabPage^ OpersPage;
+	private: System::Windows::Forms::TabPage^ TriadsPage;
+	private: System::Windows::Forms::TreeView^ OpersTreeView;
 
 
 
@@ -108,86 +93,57 @@ namespace GUI {
 
 	private:
 		/// <summary>
-		/// Обязательная переменная конструктора.
+		/// РћР±СЏР·Р°С‚РµР»СЊРЅР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР°.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Требуемый метод для поддержки конструктора — не изменяйте 
-		/// содержимое этого метода с помощью редактора кода.
+		/// РўСЂРµР±СѓРµРјС‹Р№ РјРµС‚РѕРґ РґР»СЏ РїРѕРґРґРµСЂР¶РєРё РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР° вЂ” РЅРµ РёР·РјРµРЅСЏР№С‚Рµ 
+		/// СЃРѕРґРµСЂР¶РёРјРѕРµ СЌС‚РѕРіРѕ РјРµС‚РѕРґР° СЃ РїРѕРјРѕС‰СЊСЋ СЂРµРґР°РєС‚РѕСЂР° РєРѕРґР°.
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->PageLab1 = (gcnew System::Windows::Forms::TabPage());
-			this->TokensTable = (gcnew System::Windows::Forms::DataGridView());
-			this->Index = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->Token = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->TokenType = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Tabs = (gcnew System::Windows::Forms::TabControl());
 			this->PageSource = (gcnew System::Windows::Forms::TabPage());
 			this->ExecuteBtn = (gcnew System::Windows::Forms::Button());
 			this->ClearSourceBtn = (gcnew System::Windows::Forms::Button());
 			this->FileBtn = (gcnew System::Windows::Forms::Button());
 			this->SourceCodeTxt = (gcnew System::Windows::Forms::TextBox());
 			this->SourceFileTxt = (gcnew System::Windows::Forms::TextBox());
-			this->Tabs = (gcnew System::Windows::Forms::TabControl());
+			this->PageLab1 = (gcnew System::Windows::Forms::TabPage());
+			this->TokensTable = (gcnew System::Windows::Forms::DataGridView());
+			this->Index = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Token = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->TokenType = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->lab2Page = (gcnew System::Windows::Forms::TabPage());
+			this->SyntaxTreeView = (gcnew System::Windows::Forms::TreeView());
+			this->OpersPage = (gcnew System::Windows::Forms::TabPage());
+			this->TriadsPage = (gcnew System::Windows::Forms::TabPage());
+			this->OpersTreeView = (gcnew System::Windows::Forms::TreeView());
+			this->Tabs->SuspendLayout();
+			this->PageSource->SuspendLayout();
 			this->PageLab1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TokensTable))->BeginInit();
-			this->PageSource->SuspendLayout();
-			this->Tabs->SuspendLayout();
+			this->lab2Page->SuspendLayout();
 			this->SuspendLayout();
 			// 
-			// PageLab1
+			// Tabs
 			// 
-			this->PageLab1->Controls->Add(this->TokensTable);
-			this->PageLab1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->PageLab1->Location = System::Drawing::Point(4, 34);
-			this->PageLab1->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
-			this->PageLab1->Name = L"PageLab1";
-			this->PageLab1->Padding = System::Windows::Forms::Padding(6, 7, 6, 7);
-			this->PageLab1->Size = System::Drawing::Size(917, 552);
-			this->PageLab1->TabIndex = 1;
-			this->PageLab1->Text = L"Таблица лексем";
-			this->PageLab1->UseVisualStyleBackColor = true;
-			// 
-			// TokensTable
-			// 
-			this->TokensTable->AllowUserToAddRows = false;
-			this->TokensTable->AllowUserToDeleteRows = false;
-			this->TokensTable->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+			this->Tabs->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			this->TokensTable->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::Fill;
-			this->TokensTable->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->TokensTable->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(3) {
-				this->Index, this->Token,
-					this->TokenType
-			});
-			this->TokensTable->Location = System::Drawing::Point(10, 9);
-			this->TokensTable->Name = L"TokensTable";
-			this->TokensTable->Size = System::Drawing::Size(798, 467);
-			this->TokensTable->TabIndex = 0;
-			// 
-			// Index
-			// 
-			this->Index->FillWeight = 10;
-			this->Index->HeaderText = L"№";
-			this->Index->Name = L"Index";
-			this->Index->ReadOnly = true;
-			// 
-			// Token
-			// 
-			this->Token->HeaderText = L"Лексема";
-			this->Token->Name = L"Token";
-			this->Token->ReadOnly = true;
-			// 
-			// TokenType
-			// 
-			this->TokenType->HeaderText = L"Тип лексемы";
-			this->TokenType->Name = L"TokenType";
-			this->TokenType->ReadOnly = true;
-			this->TokenType->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
+			this->Tabs->Controls->Add(this->PageSource);
+			this->Tabs->Controls->Add(this->PageLab1);
+			this->Tabs->Controls->Add(this->lab2Page);
+			this->Tabs->Controls->Add(this->OpersPage);
+			this->Tabs->Controls->Add(this->TriadsPage);
+			this->Tabs->Location = System::Drawing::Point(22, 22);
+			this->Tabs->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
+			this->Tabs->Name = L"Tabs";
+			this->Tabs->SelectedIndex = 0;
+			this->Tabs->Size = System::Drawing::Size(925, 590);
+			this->Tabs->TabIndex = 0;
 			// 
 			// PageSource
 			// 
@@ -197,13 +153,13 @@ namespace GUI {
 			this->PageSource->Controls->Add(this->FileBtn);
 			this->PageSource->Controls->Add(this->SourceCodeTxt);
 			this->PageSource->Controls->Add(this->SourceFileTxt);
-			this->PageSource->Location = System::Drawing::Point(4, 34);
+			this->PageSource->Location = System::Drawing::Point(4, 41);
 			this->PageSource->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->PageSource->Name = L"PageSource";
 			this->PageSource->Padding = System::Windows::Forms::Padding(6, 7, 6, 7);
-			this->PageSource->Size = System::Drawing::Size(917, 552);
+			this->PageSource->Size = System::Drawing::Size(917, 545);
 			this->PageSource->TabIndex = 0;
-			this->PageSource->Text = L"Исходный код";
+			this->PageSource->Text = L"РСЃС…РѕРґРЅС‹Р№ РєРѕРґ";
 			// 
 			// ExecuteBtn
 			// 
@@ -213,7 +169,7 @@ namespace GUI {
 			this->ExecuteBtn->Name = L"ExecuteBtn";
 			this->ExecuteBtn->Size = System::Drawing::Size(124, 33);
 			this->ExecuteBtn->TabIndex = 4;
-			this->ExecuteBtn->Text = L"Запустить";
+			this->ExecuteBtn->Text = L"Р—Р°РїСѓСЃС‚РёС‚СЊ";
 			this->ExecuteBtn->UseVisualStyleBackColor = true;
 			this->ExecuteBtn->Click += gcnew System::EventHandler(this, &MainForm::ExecuteBtn_Click);
 			// 
@@ -225,7 +181,7 @@ namespace GUI {
 			this->ClearSourceBtn->Name = L"ClearSourceBtn";
 			this->ClearSourceBtn->Size = System::Drawing::Size(124, 33);
 			this->ClearSourceBtn->TabIndex = 3;
-			this->ClearSourceBtn->Text = L"Очистить";
+			this->ClearSourceBtn->Text = L"РћС‡РёСЃС‚РёС‚СЊ";
 			this->ClearSourceBtn->UseVisualStyleBackColor = true;
 			this->ClearSourceBtn->Click += gcnew System::EventHandler(this, &MainForm::ClearSourceBtn_Click);
 			// 
@@ -237,7 +193,7 @@ namespace GUI {
 			this->FileBtn->Name = L"FileBtn";
 			this->FileBtn->Size = System::Drawing::Size(124, 33);
 			this->FileBtn->TabIndex = 2;
-			this->FileBtn->Text = L"Файл";
+			this->FileBtn->Text = L"Р¤Р°Р№Р»";
 			this->FileBtn->UseVisualStyleBackColor = true;
 			this->FileBtn->Click += gcnew System::EventHandler(this, &MainForm::FileBtn_Click);
 			// 
@@ -268,26 +224,111 @@ namespace GUI {
 			this->SourceFileTxt->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->SourceFileTxt->Name = L"SourceFileTxt";
 			this->SourceFileTxt->ReadOnly = true;
-			this->SourceFileTxt->Size = System::Drawing::Size(384, 35);
+			this->SourceFileTxt->Size = System::Drawing::Size(384, 42);
 			this->SourceFileTxt->TabIndex = 0;
 			// 
-			// Tabs
+			// PageLab1
 			// 
-			this->Tabs->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+			this->PageLab1->Controls->Add(this->TokensTable);
+			this->PageLab1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->PageLab1->Location = System::Drawing::Point(4, 41);
+			this->PageLab1->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
+			this->PageLab1->Name = L"PageLab1";
+			this->PageLab1->Padding = System::Windows::Forms::Padding(6, 7, 6, 7);
+			this->PageLab1->Size = System::Drawing::Size(917, 545);
+			this->PageLab1->TabIndex = 1;
+			this->PageLab1->Text = L"РўР°Р±Р»РёС†Р° Р»РµРєСЃРµРј";
+			this->PageLab1->UseVisualStyleBackColor = true;
+			// 
+			// TokensTable
+			// 
+			this->TokensTable->AllowUserToAddRows = false;
+			this->TokensTable->AllowUserToDeleteRows = false;
+			this->TokensTable->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			this->Tabs->Controls->Add(this->PageSource);
-			this->Tabs->Controls->Add(this->PageLab1);
-			this->Tabs->Location = System::Drawing::Point(22, 22);
-			this->Tabs->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
-			this->Tabs->Name = L"Tabs";
-			this->Tabs->SelectedIndex = 0;
-			this->Tabs->Size = System::Drawing::Size(925, 590);
-			this->Tabs->TabIndex = 0;
+			this->TokensTable->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::Fill;
+			this->TokensTable->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->TokensTable->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(3) {
+				this->Index, this->Token,
+					this->TokenType
+			});
+			this->TokensTable->Location = System::Drawing::Point(10, 9);
+			this->TokensTable->Name = L"TokensTable";
+			this->TokensTable->RowHeadersWidth = 51;
+			this->TokensTable->Size = System::Drawing::Size(798, 467);
+			this->TokensTable->TabIndex = 0;
+			// 
+			// Index
+			// 
+			this->Index->FillWeight = 10;
+			this->Index->HeaderText = L"в„–";
+			this->Index->MinimumWidth = 6;
+			this->Index->Name = L"Index";
+			this->Index->ReadOnly = true;
+			// 
+			// Token
+			// 
+			this->Token->HeaderText = L"Р›РµРєСЃРµРјР°";
+			this->Token->MinimumWidth = 6;
+			this->Token->Name = L"Token";
+			this->Token->ReadOnly = true;
+			// 
+			// TokenType
+			// 
+			this->TokenType->HeaderText = L"РўРёРї Р»РµРєСЃРµРјС‹";
+			this->TokenType->MinimumWidth = 6;
+			this->TokenType->Name = L"TokenType";
+			this->TokenType->ReadOnly = true;
+			this->TokenType->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
+			// 
+			// lab2Page
+			// 
+			this->lab2Page->Controls->Add(this->SyntaxTreeView);
+			this->lab2Page->Location = System::Drawing::Point(4, 41);
+			this->lab2Page->Name = L"lab2Page";
+			this->lab2Page->Padding = System::Windows::Forms::Padding(3);
+			this->lab2Page->Size = System::Drawing::Size(917, 545);
+			this->lab2Page->TabIndex = 2;
+			this->lab2Page->Text = L"РЎРёРЅС‚Р°РєСЃРёС‡РµСЃРєРѕРµ РґРµСЂРµРІРѕ";
+			this->lab2Page->UseVisualStyleBackColor = true;
+			// 
+			// SyntaxTreeView
+			// 
+			this->SyntaxTreeView->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->SyntaxTreeView->Location = System::Drawing::Point(6, 3);
+			this->SyntaxTreeView->Name = L"SyntaxTreeView";
+			this->SyntaxTreeView->Size = System::Drawing::Size(908, 543);
+			this->SyntaxTreeView->TabIndex = 0;
+			// 
+			// OpersPage
+			// 
+			this->OpersPage->Location = System::Drawing::Point(4, 41);
+			this->OpersPage->Name = L"OpersPage";
+			this->OpersPage->Size = System::Drawing::Size(917, 545);
+			this->OpersPage->TabIndex = 3;
+			// 
+			// TriadsPage
+			// 
+			this->TriadsPage->Location = System::Drawing::Point(4, 41);
+			this->TriadsPage->Name = L"TriadsPage";
+			this->TriadsPage->Size = System::Drawing::Size(917, 545);
+			this->TriadsPage->TabIndex = 4;
+			// 
+			// OpersTreeView
+			// 
+			this->OpersTreeView->LineColor = System::Drawing::Color::Empty;
+			this->OpersTreeView->Location = System::Drawing::Point(0, 0);
+			this->OpersTreeView->Name = L"OpersTreeView";
+			this->OpersTreeView->Size = System::Drawing::Size(121, 97);
+			this->OpersTreeView->TabIndex = 0;
 			// 
 			// MainForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(11, 25);
+			this->AutoScaleDimensions = System::Drawing::SizeF(13, 32);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::LightGray;
 			this->ClientSize = System::Drawing::Size(969, 636);
@@ -296,20 +337,22 @@ namespace GUI {
 				static_cast<System::Byte>(0)));
 			this->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->Name = L"MainForm";
-			this->Text = L"Переверзев А.Р., ИС-42, вариант №3";
-			this->PageLab1->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TokensTable))->EndInit();
+			this->Text = L"РРЎ-42. РџРµСЂРµРІРµСЂР·РµРІ Рђ.Р . Р’Р°СЂРёР°РЅС‚ в„–3";
+			this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
+			this->Tabs->ResumeLayout(false);
 			this->PageSource->ResumeLayout(false);
 			this->PageSource->PerformLayout();
-			this->Tabs->ResumeLayout(false);
+			this->PageLab1->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TokensTable))->EndInit();
+			this->lab2Page->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
 	private: System::Void FileBtn_Click(System::Object^ sender, System::EventArgs^ e) {
 		OpenFileDialog openFileDialog;
-		openFileDialog.DefaultExt = "sсv5";
-		openFileDialog.Filter = "Файлы кода (*.scv5)|*.scv5";
+		openFileDialog.DefaultExt = "sСЃv5";
+		openFileDialog.Filter = "Р¤Р°Р№Р»С‹ РєРѕРґР° (*.scv5)|*.scv5";
 		openFileDialog.ShowDialog();
 
 		System::String^ fileName = openFileDialog.FileName;
@@ -320,23 +363,23 @@ namespace GUI {
 			SourceCodeTxt->Text = sourceCode;
 		}
 		else {
-			MessageBox::Show(this, "Выбор файла был отменен!", "Сообщение");
+			MessageBox::Show(this, "Р’С‹Р±РѕСЂ С„Р°Р№Р»Р° Р±С‹Р» РѕС‚РјРµРЅРµРЅ!", "РЎРѕРѕР±С‰РµРЅРёРµ");
 		}
 	}
 
-	private: System::Void ClearSourceBtn_Click(System::Object^ sender, System::EventArgs^ e) {	
+	private: System::Void ClearSourceBtn_Click(System::Object^ sender, System::EventArgs^ e) {
 		SourceFileTxt->Clear();
 		SourceCodeTxt->Clear();
 		TokensTable->Rows->Clear();
-		//SyntaxTreeView->Nodes->Clear();
+		SyntaxTreeView->Nodes->Clear();
 	}
 
 	private: System::Void ExecuteBtn_Click(System::Object^ sender, System::EventArgs^ e) {
-		
+
 		setlocale(LC_ALL, "");
-		
+
 		if (String::IsNullOrWhiteSpace(SourceCodeTxt->Text)) {
-			MessageBox::Show(this, "Нет данных для распознавания!", "Сообщение");
+			MessageBox::Show(this, "РќРµС‚ РґР°РЅРЅС‹С… РґР»СЏ СЂР°СЃРїРѕР·РЅР°РІР°РЅРёСЏ!", "РЎРѕРѕР±С‰РµРЅРёРµ");
 			return;
 		}
 
@@ -346,52 +389,52 @@ namespace GUI {
 			.parse(sourceCode);
 
 		if (!result.isSuccess()) {
-			parseResultError(sourceCode, result);	
+			parseResultError(sourceCode, result);
 			return;
 		}
-		
+
 		fillDataGridViewWithTokens(result);
 
 		auto commands = CommandSplitter().split(result);
-		
-		//for (auto& command : commands) {
-		//	if (command.isValid) {
-		//		Syntax syntax = Syntax(CurrentSyntaxConfig);
-		//		
-		//		auto syntaxResult = syntax.proccess(command);
-		//		
-		//		if (!syntaxResult.isSuccess()) {
-		//			std::cout << syntaxResult.message << "\n";
-		//			syntaxResultError(syntaxResult);
-		//			return;
-		//		}
-		//		
-		//		std::list<SyntaxNode> ruleNodes = syntaxResult.nodes;
-		//
-		//		for (auto& it = ruleNodes.rbegin(); it != ruleNodes.rend(); it++) {
-		//			std::cout << it->syntaxRule.buildRule << "\t" 
-		//				<< it->syntaxRule.buildRule.ruleString  << "\n";
-		//		}
-		//
-		//		//SyntaxTreeViewBuilder(SyntaxTreeView)
-		//		//	.build(ruleNodes, command.getValueTokens());	
-		//
-		//		//// Построение дерева операций
-		//		//std::list<SyntaxNode> ruleNodes2 = syntaxResult.nodes;
-		//		//RefTree<RefValue> myTreeRefView;
-		//		//
-		//		//SyntaxTreeByCharBuilder(myTreeRefView)
-		//		//	.build(ruleNodes2, command.getValueTokens());
-		//		//
-		//		//OperatorsTreeBuilder(myTreeRefView)
-		//		//	.build();
-		//		//
-		//		//OperatorsTreeViewBuilder(OpersTreeView)
-		//		//	.build(myTreeRefView);
-		//	}
-		//}
 
-		MessageBox::Show(this, "Анализ текста выполнен успешно!", "Сообщение");
+		for (auto& command : commands) {
+			if (command.isValid) {
+				Syntax syntax = Syntax(CurrentSyntaxConfig);
+
+				auto syntaxResult = syntax.proccess(command);
+
+				if (!syntaxResult.isSuccess()) {
+					std::cout << syntaxResult.message << "\n";
+					syntaxResultError(syntaxResult);
+					return;
+				}
+
+				std::list<SyntaxNode> ruleNodes = syntaxResult.nodes;
+
+				for (auto& it = ruleNodes.rbegin(); it != ruleNodes.rend(); it++) {
+					std::cout << it->syntaxRule.buildRule << "\t"
+						<< it->syntaxRule.buildRule.ruleString << "\n";
+				}
+
+				SyntaxTreeViewBuilder(SyntaxTreeView)
+					.build(ruleNodes, command.getValueTokens());
+
+				//// РџРѕСЃС‚СЂРѕРµРЅРёРµ РґРµСЂРµРІР° РѕРїРµСЂР°С†РёР№
+				//std::list<SyntaxNode> ruleNodes2 = syntaxResult.nodes;
+				//RefTree<RefValue> myTreeRefView;
+				//
+				//SyntaxTreeByCharBuilder(myTreeRefView)
+				//	.build(ruleNodes2, command.getValueTokens());
+				//
+				//OperatorsTreeBuilder(myTreeRefView)
+				//	.build();
+				//
+				//OperatorsTreeViewBuilder(OpersTreeView)
+				//	.build(myTreeRefView);
+			}
+		}
+
+		MessageBox::Show(this, "РђРЅР°Р»РёР· С‚РµРєСЃС‚Р° РІС‹РїРѕР»РЅРµРЅ СѓСЃРїРµС€РЅРѕ!", "РЎРѕРѕР±С‰РµРЅРёРµ");
 
 	}
 
@@ -404,10 +447,10 @@ namespace GUI {
 
 		char inputChar = source.at(index);
 
-		ss << "Встречена ошибка на этапе \"Лексический анализ\":\n\n"
-			<< "В символе: " << index << ";\n"
-			<< "Входной симол \'" << inputChar << " \'(ASCII:" << (int)inputChar << ")\n\n"
-			<< "Сообщение: " << result.items.at(result.items.size() - 1).statusCode.toString() << ".";
+		ss << "Р’СЃС‚СЂРµС‡РµРЅР° РѕС€РёР±РєР° РЅР° СЌС‚Р°РїРµ \"Р›РµРєСЃРёС‡РµСЃРєРёР№ Р°РЅР°Р»РёР·\":\n\n"
+			<< "Р’ СЃРёРјРІРѕР»Рµ: " << index << ";\n"
+			<< "Р’С…РѕРґРЅРѕР№ СЃРёРјРѕР» \'" << inputChar << " \'(ASCII:" << (int)inputChar << ")\n\n"
+			<< "РЎРѕРѕР±С‰РµРЅРёРµ: " << result.items.at(result.items.size() - 1).statusCode.toString() << ".";
 
 		String^ message = gcnew String(ss.str().c_str());
 
@@ -417,23 +460,25 @@ namespace GUI {
 	private: void syntaxResultError(SyntaxResult& result) {
 		std::stringstream ss;
 
-			ss << "Встречена ошибка на этапе \"Синтаксический анализ\":\n\n"
-			   << "Сообщение: " << result.message << ".";
+		ss << "Р’СЃС‚СЂРµС‡РµРЅР° РѕС€РёР±РєР° РЅР° СЌС‚Р°РїРµ \"РЎРёРЅС‚Р°РєСЃРёС‡РµСЃРєРёР№ Р°РЅР°Р»РёР·\":\n\n"
+			<< "РЎРѕРѕР±С‰РµРЅРёРµ: " << result.message << ".";
 
-			   String^ message = gcnew String(ss.str().c_str());
+		String^ message = gcnew String(ss.str().c_str());
 
-			   MessageBox::Show(message);
-		   }
+		MessageBox::Show(message);
+	}
 
-    private: void fillDataGridViewWithTokens(ParseResult& result) {
-			TokensTable->Rows->Clear();
+	private: void fillDataGridViewWithTokens(ParseResult& result) {
+		TokensTable->Rows->Clear();
 
-			for (int i = 0; i < result.items.size(); ++i) {
-				String^ tokenString = gcnew String(result.items[i].token.value.c_str());
-				String^ typeNameString = gcnew String(result.items[i].token.termType.toString().c_str());
-				TokensTable->Rows->Add(System::Int32(i + 1), tokenString, typeNameString);
-			}
-	    }
-	};
+		for (int i = 0; i < result.items.size(); ++i) {
+			String^ tokenString = gcnew String(result.items[i].token.value.c_str());
+			String^ typeNameString = gcnew String(result.items[i].token.termType.toString().c_str());
+			TokensTable->Rows->Add(System::Int32(i + 1), tokenString, typeNameString);
+		}
+	}
+	private: System::Void MainForm_Load(System::Object^ sender, System::EventArgs^ e) {
+	}
+};
 }
 

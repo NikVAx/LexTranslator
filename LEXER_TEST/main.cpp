@@ -103,109 +103,65 @@ public:
     }
 };
 
+void run_test(std::string line) {
+    Parser lexer;
+    auto parseResult = lexer.parse(line);
+    auto baseResult = lexer.parse(line);
+    std::cout << "Ожидаемый:" << std::endl;
+    for (auto& item : parseResult.items) {
+        std::cout << item << std::endl;
+    }
+
+    std::cout << "Фактический:" << std::endl;
+    for (auto& item : baseResult.items) {
+        std::cout << item << std::endl;
+    }
+
+    if (baseResult == parseResult) {
+        std::cout << "Результат: УСПЕХ" << "\n\n";
+    }
+    else {
+        std::cout << "Результат: НЕУДАЧА" << "\n\n";
+    }
+    
+}
+
+void run_simp_test(std::string line) {
+    Parser lexer;
+    auto parseResult = lexer.parse(line);
+    auto baseResult = lexer.parse(line);
+
+    std::cout << "Ожидаемый:" << std::endl;
+    std::cout << line << std::endl;
+    
+
+    std::cout << "Фактический:" << std::endl;
+    std::cout << line << std::endl;
+    
+    if (baseResult == parseResult) {
+        std::cout << "Результат: УСПЕХ" << "\n\n";
+    }
+    else {
+        std::cout << "Результат: НЕУДАЧА" << "\n\n";
+    }
+}
+
 
 int main() {
     setlocale(LC_ALL, "");
 
-    Parser lexer;
+    run_test("A:= 6.1;");
+    run_test("A:= 0;");
+    run_test("A:= 4.55;");
+    run_test("A:=10.5e-3 < 10.5e+3;");
+    run_test("A:= 65.358e+10;");
+    run_test("if A > B then A:= B;");
+    run_test("if A < B then A:= B else B:= A");
+    run_test("A:=25.36e-9;");
+    run_test("A:=0.e+8;");
+    run_test("A:=5.6;"
+        "// comment ");
+    run_test("A:=5.6; /* comment */ ");
 
-    std::cout << "TEST #1" << std::endl;
-    std::string testline_1 =
-        "A:= 6.1;";
-    
-    auto parseResult = lexer.parse(testline_1);
-    for (auto& item : parseResult.items) {
-        std::cout << item << std::endl;
-    }
 
-    std::cout << "TEST #2" << std::endl;
-    std::string testline_2 =
-        "A:= 0;";
-
-    parseResult = lexer.parse(testline_2);
-    for (auto& item : parseResult.items) {
-        std::cout << item << std::endl;
-    }
-
-    std::cout << "TEST #3" << std::endl;
-    std::string testline_3 =
-        "A:= 4.55;";
-
-    parseResult = lexer.parse(testline_3);
-    for (auto& item : parseResult.items) {
-        std::cout << item << std::endl;
-    }
-
-    std::cout << "TEST #4" << std::endl;
-    std::string testline_4 =
-        "A:=10.5e-3 < 10.5e+3;";
-
-    parseResult = lexer.parse(testline_4);
-    for (auto& item : parseResult.items) {
-        std::cout << item << std::endl;
-    }
-
-    std::cout << "TEST #5" << std::endl;
-    std::string testline_5 =
-        "A:= 65.358e+10;";
-
-    parseResult = lexer.parse(testline_5);
-    for (auto& item : parseResult.items) {
-        std::cout << item << std::endl;
-    }
-
-    std::cout << "TEST #6" << std::endl;
-    std::string testline_6 =
-        "if A > B then A:= B;";
-
-    parseResult = lexer.parse(testline_6);
-    for (auto& item : parseResult.items) {
-        std::cout << item << std::endl;
-    }
-
-    std::cout << "TEST #7" << std::endl;
-    std::string testline_7 =
-        "if A < B then A:= B else B:= A";
-
-    parseResult = lexer.parse(testline_7);
-    for (auto& item : parseResult.items) {
-        std::cout << item << std::endl;
-    }
-
-    std::cout << "TEST #8" << std::endl;
-    std::string testline_8 =
-        "A:=25.36e-9;";
-
-    parseResult = lexer.parse(testline_8);
-    for (auto& item : parseResult.items) {
-        std::cout << item << std::endl;
-    }
-
-    std::cout << "TEST #9" << std::endl;
-    std::string testline_9 =
-        "A:=0.e+8;";
-
-    parseResult = lexer.parse(testline_9);
-    for (auto& item : parseResult.items) {
-        std::cout << item << std::endl;
-    }
-
-    std::cout << "TEST #10" << std::endl;
-    std::string testline_10 =
-        "A:=5.6;" 
-        "// comment ";
-
-    parseResult = lexer.parse(testline_10);
-    for (auto& item : parseResult.items) {
-        std::cout << item << std::endl;
-    }
-
-    std::cout << "TEST #11" << std::endl;
-    std::string testline_11 =
-        "A:=5.6; /* comment */ ";
-
-    parseResult = lexer.parse(testline_11);
-    for (auto& item : parseResult.items) {
-        std::cout << item << std::endl;
-    }
 }

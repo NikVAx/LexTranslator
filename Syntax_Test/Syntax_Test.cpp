@@ -96,11 +96,28 @@ std::pair<bool, std::string> run_syntax(Command& command) {
 	if (syntaxResult.isSuccess()) {
 		auto generated = SyntaxLineBuilder().buildline(syntaxResult, command);
 
-		std::cout << "ПОРЯДОК РАЗБОРА:\n" << generated.second << "\n";
+		// std::cout << "ПОРЯДОК РАЗБОРА:\n" << generated.second << "\n";
 
 		return std::pair<bool, std::string>(true, generated.first);
 
 	} else {
+		return std::pair<bool, std::string>(false, syntaxResult.message);
+	}
+}
+
+std::pair<bool, std::string> run_syntax_f(Command& command) {
+	Syntax syntax(gmconf);
+	auto syntaxResult = syntax.proccess(command);
+
+	if (syntaxResult.isSuccess()) {
+		auto generated = SyntaxLineBuilder().buildline(syntaxResult, command);
+
+		std::cout << "ПОРЯДОК РАЗБОРА:\n" << generated.second << "\n";
+
+		return std::pair<bool, std::string>(true, generated.first);
+
+	}
+	else {
 		return std::pair<bool, std::string>(false, syntaxResult.message);
 	}
 }
@@ -153,11 +170,8 @@ void success_1() {
 	
 	std::string input =
 		"if A > B then      \n"
-		"  if B > 100 then    \n"
-		"    A := B   \n"
-		"  else                    \n"
-		"    B:= 5.255e+2       \n"
-		"else if A<25 then    \n"
+		"  B:= A       \n"
+		"else   \n"
 		"  B:=20.0;           \n";
 	auto b_command = prepare_command(input);
 
@@ -175,7 +189,14 @@ void success_1() {
 
 void success_2() {
 	std::cout << "\nТЕСТ #2\n";
-	std::string input = "arg:=I*(II+III);";
+	std::string input =
+		"if A > B then      \n"
+		"  if B > 1 then    \n"
+		"    A := B   \n"
+		"  else                    \n"
+		"    B:= 6.1e2       \n"
+		"else if A<25 then    \n"
+		"  B:=20.0;           \n";
 	auto b_command = prepare_command(input);
 
 	if (b_command.first != true)
@@ -183,7 +204,7 @@ void success_2() {
 
 	auto b_actual = run_syntax(b_command.second);
 
-	std::string expected = input;
+	std::string expected = truncate(input);
 	std::string actual = b_actual.second;
 
 	on_result(expected, actual, input);
@@ -191,7 +212,14 @@ void success_2() {
 
 void success_3() {
 	std::cout << "\nТЕСТ #3\n";
-	std::string input = "arg:=I*II+III;";
+	std::string input =
+		"if A > B then      \n"
+		"  if B > 100 then    \n"
+		"    A := B   \n"
+		"  else                    \n"
+		"    B:= 5.255e+2       \n"
+		"else if A<25 then    \n"
+		"  B:=20.0;           \n";
 	auto b_command = prepare_command(input);
 
 	if (b_command.first != true)
@@ -199,15 +227,22 @@ void success_3() {
 
 	auto b_actual = run_syntax(b_command.second);
 
-	std::string expected = input;
+	std::string expected = truncate(input);
 	std::string actual = b_actual.second;
 
 	on_result(expected, actual, input);
 }
 
-void unclosed_bracket() {
+void second_then() {
 	std::cout << "\nТЕСТ #4\n";
-	std::string input = "a:=XXV-(III*x+y/(b-(I+III-VI));";
+	std::string input =
+		"if A > B then      \n"
+		"  if B > 100 then then   \n"
+		"    A := B   \n"
+		"  else                    \n"
+		"    B:= 5.255e+2       \n"
+		"else if A<25 then    \n"
+		"  B:=20.0;           \n";;
 	auto b_command = prepare_command(input);
 
 	if (b_command.first != true)
@@ -215,16 +250,23 @@ void unclosed_bracket() {
 
 	auto b_actual = run_syntax(b_command.second);
 
-	std::string expected = StatusCodes::SYN_UNCLOSED_BRACKET.toString();
+	std::string expected = StatusCodes::SYN_ERROR.toString();
 	std::string actual = b_actual.second;
 
 	on_result(expected, actual, input);
 }
 
-void unexpected_bracket() {
+void second_condition() {
 	std::cout << "\nТЕСТ #5\n";
 
-	std::string input = "a:=XXV-(III*x+y/(b-(I+III))-VI));";
+	std::string input =
+		"if A > B > C then      \n"
+		"  if B > 100 then    \n"
+		"    A := B   \n"
+		"  else                    \n"
+		"    B:= 5.255e+2       \n"
+		"else if A<25 then    \n"
+		"  B:=20.0;           \n";
 	auto b_command = prepare_command(input);
 
 	if (b_command.first != true)
@@ -232,7 +274,122 @@ void unexpected_bracket() {
 
 	auto b_actual = run_syntax(b_command.second);
 
-	std::string expected = StatusCodes::SYN_UEXPECTED_BRACKET.toString();
+	std::string expected = StatusCodes::SYN_EXPR_EXPECT.toString();
+	std::string actual = b_actual.second;
+
+	on_result(expected, actual, input);
+}
+
+void success_w1() {
+	std::cout << "\nТЕСТ #1\n";
+
+	std::string input =
+		"if A > B then      \n"
+		"  B:= A       \n"
+		"else   \n"
+		"  B:=20.0;           \n";
+	auto b_command = prepare_command(input);
+
+	if (b_command.first != true)
+		return;
+
+	auto b_actual = run_syntax_f(b_command.second);
+
+	std::string expected = truncate(input);
+	std::string actual = b_actual.second;
+
+	on_result(expected, actual, input);
+}
+
+
+void success_w2() {
+	std::cout << "\nТЕСТ #2\n";
+	std::string input =
+		"if A > B then      \n"
+		"  if B > 1 then    \n"
+		"    A := B   \n"
+		"  else                    \n"
+		"    B:= 6.1e2       \n"
+		"else if A<25 then    \n"
+		"  B:=20.0;           \n";
+	auto b_command = prepare_command(input);
+
+	if (b_command.first != true)
+		return;
+
+	auto b_actual = run_syntax_f(b_command.second);
+
+	std::string expected = truncate(input);
+	std::string actual = b_actual.second;
+
+	on_result(expected, actual, input);
+}
+
+void success_w3() {
+	std::cout << "\nТЕСТ #3\n";
+	std::string input =
+		"if A > B then      \n"
+		"  if B > 100 then    \n"
+		"    A := B   \n"
+		"  else                    \n"
+		"    B:= 5.255e+2       \n"
+		"else if A<25 then    \n"
+		"  B:=20.0;           \n";
+	auto b_command = prepare_command(input);
+
+	if (b_command.first != true)
+		return;
+
+	auto b_actual = run_syntax_f(b_command.second);
+
+	std::string expected = truncate(input);
+	std::string actual = b_actual.second;
+
+	on_result(expected, actual, input);
+}
+
+void second_then_w() {
+	std::cout << "\nТЕСТ #4\n";
+	std::string input =
+		"if A > B then      \n"
+		"  if B > 100 then then   \n"
+		"    A := B   \n"
+		"  else                    \n"
+		"    B:= 5.255e+2       \n"
+		"else if A<25 then    \n"
+		"  B:=20.0;           \n";;
+	auto b_command = prepare_command(input);
+
+	if (b_command.first != true)
+		return;
+
+	auto b_actual = run_syntax_f(b_command.second);
+
+	std::string expected = StatusCodes::SYN_ERROR.toString();
+	std::string actual = b_actual.second;
+
+	on_result(expected, actual, input);
+}
+
+void second_condition_w() {
+	std::cout << "\nТЕСТ #5\n";
+
+	std::string input =
+		"if A > B > C then      \n"
+		"  if B > 100 then    \n"
+		"    A := B   \n"
+		"  else                    \n"
+		"    B:= 5.255e+2       \n"
+		"else if A<25 then    \n"
+		"  B:=20.0;           \n";
+	auto b_command = prepare_command(input);
+
+	if (b_command.first != true)
+		return;
+
+	auto b_actual = run_syntax_f(b_command.second);
+
+	std::string expected = StatusCodes::SYN_EXPR_EXPECT.toString();
 	std::string actual = b_actual.second;
 
 	on_result(expected, actual, input);
@@ -247,8 +404,14 @@ int main() {
 	success_1();
 	success_2();
 	success_3();
-	unclosed_bracket();
-	unexpected_bracket();
+	second_then();
+	second_condition();
+
+	success_w1();
+	success_w2();
+	success_w3();
+	second_then_w();
+	second_condition_w();
 	
 	return 0;
 }

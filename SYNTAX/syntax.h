@@ -171,14 +171,14 @@ public:
 
             Relations relation = syntaxConfig.getRelation(top, input);
             
-            std::cout << " | " << char(relation) << " | " 
+            /*std::cout << " | " << char(relation) << " | " 
                 << std::setw(6)
                 << stack.at(topStackTermIndex).currentChar.tokenString << " | "
                       << input << " : " << std::setw(4) << 
                       (currentToken.termType == TermTypes::IDENTIFIER ||
                        currentToken.termType == TermTypes::NUMBER ?
                           ("I") : currentToken.value) << " | " 
-                      << stack_str(stack) << "\n";
+                      << stack_str(stack) << "\n";*/
 
             if (relation == Relations::PREV || relation == Relations::BASE) {
                 shift(input, currentToken);

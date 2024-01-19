@@ -20,7 +20,7 @@ public:
 
         _sm.reset();
 
-        std::string text = input + "\n";
+        std::string text = input + "\n\n";
         std::string tokenString = "";
 
         for (int head = 0; head < text.length(); head++) {
