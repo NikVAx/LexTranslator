@@ -79,7 +79,7 @@ std::pair<bool, Command> prepare_command(std::string input) {
 	auto parseResult = parser.parse(input);
 
 	if (parseResult.isSuccess()) {
-		auto commands = MathCommandSplitter()
+		auto commands = CommandSplitter()
 			.split(parseResult);
 		auto command = commands[0];
 
@@ -214,24 +214,6 @@ int main() {
 	success_3();
 	unclosed_bracket();
 	unexpected_bracket();
-
-
-
-	//std::string input = "a:=XXV-(III*x+y/(b-(I+III))-VI));";
-	//
-	//auto b_command = prepare_command(input);
-	//
-	//if (b_command.first != true)
-	//	return -1;
-	//
-	//auto b_actual = run_syntax(b_command.second);
-	//
-	//if (b_actual.first != true) {
-	//	std::cout << b_actual.second << "\n";
-	//}
-	//
-
-	//success_base(input, 1);
 	
 	return 0;
 }

@@ -146,15 +146,15 @@ public:
             tokenIndex += 1;
             Token currentToken = items[head];
 
-            if (tokenIndex == 1 && currentToken.termType != TermTypes::IDENTIFIER) {
-                result.setError(StatusCodes::SEM_ASSIGNTOCONST.toString(), tokenIndex);
-                break;
-            }
-
-            if (tokenIndex == 2 && currentToken.termType != TermTypes::ASSIGNMENT) {
-                result.setError(StatusCodes::SYN_ASSIGNMENT_EXPECTED.toString(), tokenIndex);
-                break;
-            }
+           // if (tokenIndex == 1 && currentToken.termType != TermTypes::IDENTIFIER) {
+           //     result.setError(StatusCodes::SEM_ASSIGNTOCONST.toString(), tokenIndex);
+           //     break;
+           // }
+           //
+           // if (tokenIndex == 2 && currentToken.termType != TermTypes::ASSIGNMENT) {
+           //     result.setError(StatusCodes::SYN_ASSIGNMENT_EXPECTED.toString(), tokenIndex);
+           //     break;
+           // }
 
             //std::cout << " #IN >> " << currentToken.value << "\n";
 
