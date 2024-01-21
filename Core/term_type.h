@@ -18,6 +18,10 @@ public:
         return toString();
     }
 
+    TermType operator=(const TermType& a) {
+        return a;
+    }
+
     TermType operator=(TermType& a) {
         return a;
     }

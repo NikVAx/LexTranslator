@@ -45,8 +45,6 @@ public:
 
 					std::string rString = node.syntaxRule.buildRule.ruleString;
 
-					
-
 					line.replace(pos, 1, rString);
 					nodes.pop_back();
 

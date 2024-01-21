@@ -46,5 +46,9 @@ public:
             parent->items.erase(parent->items.begin() + 1, parent->items.begin() + 2);
 
         }
+        if (parent->items.size() == 2 && *parent->items[0]->value->syntaxChar == SyntaxChars::NOT) {
+            parent->value = parent->items[0]->value;
+            parent->items.erase(parent->items.begin(), parent->items.begin() + 1);
+        }
     }
 };

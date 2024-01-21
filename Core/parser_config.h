@@ -83,9 +83,9 @@ public:
     }
 
     TermType mapTokenType(int state) const {
-        TermType termType = (0 <= state && state < getCountOfStates())
+        TermType type = (0 <= state && state < getCountOfStates())
             ? tokenTypeMap.at(state)
             : TermTypes::UNDEFINED;
-        return termType;
+        return type;
     }
 };
