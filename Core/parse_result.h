@@ -23,6 +23,7 @@ struct Location {
 struct ParseResult {
 private:
     bool error = false;
+    std::string msg;
 public:
     ParseResult() {};
 
@@ -31,12 +32,17 @@ public:
     std::vector<ParseItem> items;
     Location current;
 
+    std::string getError() const {
+        return msg;
+    }
+
     void addError(std::string value, StatusCode statusCode) {
         items.push_back(ParseItem(Token(value, TermTypes::UNDEFINED), statusCode));
         error = true;
+        msg = statusCode.toString();
     }
 
-    bool isSuccess() {
+    bool isSuccess() const {
         return !error;
     }
 

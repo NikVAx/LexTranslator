@@ -24,7 +24,7 @@ namespace GUI {
 	{ }
 
 	public: void build(std::list<SyntaxNode>& ruleNodes, std::list<::Token>& tokens) {
-			  TreeNode^ root = gcnew TreeNode(L"S");
+			  TreeNode^ root = gcnew TreeNode(L"E");
 
 			  buildCascade(root, ruleNodes, tokens, 0);
 

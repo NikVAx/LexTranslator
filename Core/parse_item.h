@@ -18,7 +18,7 @@ struct ParseItem {
 
     friend std::ostream& operator<<(std::ostream& s, const ParseItem& parseItem)
     {
-        s << "{" << "status code: " << parseItem.statusCode.toString() << ", token: " << parseItem.token << "}";
+        s  << parseItem.token;
         return s;
     }
 

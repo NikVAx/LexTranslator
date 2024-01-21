@@ -36,7 +36,7 @@ namespace StatusCodes {
     static const StatusCode LEX_6(6, "Недопустимый формат идентификатора");
     static const StatusCode LEX_7(7, "Незавершенный оператор присванивания");
     static const StatusCode LEX_8(8, "Ожидалось выражение");
-    static const StatusCode LEX_9(9, "Ожидался оператор");
+    static const StatusCode LEX_9(9, "Неизвестный оператор");
     static const StatusCode LEX_10(10, "Ожидался идентификатор");
 
     static const StatusCode LEX_INVALID_INPUT_CHAR(51, "Недопустимый входной символ");

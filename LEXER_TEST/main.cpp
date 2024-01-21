@@ -103,65 +103,208 @@ public:
     }
 };
 
-void run_test(std::string line) {
+
+
+void unit_for(std::string line, const ParseResult& expected) {
     Parser lexer;
-    auto parseResult = lexer.parse(line);
-    auto baseResult = lexer.parse(line);
+    auto real = lexer.parse(line);
+    
     std::cout << "Ожидаемый:" << std::endl;
+    if (expected.isSuccess()) {
+        for (auto& item : expected.items) {
+            std::cout << item << std::endl;
+        }
+    }
+    else {
+        std::cout << StatusCodes::LEX_9.toString() << std::endl;
+    }
+    
+    std::cout << "Фактический:" << std::endl;
+    if (real.isSuccess()) {
+        for (auto& item : real.items) {
+            std::cout << item << std::endl;
+        }
+    }
+    else {
+        std::cout << real.getError() << std::endl;
+    }
+    
+
+    bool isEqual = true;
+
+    if (real.items.size() != expected.items.size()) {
+        isEqual = false;       
+    }
+
+    for (int i = 0; i < real.items.size() && isEqual; ++i) {
+        if (real.items[i].token != expected.items[i].token) {
+            isEqual = false;
+        }
+    }
+
+    if (!real.isSuccess() && !expected.isSuccess()) {
+        isEqual = true;
+    }
+
+    if (isEqual) {
+        std::cout << "Результат: ТЕСТ ПРОЙДЕН" << "\n\n";
+    }
+    else {
+        std::cout << "Результат: ТЕСТ ПРОВАЛЕН" << "\n\n";
+    }
+    
+}
+
+void unit_black(std::string line, std::string expected) {
+    Parser lexer;
+    std::stringstream ss;
+    auto parseResult = lexer.parse(line);
+
+
+    std::cout << "Ожидаемый:" << std::endl;
+    std::cout << expected << std::endl;
+    
+
+    std::cout << "Фактический:" << std::endl;
     for (auto& item : parseResult.items) {
         std::cout << item << std::endl;
+        ss << item << std::endl;
     }
 
-    std::cout << "Фактический:" << std::endl;
-    for (auto& item : baseResult.items) {
-        std::cout << item << std::endl;
-    }
-
-    if (baseResult == parseResult) {
-        std::cout << "Результат: УСПЕХ" << "\n\n";
+    
+    if (expected == ss.str()) {
+        std::cout << "Результат: ТЕСТ ПРОЙДЕН" << "\n\n";
     }
     else {
-        std::cout << "Результат: НЕУДАЧА" << "\n\n";
-    }
-    
-}
-
-void run_simp_test(std::string line) {
-    Parser lexer;
-    auto parseResult = lexer.parse(line);
-    auto baseResult = lexer.parse(line);
-
-    std::cout << "Ожидаемый:" << std::endl;
-    std::cout << line << std::endl;
-    
-
-    std::cout << "Фактический:" << std::endl;
-    std::cout << line << std::endl;
-    
-    if (baseResult == parseResult) {
-        std::cout << "Результат: УСПЕХ" << "\n\n";
-    }
-    else {
-        std::cout << "Результат: НЕУДАЧА" << "\n\n";
+        std::cout << "Результат: ТЕСТ ПРОВАЛЕН" << "\n\n";
     }
 }
 
+void units1() {
+    unit_for("if a > b then x:=a else x:=b;",
+        ParseResult({ 0,0 }, {
+        ParseItem(Token("if", TermTypes::IF), StatusCodes::SUCCESS__),
+        ParseItem(Token("a", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+        ParseItem(Token(">", TermTypes::GREATER), StatusCodes::SUCCESS__),
+        ParseItem(Token("b", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+        ParseItem(Token("then", TermTypes::THEN), StatusCodes::SUCCESS__),
+        ParseItem(Token("x", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+        ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+        ParseItem(Token("a", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+        ParseItem(Token("else", TermTypes::ELSE), StatusCodes::SUCCESS__),
+        ParseItem(Token("x", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+        ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+        ParseItem(Token("b", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+        ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__),
+            }, false));
+
+    unit_for("if a > 100 then b:=1 else if a=1.2e-1 then b:=2 else b:=3.3;",
+        ParseResult({ 0,0 }, {
+        ParseItem(Token("if", TermTypes::IF), StatusCodes::SUCCESS__),
+        ParseItem(Token("a", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+        ParseItem(Token(">", TermTypes::GREATER), StatusCodes::SUCCESS__),
+        ParseItem(Token("100", TermTypes::NUMBER), StatusCodes::SUCCESS__),
+        ParseItem(Token("then", TermTypes::THEN), StatusCodes::SUCCESS__),
+        ParseItem(Token("b", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+        ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+        ParseItem(Token("1", TermTypes::NUMBER), StatusCodes::SUCCESS__),
+        ParseItem(Token("else", TermTypes::ELSE), StatusCodes::SUCCESS__),
+        ParseItem(Token("if", TermTypes::IF), StatusCodes::SUCCESS__),
+        ParseItem(Token("a", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+        ParseItem(Token("=", TermTypes::EQUAL), StatusCodes::SUCCESS__),
+        ParseItem(Token("1.2e-1", TermTypes::NUMBER), StatusCodes::SUCCESS__),
+        ParseItem(Token("then", TermTypes::THEN), StatusCodes::SUCCESS__),
+        ParseItem(Token("b", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+        ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+        ParseItem(Token("2", TermTypes::NUMBER), StatusCodes::SUCCESS__),
+        ParseItem(Token("else", TermTypes::ELSE), StatusCodes::SUCCESS__),
+        ParseItem(Token("b", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+        ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+        ParseItem(Token("3.3", TermTypes::NUMBER), StatusCodes::SUCCESS__),
+        ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__),
+            }, false));
+
+    unit_for("if a > b then a:=b; //123\n /*123*/\n",
+        ParseResult({ 0,0 }, {
+        ParseItem(Token("if", TermTypes::IF), StatusCodes::SUCCESS__),
+        ParseItem(Token("a", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+        ParseItem(Token(">", TermTypes::GREATER), StatusCodes::SUCCESS__),
+        ParseItem(Token("b", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+        ParseItem(Token("then", TermTypes::THEN), StatusCodes::SUCCESS__),
+        ParseItem(Token("a", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+        ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS__),
+        ParseItem(Token("b", TermTypes::IDENTIFIER), StatusCodes::SUCCESS__),
+        ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS__),
+            }, false));
+
+    unit_for("if a > b then a :=- b;", ParseResult({ 0,0 }, { }, true));
+}
+
+void units2() {
+    unit_black("if a > b then x:=a else x:=b;",
+        " 17          if             Оператор IF\n"
+        "  1           a           Идентификатор\n"
+        " 24           >              Оператор >\n"
+        "  1           b           Идентификатор\n"
+        " 18        then           Оператор THEN\n"
+        "  1           x           Идентификатор\n"
+        "  3          :=   Оператор присваивания\n"
+        "  1           a           Идентификатор\n"
+        " 19        else           Оператор ELSE\n"
+        "  1           x           Идентификатор\n"
+        "  3          :=   Оператор присваивания\n"
+        "  1           b           Идентификатор\n"
+        "  7           ;         Точка с запятой\n");
+
+    unit_black("if a > 100 then b:=1 else if a=1.2e-1 then b:=2 else b:=3.3;",
+        " 17          if             Оператор IF\n"
+        "  1           a           Идентификатор\n"
+        " 24           >              Оператор >\n"
+        "  2         100        Числовой литерал\n"
+        " 18        then           Оператор THEN\n"
+        "  1           b           Идентификатор\n"
+        "  3          :=   Оператор присваивания\n"
+        "  2           1        Числовой литерал\n"
+        " 19        else           Оператор ELSE\n"
+        " 17          if             Оператор IF\n"
+        "  1           a           Идентификатор\n"
+        " 25           =              Оператор =\n"
+        "  2      1.2e-1        Числовой литерал\n"
+        " 18        then           Оператор THEN\n"
+        "  1           b           Идентификатор\n"
+        "  3          :=   Оператор присваивания\n"
+        "  2           2        Числовой литерал\n"
+        " 19        else           Оператор ELSE\n"
+        "  1           b           Идентификатор\n"
+        "  3          :=   Оператор присваивания\n"
+        "  2         3.3        Числовой литерал\n"
+        "  7           ;         Точка с запятой\n");
+
+    unit_black("if a > b then a:=b; //123\n /*123*/\n",
+        " 17          if             Оператор IF\n"
+        "  1           a           Идентификатор\n"
+        " 24           >              Оператор >\n"
+        "  1           b           Идентификатор\n"
+        " 18        then           Оператор THEN\n"
+        "  1           a           Идентификатор\n"
+        "  3          :=   Оператор присваивания\n"
+        "  1           b           Идентификатор\n"
+        "  7           ;         Точка с запятой\n" 
+    );
+    unit_black("if a > b then a :=- b;", 
+        " 17          if             Оператор IF\n"
+        "  1           a           Идентификатор\n"
+        " 24           >              Оператор >\n"
+        "  1           b           Идентификатор\n"
+        " 18        then           Оператор THEN\n"
+        "  1           a           Идентификатор\n"
+        "  0          :=            Неопределено\n"
+        );
+}
 
 int main() {
     setlocale(LC_ALL, "");
-
-    run_test("A:= 6.1;");
-    run_test("A:= 0;");
-    run_test("A:= 4.55;");
-    run_test("A:=10.5e-3 < 10.5e+3;");
-    run_test("A:= 65.358e+10;");
-    run_test("if A > B then A:= B;");
-    run_test("if A < B then A:= B else B:= A");
-    run_test("A:=25.36e-9;");
-    run_test("A:=0.e+8;");
-    run_test("A:=5.6;"
-        "// comment ");
-    run_test("A:=5.6; /* comment */ ");
-
+   
+    units2();
 
 }

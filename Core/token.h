@@ -5,6 +5,7 @@
 
 #include <string>
 #include <iostream>
+#include <iomanip>
 
 struct Token {
     Token(std::string value, TermType termType) 
@@ -26,7 +27,7 @@ struct Token {
 
     friend std::ostream& operator<<(std::ostream& s, const Token& token)
     {
-        s << "{code: " << token.termType.code() << ",typeName: " << token.termType.toString() << ",value: " << token.value << "}";
+        s << std::setw(3) << token.termType.code() << std::setw(12) << token.value << std::setw(24) << token.termType.toString();
         return s;
     }
 };

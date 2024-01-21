@@ -81,9 +81,10 @@ namespace GUI {
 	private: System::Windows::Forms::TabPage^ lab2Page;
 
 	private: System::Windows::Forms::TreeView^ SyntaxTreeView;
-	private: System::Windows::Forms::TabPage^ OpersPage;
-	private: System::Windows::Forms::TabPage^ TriadsPage;
+
+
 	private: System::Windows::Forms::TreeView^ OpersTreeView;
+	private: System::Windows::Forms::Button^ exitBtn;
 
 
 
@@ -106,6 +107,7 @@ namespace GUI {
 		{
 			this->Tabs = (gcnew System::Windows::Forms::TabControl());
 			this->PageSource = (gcnew System::Windows::Forms::TabPage());
+			this->exitBtn = (gcnew System::Windows::Forms::Button());
 			this->ExecuteBtn = (gcnew System::Windows::Forms::Button());
 			this->ClearSourceBtn = (gcnew System::Windows::Forms::Button());
 			this->FileBtn = (gcnew System::Windows::Forms::Button());
@@ -118,8 +120,6 @@ namespace GUI {
 			this->TokenType = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->lab2Page = (gcnew System::Windows::Forms::TabPage());
 			this->SyntaxTreeView = (gcnew System::Windows::Forms::TreeView());
-			this->OpersPage = (gcnew System::Windows::Forms::TabPage());
-			this->TriadsPage = (gcnew System::Windows::Forms::TabPage());
 			this->OpersTreeView = (gcnew System::Windows::Forms::TreeView());
 			this->Tabs->SuspendLayout();
 			this->PageSource->SuspendLayout();
@@ -136,35 +136,46 @@ namespace GUI {
 			this->Tabs->Controls->Add(this->PageSource);
 			this->Tabs->Controls->Add(this->PageLab1);
 			this->Tabs->Controls->Add(this->lab2Page);
-			this->Tabs->Controls->Add(this->OpersPage);
-			this->Tabs->Controls->Add(this->TriadsPage);
 			this->Tabs->Location = System::Drawing::Point(22, 22);
 			this->Tabs->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->Tabs->Name = L"Tabs";
 			this->Tabs->SelectedIndex = 0;
-			this->Tabs->Size = System::Drawing::Size(925, 590);
+			this->Tabs->Size = System::Drawing::Size(654, 590);
 			this->Tabs->TabIndex = 0;
 			// 
 			// PageSource
 			// 
-			this->PageSource->BackColor = System::Drawing::Color::LightGray;
+			this->PageSource->BackColor = System::Drawing::SystemColors::ScrollBar;
+			this->PageSource->Controls->Add(this->exitBtn);
 			this->PageSource->Controls->Add(this->ExecuteBtn);
 			this->PageSource->Controls->Add(this->ClearSourceBtn);
 			this->PageSource->Controls->Add(this->FileBtn);
 			this->PageSource->Controls->Add(this->SourceCodeTxt);
 			this->PageSource->Controls->Add(this->SourceFileTxt);
-			this->PageSource->Location = System::Drawing::Point(4, 41);
+			this->PageSource->Location = System::Drawing::Point(4, 34);
 			this->PageSource->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->PageSource->Name = L"PageSource";
 			this->PageSource->Padding = System::Windows::Forms::Padding(6, 7, 6, 7);
-			this->PageSource->Size = System::Drawing::Size(917, 545);
+			this->PageSource->Size = System::Drawing::Size(646, 552);
 			this->PageSource->TabIndex = 0;
 			this->PageSource->Text = L"Исходный код";
+			// 
+			// exitBtn
+			// 
+			this->exitBtn->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
+			this->exitBtn->Location = System::Drawing::Point(510, 505);
+			this->exitBtn->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
+			this->exitBtn->Name = L"exitBtn";
+			this->exitBtn->Size = System::Drawing::Size(124, 33);
+			this->exitBtn->TabIndex = 5;
+			this->exitBtn->Text = L"Выйти";
+			this->exitBtn->UseVisualStyleBackColor = true;
+			this->exitBtn->Click += gcnew System::EventHandler(this, &MainForm::exitBtn_Click);
 			// 
 			// ExecuteBtn
 			// 
 			this->ExecuteBtn->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
-			this->ExecuteBtn->Location = System::Drawing::Point(679, 13);
+			this->ExecuteBtn->Location = System::Drawing::Point(374, 63);
 			this->ExecuteBtn->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->ExecuteBtn->Name = L"ExecuteBtn";
 			this->ExecuteBtn->Size = System::Drawing::Size(124, 33);
@@ -176,7 +187,7 @@ namespace GUI {
 			// ClearSourceBtn
 			// 
 			this->ClearSourceBtn->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
-			this->ClearSourceBtn->Location = System::Drawing::Point(543, 13);
+			this->ClearSourceBtn->Location = System::Drawing::Point(510, 63);
 			this->ClearSourceBtn->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->ClearSourceBtn->Name = L"ClearSourceBtn";
 			this->ClearSourceBtn->Size = System::Drawing::Size(124, 33);
@@ -187,13 +198,12 @@ namespace GUI {
 			// 
 			// FileBtn
 			// 
-			this->FileBtn->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
-			this->FileBtn->Location = System::Drawing::Point(407, 13);
+			this->FileBtn->Location = System::Drawing::Point(12, 14);
 			this->FileBtn->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->FileBtn->Name = L"FileBtn";
-			this->FileBtn->Size = System::Drawing::Size(124, 33);
+			this->FileBtn->Size = System::Drawing::Size(163, 35);
 			this->FileBtn->TabIndex = 2;
-			this->FileBtn->Text = L"Файл";
+			this->FileBtn->Text = L"Выбрать файл";
 			this->FileBtn->UseVisualStyleBackColor = true;
 			this->FileBtn->Click += gcnew System::EventHandler(this, &MainForm::FileBtn_Click);
 			// 
@@ -202,14 +212,15 @@ namespace GUI {
 			this->SourceCodeTxt->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			this->SourceCodeTxt->Font = (gcnew System::Drawing::Font(L"Courier New", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->SourceCodeTxt->BackColor = System::Drawing::SystemColors::Control;
+			this->SourceCodeTxt->Font = (gcnew System::Drawing::Font(L"Consolas", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->SourceCodeTxt->Location = System::Drawing::Point(12, 58);
+			this->SourceCodeTxt->Location = System::Drawing::Point(12, 110);
 			this->SourceCodeTxt->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->SourceCodeTxt->Multiline = true;
 			this->SourceCodeTxt->Name = L"SourceCodeTxt";
 			this->SourceCodeTxt->ScrollBars = System::Windows::Forms::ScrollBars::Both;
-			this->SourceCodeTxt->Size = System::Drawing::Size(790, 421);
+			this->SourceCodeTxt->Size = System::Drawing::Size(622, 381);
 			this->SourceCodeTxt->TabIndex = 1;
 			this->SourceCodeTxt->WordWrap = false;
 			// 
@@ -220,11 +231,11 @@ namespace GUI {
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->SourceFileTxt->Font = (gcnew System::Drawing::Font(L"Segoe UI", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->SourceFileTxt->Location = System::Drawing::Point(12, 13);
+			this->SourceFileTxt->Location = System::Drawing::Point(187, 14);
 			this->SourceFileTxt->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->SourceFileTxt->Name = L"SourceFileTxt";
 			this->SourceFileTxt->ReadOnly = true;
-			this->SourceFileTxt->Size = System::Drawing::Size(384, 42);
+			this->SourceFileTxt->Size = System::Drawing::Size(447, 35);
 			this->SourceFileTxt->TabIndex = 0;
 			// 
 			// PageLab1
@@ -232,11 +243,11 @@ namespace GUI {
 			this->PageLab1->Controls->Add(this->TokensTable);
 			this->PageLab1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->PageLab1->Location = System::Drawing::Point(4, 41);
+			this->PageLab1->Location = System::Drawing::Point(4, 34);
 			this->PageLab1->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->PageLab1->Name = L"PageLab1";
 			this->PageLab1->Padding = System::Windows::Forms::Padding(6, 7, 6, 7);
-			this->PageLab1->Size = System::Drawing::Size(917, 545);
+			this->PageLab1->Size = System::Drawing::Size(646, 552);
 			this->PageLab1->TabIndex = 1;
 			this->PageLab1->Text = L"Таблица лексем";
 			this->PageLab1->UseVisualStyleBackColor = true;
@@ -245,19 +256,18 @@ namespace GUI {
 			// 
 			this->TokensTable->AllowUserToAddRows = false;
 			this->TokensTable->AllowUserToDeleteRows = false;
-			this->TokensTable->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-				| System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
 			this->TokensTable->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::Fill;
 			this->TokensTable->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 			this->TokensTable->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(3) {
 				this->Index, this->Token,
 					this->TokenType
 			});
-			this->TokensTable->Location = System::Drawing::Point(10, 9);
+			this->TokensTable->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->TokensTable->GridColor = System::Drawing::SystemColors::Window;
+			this->TokensTable->Location = System::Drawing::Point(6, 7);
 			this->TokensTable->Name = L"TokensTable";
 			this->TokensTable->RowHeadersWidth = 51;
-			this->TokensTable->Size = System::Drawing::Size(798, 467);
+			this->TokensTable->Size = System::Drawing::Size(634, 538);
 			this->TokensTable->TabIndex = 0;
 			// 
 			// Index
@@ -286,37 +296,21 @@ namespace GUI {
 			// lab2Page
 			// 
 			this->lab2Page->Controls->Add(this->SyntaxTreeView);
-			this->lab2Page->Location = System::Drawing::Point(4, 41);
+			this->lab2Page->Location = System::Drawing::Point(4, 34);
 			this->lab2Page->Name = L"lab2Page";
 			this->lab2Page->Padding = System::Windows::Forms::Padding(3);
-			this->lab2Page->Size = System::Drawing::Size(917, 545);
+			this->lab2Page->Size = System::Drawing::Size(646, 552);
 			this->lab2Page->TabIndex = 2;
 			this->lab2Page->Text = L"Синтаксическое дерево";
 			this->lab2Page->UseVisualStyleBackColor = true;
 			// 
 			// SyntaxTreeView
 			// 
-			this->SyntaxTreeView->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-				| System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
-			this->SyntaxTreeView->Location = System::Drawing::Point(6, 3);
+			this->SyntaxTreeView->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->SyntaxTreeView->Location = System::Drawing::Point(3, 3);
 			this->SyntaxTreeView->Name = L"SyntaxTreeView";
-			this->SyntaxTreeView->Size = System::Drawing::Size(908, 543);
+			this->SyntaxTreeView->Size = System::Drawing::Size(640, 546);
 			this->SyntaxTreeView->TabIndex = 0;
-			// 
-			// OpersPage
-			// 
-			this->OpersPage->Location = System::Drawing::Point(4, 41);
-			this->OpersPage->Name = L"OpersPage";
-			this->OpersPage->Size = System::Drawing::Size(917, 545);
-			this->OpersPage->TabIndex = 3;
-			// 
-			// TriadsPage
-			// 
-			this->TriadsPage->Location = System::Drawing::Point(4, 41);
-			this->TriadsPage->Name = L"TriadsPage";
-			this->TriadsPage->Size = System::Drawing::Size(917, 545);
-			this->TriadsPage->TabIndex = 4;
 			// 
 			// OpersTreeView
 			// 
@@ -328,17 +322,16 @@ namespace GUI {
 			// 
 			// MainForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(13, 32);
+			this->AutoScaleDimensions = System::Drawing::SizeF(11, 25);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::LightGray;
-			this->ClientSize = System::Drawing::Size(969, 636);
+			this->ClientSize = System::Drawing::Size(698, 636);
 			this->Controls->Add(this->Tabs);
 			this->Font = (gcnew System::Drawing::Font(L"Segoe UI", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->Name = L"MainForm";
-			this->Text = L"ИС-42. Переверзев А.Р. Вариант №3";
-			this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
+			this->Text = L"Бутузов А.Е. Вариант №3";
 			this->Tabs->ResumeLayout(false);
 			this->PageSource->ResumeLayout(false);
 			this->PageSource->PerformLayout();
@@ -418,19 +411,6 @@ namespace GUI {
 
 				SyntaxTreeViewBuilder(SyntaxTreeView)
 					.build(ruleNodes, command.getValueTokens());
-
-				//// Построение дерева операций
-				//std::list<SyntaxNode> ruleNodes2 = syntaxResult.nodes;
-				//RefTree<RefValue> myTreeRefView;
-				//
-				//SyntaxTreeByCharBuilder(myTreeRefView)
-				//	.build(ruleNodes2, command.getValueTokens());
-				//
-				//OperatorsTreeBuilder(myTreeRefView)
-				//	.build();
-				//
-				//OperatorsTreeViewBuilder(OpersTreeView)
-				//	.build(myTreeRefView);
 			}
 		}
 
@@ -447,10 +427,9 @@ namespace GUI {
 
 		char inputChar = source.at(index);
 
-		ss << "Встречена ошибка на этапе \"Лексический анализ\":\n\n"
-			<< "В символе: " << index << ";\n"
-			<< "Входной симол \'" << inputChar << " \'(ASCII:" << (int)inputChar << ")\n\n"
-			<< "Сообщение: " << result.items.at(result.items.size() - 1).statusCode.toString() << ".";
+		ss << "Встречена ошибка:\n\n"
+		   << "В символе: " << index << ";\n"
+		   << "Сообщение: " << result.items.at(result.items.size() - 1).statusCode.toString() << ".";
 
 		String^ message = gcnew String(ss.str().c_str());
 
@@ -460,7 +439,7 @@ namespace GUI {
 	private: void syntaxResultError(SyntaxResult& result) {
 		std::stringstream ss;
 
-		ss << "Встречена ошибка на этапе \"Синтаксический анализ\":\n\n"
+		ss << "Встречена ошибка:\n\n"
 			<< "Сообщение: " << result.message << ".";
 
 		String^ message = gcnew String(ss.str().c_str());
@@ -477,8 +456,9 @@ namespace GUI {
 			TokensTable->Rows->Add(System::Int32(i + 1), tokenString, typeNameString);
 		}
 	}
-	private: System::Void MainForm_Load(System::Object^ sender, System::EventArgs^ e) {
-	}
+private: System::Void exitBtn_Click(System::Object^ sender, System::EventArgs^ e) {
+	Application::Exit();
+}
 };
 }
 

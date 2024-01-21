@@ -15,7 +15,7 @@ namespace SyntaxChars {
     const SyntaxChar EQUAL(7, "=", TokenType::TERMINAL);
     const SyntaxChar ASSIGNMENT(8, ":=", TokenType::TERMINAL);
     const SyntaxChar SEMICOLON(9, ";", TokenType::TERMINAL);
-    const SyntaxChar NONTERMINAL(10, "S", TokenType::NONTERMINAL);
+    const SyntaxChar NONTERMINAL(10, "E", TokenType::NONTERMINAL);
     
 
     const SyntaxChar OPEN_BRACKET(101, "#", TokenType::TERMINAL);
