@@ -146,12 +146,12 @@ public:
             tokenIndex += 1;
             Token currentToken = items[head];
 
-            if (tokenIndex == 1 && currentToken.termType != TermTypes::IDENTIFIER) {
+            if (tokenIndex == 1 && currentToken.type != TermTypes::IDENTIFIER) {
                 result.setError(StatusCodes::SEM_ASSIGNTOCONST.toString(), tokenIndex);
                 break;
             }
 
-            if (tokenIndex == 2 && currentToken.termType != TermTypes::ASSIGNMENT) {
+            if (tokenIndex == 2 && currentToken.type != TermTypes::ASSIGNMENT) {
                 result.setError(StatusCodes::SYN_ASSIGNMENT_EXPECTED.toString(), tokenIndex);
                 break;
             }
@@ -161,7 +161,7 @@ public:
             int topStackTermIndex = getTerminalIndex(stack.size() - 1);
 
             int top = stack.at(topStackTermIndex).code;
-            int input = syntaxConfig.getIndex(currentToken.termType);
+            int input = syntaxConfig.getIndex(currentToken.type);
 
 
             Relations relation = syntaxConfig.getRelation(top, input);
@@ -213,9 +213,9 @@ public:
     void shift(int input, Token token) {
         stack.push_back(
             StackItem(
-                syntaxConfig.getIndex(token.termType),
+                syntaxConfig.getIndex(token.type),
                 token.value, 
-                syntaxConfig.getSyntaxChar(token.termType)));
+                syntaxConfig.getSyntaxChar(token.type)));
         head += 1;
     }
 };

@@ -157,6 +157,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="ref_value.h" />
     <ClInclude Include="relations.h" />
+    <ClInclude Include="boolean.h" />
     <ClInclude Include="stack_item.h" />
     <ClInclude Include="parser_config.h" />
     <ClInclude Include="syntax.h" />
@@ -171,12 +172,19 @@
     <ClInclude Include="syntax_rule.h" />
     <ClInclude Include="syntax_tree_builder.h" />
     <ClInclude Include="syntax_tree_by_char_builder.h" />
+    <ClInclude Include="table_of_constants.h" />
+    <ClInclude Include="table_of_vars.h" />
     <ClInclude Include="term_types.h" />
+    <ClInclude Include="triadopt1.h" />
+    <ClInclude Include="triadopt2.h" />
+    <ClInclude Include="triads_builder.h" />
     <ClInclude Include="token.h" />
     <ClInclude Include="token_types.h" />
     <ClInclude Include="transition_info.h" />
     <ClInclude Include="tree.h" />
     <ClInclude Include="term_type.h" />
+    <ClInclude Include="triad.h" />
+    <ClInclude Include="triad_math.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core.cpp" />

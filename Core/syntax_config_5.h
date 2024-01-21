@@ -16,8 +16,7 @@ const std::map<TermType, SyntaxChar> TERM_TYPE_TO_MATRIX_INDEX = {
     { TermTypes::OPEN_BRACKET, SyntaxChars::OPEN_BRACKET },
     { TermTypes::CLOSE_BRACKET, SyntaxChars::CLOSE_BRACKET },
     { TermTypes::IDENTIFIER, SyntaxChars::IDENTIFIER },
-    { TermTypes::TRUE, SyntaxChars::IDENTIFIER },
-    { TermTypes::FALSE, SyntaxChars::IDENTIFIER },
+    { TermTypes::BOOL, SyntaxChars::IDENTIFIER },
     { TermTypes::ASSIGNMENT, SyntaxChars::ASSIGNMENT },
     { TermTypes::SEMICOLON, SyntaxChars::SEMICOLON },
     { TermTypes::LIMIT, SyntaxChars::LIMIT },
@@ -31,6 +30,7 @@ namespace SyntaxRules {
     const SyntaxRule R5 = SyntaxRule(5, BuildRule({ SyntaxChars::NOT, SyntaxChars::NONTERMINAL }));
     const SyntaxRule R6 = SyntaxRule(6, BuildRule({ SyntaxChars::OPEN_BRACKET, SyntaxChars::NONTERMINAL, SyntaxChars::CLOSE_BRACKET }));
     const SyntaxRule R7 = SyntaxRule(7, BuildRule({ SyntaxChars::IDENTIFIER }));
+    const SyntaxRule R8 = SyntaxRule(8, BuildRule({ SyntaxChars::BOOL }));
 }
 
 const std::vector<SyntaxRule> RULES = {
@@ -41,6 +41,7 @@ const std::vector<SyntaxRule> RULES = {
     SyntaxRules::R5,
     SyntaxRules::R6,
     SyntaxRules::R7,
+    SyntaxRules::R8,
 };
 
 SyntaxConfig MathGrammarConfig(MATRIX_1, TERM_TYPE_TO_MATRIX_INDEX, RULES, MATRIX_1_ERRORS);

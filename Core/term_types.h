@@ -32,4 +32,6 @@ namespace TermTypes {
     static const TermType TRUE(26, "ИСТИНА");
     static const TermType FALSE(27, "ЛОЖЬ");
     static const TermType BOOL(28, "Логический тип");
+    static const TermType MyTRUE(26, "ИСТИНА");
+    static const TermType MyFALSE(27, "ИСТИНА");
 }
