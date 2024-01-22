@@ -198,6 +198,12 @@ public:
                 else {
                     result.setError(syntaxConfig.getStatusCode(top, input), tokenIndex);
                 }
+
+                int a = 1;
+                int b = 2;
+
+                -- -a;
+
                 end = true;
                 break;
             }

@@ -27,8 +27,8 @@ private:
 };
 
 namespace StatusCodes {
-    static const StatusCode SUCCESS__(0, "Успешно");
-    static const StatusCode LEX_1(1, "Неизвестная ошибка");
+    static const StatusCode SUCCESS(0, "Успешно");
+    static const StatusCode LEX_1(1, "Лексическая ошибка");
     static const StatusCode LEX_2(2, "Недопустимый входной символ");
     static const StatusCode LEX_3(3, "Неожиданный конец файла");
     static const StatusCode LEX_4(4, "Встречен незавершенный комментарий");

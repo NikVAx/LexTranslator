@@ -20,16 +20,16 @@ const std::vector<std::vector<Relations>> MATRIX_1 =
 
 const std::vector<std::vector<StatusCode>> MATRIX_1_ERRORS =
 {
-    { StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR} ,
-    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR} ,
-    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR} ,
-    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR} ,
-    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR} ,
-    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SYN_OPEXP, StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__} ,
-    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SYN_UNCLOSED_BRACKET, StatusCodes::SYN_ERROR} ,
-    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR} ,
-    { StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR} ,
-    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SUCCESS__, StatusCodes::SYN_UEXPECTED_BRACKET, StatusCodes::SUCCESS__, StatusCodes::SYN_ERROR} ,
+    { StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SUCCESS, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR} ,
+    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SYN_ERROR} ,
+    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SYN_ERROR} ,
+    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SYN_ERROR} ,
+    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SYN_ERROR} ,
+    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SYN_OPEXP, StatusCodes::SYN_ERROR, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS} ,
+    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SYN_UNCLOSED_BRACKET, StatusCodes::SYN_ERROR} ,
+    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SYN_ERROR} ,
+    { StatusCodes::SUCCESS, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR, StatusCodes::SYN_ERROR} ,
+    { StatusCodes::SYN_ERROR, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SUCCESS, StatusCodes::SYN_UEXPECTED_BRACKET, StatusCodes::SUCCESS, StatusCodes::SYN_ERROR} ,
 };
 
 /*

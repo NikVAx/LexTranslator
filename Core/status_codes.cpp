@@ -2,7 +2,7 @@
 #include "status_codes.h"
 
 const std::map<int, StatusCode> StatusCode::INSTANCES = {
-    { StatusCodes::SUCCESS__.toInt(), StatusCodes::SUCCESS__},
+    { StatusCodes::SUCCESS.toInt(), StatusCodes::SUCCESS},
     { StatusCodes::LEX_1.toInt(), StatusCodes::LEX_1 },
     { StatusCodes::LEX_2.toInt(), StatusCodes::LEX_2 },
     { StatusCodes::LEX_3.toInt(), StatusCodes::LEX_3 },

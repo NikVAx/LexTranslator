@@ -36,13 +36,10 @@ static void print_triads(std::list<Triad*>& triads) {
     }
 }
 
-
-
 struct ReNode {
     int value;
     std::vector<ReNode> nodes;
 };
-
 
 std::list<Triad*> prepare_triads(std::string line) {
     Parser lexer;
@@ -332,41 +329,179 @@ public:
     }
 };
 
+void test(std::string input, std::string expect) {
+    Parser parser;
+    auto parseResult = parser.parse(input);
+
+    std::stringstream ss;
+
+    std::cout << "Данные для тестирования:\n" << input << "\n";
+
+    if (parseResult.isSuccess()) {
+        for (auto& item : parseResult.items) {
+            ss << item.token.value << " - " << item.token.type.toString() << "\n";
+        }
+    }
+    else {
+        ss << "Лексическая ошибка";
+    }
+
+    std::cout << "Фактический результат:\n" << ss.str() << "\n";
+    std::cout << "Верный результат:\n" << expect << "\n";
+
+    if (ss.str() == expect) {
+        std::cout << "Тест пройден\n";
+    } else {
+        std::cout << "Тест провален\n";
+    }
+
+    std::cout  << "\n";
+}
+
+void unit_for(std::string input, std::vector<ParseItem> items) {
+    Parser lexer;
+    auto parseResult = lexer.parse(input);
+
+    std::stringstream ss;
+    std::stringstream expected;
+
+    std::cout << "Данные для тестирования:\n" << input << "\n";
+    
+    if (parseResult.isSuccess()) {
+        for (auto& item : parseResult.items) {
+            ss << item.token.value << " - " << item.token.type.toString() << "\n";
+        }
+    }
+    else {
+        ss << "Лексическая ошибка";
+    }
+
+    if (parseResult.items.size() > 0) {
+        for (auto& item : items) {
+            expected << item.token.value << " - " << item.token.type.toString() << "\n";
+        }
+    }
+    else {
+        expected << "Лексическая ошибка";
+    }
+    
+
+    std::cout << "Фактический результат:\n" << ss.str() << "\n";
+    std::cout << "Верный результат:\n" << expected.str() << "\n";
+
+    if (ss.str() == expected.str()) {
+        std::cout << "Тест пройден\n";
+    }
+    else {
+        std::cout << "Тест провален\n";
+    }
+
+    std::cout << "\n";
+}
+
+
+void v1() {
+    test(
+        "x:=0x123ABF+(0x1+0xABA1+0x1*0x2+cats);\n",
+
+        "x - Идентификатор\n"
+        ":= - Оператор присваивания\n"
+        "0x123ABF - Числовой литерал\n"
+        "+ - Оператор \"+\"\n"
+        "( - Открывающая скобка\n"
+        "0x1 - Числовой литерал\n"
+        "+ - Оператор \"+\"\n"
+        "0xABA1 - Числовой литерал\n"
+        "+ - Оператор \"+\"\n"
+        "0x1 - Числовой литерал\n"
+        "* - Оператор \"*\"\n"
+        "0x2 - Числовой литерал\n"
+        "+ - Оператор \"+\"\n"
+        "cats - Идентификатор\n"
+        ") - Закрывающая скобка\n"
+        "; - Точка с запятой\n");
+
+
+    test(
+        "x:=0x123ABF+(a+0x123);\ny:=0xFA12*(a+0x1)+0xAFFF*y*y-0x334;\n",
+
+        "x - Идентификатор\n"
+        ":= - Оператор присваивания\n"
+        "0x123ABF - Числовой литерал\n"
+        "+ - Оператор \"+\"\n"
+        "( - Открывающая скобка\n"
+        "a - Идентификатор\n"
+        "+ - Оператор \"+\"\n"
+        "0x123 - Числовой литерал\n"
+        ") - Закрывающая скобка\n"
+        "; - Точка с запятой\n"
+        "y - Идентификатор\n"
+        ":= - Оператор присваивания\n"
+        "0xFA12 - Числовой литерал\n"
+        "* - Оператор \"*\"\n"
+        "( - Открывающая скобка\n"
+        "a - Идентификатор\n"
+        "+ - Оператор \"+\"\n"
+        "0x1 - Числовой литерал\n"
+        ") - Закрывающая скобка\n"
+        "+ - Оператор \"+\"\n"
+        "0xAFFF - Числовой литерал\n"
+        "* - Оператор \"*\"\n"
+        "y - Идентификатор\n"
+        "* - Оператор \"*\"\n"
+        "y - Идентификатор\n"
+        "- - Оператор \"-\"\n"
+        "0x334 - Числовой литерал\n"
+        "; - Точка с запятой\n");
+
+    test(
+        "x:=0xx123;\n",
+        "Лексическая ошибка");
+}
+
 int main() {
     setlocale(LC_ALL, "");
   
-    //BlackBoxTriads::s_run();
+    unit_for("x:=a+(0x1-0x2);",
+        {
+            ParseItem(Token("x", TermTypes::IDENTIFIER), StatusCodes::SUCCESS),
+            ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS),
+            ParseItem(Token("a", TermTypes::IDENTIFIER), StatusCodes::SUCCESS),
+            ParseItem(Token("+", TermTypes::PLUS), StatusCodes::SUCCESS),
+            ParseItem(Token("(", TermTypes::OPEN_BRACKET), StatusCodes::SUCCESS),
+            ParseItem(Token("0x1", TermTypes::NUMBER), StatusCodes::SUCCESS),
+            ParseItem(Token("-", TermTypes::MINUS), StatusCodes::SUCCESS),
+            ParseItem(Token("0x2", TermTypes::NUMBER), StatusCodes::SUCCESS),
+            ParseItem(Token(")", TermTypes::CLOSE_BRACKET), StatusCodes::SUCCESS),
+            ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS),
+        });
 
-    WhiteBoxTriads::s_run();
-    
-    //std::string line = "a:=X;\n"
-    //                   "b:=X+I-I;\n"
-    //                   "c:=II+((C-IX-VI)/(XVI+b)+(a+I))*(II+II)+(z*(II+II));\n"
-    //                   "f:=UNDEF*b+b;\n"
-    //                   "d:=(c+IV)+(z*(II+II)-(II+II+c));\n" 
-    //                   "c:=(z*IV+(a+c))+V+(c+d)-(z*(II*II)+(a+c));\n"
-    //                   "e:=c+d;\n";
-    //
-    //std::list<Triad*> triads__ = prepare_triads(line);
-    //std::cout << "\n";
-    //print_triads(triads__);
-    //TriadOpt1(triads__).reduce();
-    //TriadOpt2 triadOpt2(triads__);
-    //triadOpt2.setDepValues();
-    //std::cout << "\n";
-    //print_triads(triads__);
-    //std::cout << "\n";
-    //triadOpt2.clearSameTriads();
-    //print_triads(triads__);
+    unit_for(
+        "x:=a+(0x1-0x2);\n"
+        "/*firstline\n" 
+        "secondline*/\n"
+        "y:=b+c+d-0x123;\n",
+        
+        {
+            ParseItem(Token("x", TermTypes::IDENTIFIER), StatusCodes::SUCCESS),
+            ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS),
+            ParseItem(Token("a", TermTypes::IDENTIFIER), StatusCodes::SUCCESS),
+            ParseItem(Token("+", TermTypes::PLUS), StatusCodes::SUCCESS),
+            ParseItem(Token("(", TermTypes::OPEN_BRACKET), StatusCodes::SUCCESS),
+            ParseItem(Token("0x1", TermTypes::NUMBER), StatusCodes::SUCCESS),
+            ParseItem(Token("-", TermTypes::MINUS), StatusCodes::SUCCESS),
+            ParseItem(Token("0x2", TermTypes::NUMBER), StatusCodes::SUCCESS),
+            ParseItem(Token(")", TermTypes::CLOSE_BRACKET), StatusCodes::SUCCESS),
+            ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS),
+            ParseItem(Token("y", TermTypes::IDENTIFIER), StatusCodes::SUCCESS),
+            ParseItem(Token(":=", TermTypes::ASSIGNMENT), StatusCodes::SUCCESS),
+            ParseItem(Token("b", TermTypes::IDENTIFIER), StatusCodes::SUCCESS),
+            ParseItem(Token("+", TermTypes::PLUS), StatusCodes::SUCCESS),
+            ParseItem(Token("c", TermTypes::IDENTIFIER), StatusCodes::SUCCESS),
+            ParseItem(Token("+", TermTypes::PLUS), StatusCodes::SUCCESS),
+            ParseItem(Token("d", TermTypes::IDENTIFIER), StatusCodes::SUCCESS),
+            ParseItem(Token("-", TermTypes::MINUS), StatusCodes::SUCCESS),
+            ParseItem(Token("0x123", TermTypes::NUMBER), StatusCodes::SUCCESS),
+            ParseItem(Token(";", TermTypes::SEMICOLON), StatusCodes::SUCCESS),
+        }); 
 }
-
-/*
-    //for (Triad* triad : triads__) {
-    //    std::cout
-    //        << " | "
-    //        << std::setw(2) << (triad->id) << "  | "
-    //        << triad->toString() <<  " DEP="
-    //        << triad->dep << " \n";
-    //}
-
-*/

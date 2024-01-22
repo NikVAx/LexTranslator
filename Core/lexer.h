@@ -30,6 +30,8 @@ public:
 
             TransitionInfo info = _sm.getTransition(ch);
 
+            //std::cout << _sm.currentState << "->" << info.getNextState() << "buf:" << tokenString << ":\tchar=" << ch  << ": " << info.getInputCode() << "\t bound=" << info.isTokenBoundary() << "\n";
+
             if (info.isNotSuccess()) {
                 result.addError(tokenString, info.getStatusCode());
                 break;
@@ -38,7 +40,7 @@ public:
             if (info.isTokenBoundary() && !tokenString.empty()) {
                 TermType tokenType = CurrentParserConfig.mapTokenType(_sm.currentState);
 
-
+                //std::cout << "\t\t" << tokenString << "\n";
                 if (tokenType != TermTypes::COMMENT) {
                     result.add(tokenString, tokenType);
                 } // else ingore comment

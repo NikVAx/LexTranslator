@@ -23,7 +23,7 @@ public:
         error = true;
     }
 
-    bool isSuccess() {
+    bool isSuccess() const {
         return !error;
     }
 
