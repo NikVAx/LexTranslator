@@ -12,10 +12,12 @@ namespace SyntaxChars {
     const SyntaxChar IDENTIFIER(4, "I", TokenType::TERMINAL);
     const SyntaxChar GREATER(5, ">", TokenType::TERMINAL);
     const SyntaxChar LESS(6, "<", TokenType::TERMINAL);
-    const SyntaxChar EQUAL(7, "=", TokenType::TERMINAL);
-    const SyntaxChar ASSIGNMENT(8, ":=", TokenType::TERMINAL);
-    const SyntaxChar SEMICOLON(9, ";", TokenType::TERMINAL);
-    const SyntaxChar NONTERMINAL(10, "S", TokenType::NONTERMINAL);
+    const SyntaxChar ASSIGNMENT(7, ":=", TokenType::TERMINAL);
+    const SyntaxChar PLUS(8, "+", TokenType::TERMINAL);
+    const SyntaxChar MINUS(9, "-", TokenType::TERMINAL);
+    const SyntaxChar EQUAL(10, "=", TokenType::TERMINAL);
+    const SyntaxChar SEMICOLON(11, ";", TokenType::TERMINAL);
+    const SyntaxChar NONTERMINAL(12, "S", TokenType::NONTERMINAL);
     
 
     const SyntaxChar OPEN_BRACKET(101, "#", TokenType::TERMINAL);
