@@ -30,6 +30,10 @@ public:
 
             TransitionInfo info = _sm.getTransition(ch);
 
+
+            std::cout << "in: " << ch << "(" << info.getInputCode() << "); store<" << tokenString << "> " << _sm.currentState << " -> " << info.getNextState() << "\n";
+            //std::cout << "\t" << info.isNotSuccess() << "\n";
+
             if (info.isNotSuccess()) {
                 result.addError(tokenString, info.getStatusCode());
                 break;
