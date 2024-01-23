@@ -7,13 +7,13 @@
 const std::vector<std::vector<Relations>> MATRIX_1 =
 {
 {
-Relations::PREV,	Relations::PREV,	Relations::NONE,	Relations::NONE,	Relations::PREV,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::PREV
+Relations::NONE,	Relations::PREV,	Relations::NONE,	Relations::NONE,	Relations::PREV,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::PREV
 },
 {
 Relations::NONE,	Relations::PREV,	Relations::BASE,	Relations::NONE,	Relations::PREV,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::BASE,	Relations::BASE,	Relations::NONE,	Relations::NONE
 },
 {
-Relations::NONE,	Relations::PREV,	Relations::NONE,	Relations::BASE,	Relations::PREV,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NONE
+Relations::NONE,	Relations::PREV,	Relations::NONE,	Relations::BASE,	Relations::PREV,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NEXT
 },
 {
 Relations::NONE,	Relations::PREV,	Relations::NONE,	Relations::NEXT,	Relations::PREV,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NONE,	Relations::NEXT
@@ -53,7 +53,7 @@ StatusCodes::SUCCESS__,	StatusCodes::SUCCESS__,	StatusCodes::SYN_ERROR,	StatusCo
 StatusCodes::SYN_ERROR,	StatusCodes::SUCCESS__,	StatusCodes::SUCCESS__,	StatusCodes::SYN_ERROR,	StatusCodes::SUCCESS__,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR,	StatusCodes::SUCCESS__,	StatusCodes::SUCCESS__,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR
 },
 {
-StatusCodes::SYN_ERROR,	StatusCodes::SUCCESS__,	StatusCodes::SYN_ERROR,	StatusCodes::SUCCESS__,	StatusCodes::SUCCESS__,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR
+StatusCodes::SYN_ERROR,	StatusCodes::SUCCESS__,	StatusCodes::SYN_ERROR,	StatusCodes::SUCCESS__,	StatusCodes::SUCCESS__,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR,	StatusCodes::SUCCESS__
 },
 {
 StatusCodes::SYN_ERROR,	StatusCodes::SUCCESS__,	StatusCodes::SYN_ERROR,	StatusCodes::SUCCESS__,	StatusCodes::SUCCESS__,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR,	StatusCodes::SYN_ERROR,	StatusCodes::SUCCESS__
