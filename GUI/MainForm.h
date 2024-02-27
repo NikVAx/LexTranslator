@@ -351,7 +351,7 @@ namespace GUI {
 			MessageBox::Show(this, "Нет данных для распознавания!", "Сообщение");
 			return;
 		}
-
+		
 		std::string sourceCode = msclr::interop::marshal_as<std::string>(SourceCodeTxt->Text);
 
 		ParseResult result = Parser()
