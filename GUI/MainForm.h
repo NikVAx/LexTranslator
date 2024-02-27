@@ -78,9 +78,9 @@ namespace GUI {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Index;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Token;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ TokenType;
-	private: System::Windows::Forms::TabPage^ lab2Page;
 
-	private: System::Windows::Forms::TreeView^ SyntaxTreeView;
+
+
 
 
 	private: System::Windows::Forms::TreeView^ OpersTreeView;
@@ -118,14 +118,11 @@ namespace GUI {
 			this->Index = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->Token = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->TokenType = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->lab2Page = (gcnew System::Windows::Forms::TabPage());
-			this->SyntaxTreeView = (gcnew System::Windows::Forms::TreeView());
 			this->OpersTreeView = (gcnew System::Windows::Forms::TreeView());
 			this->Tabs->SuspendLayout();
 			this->PageSource->SuspendLayout();
 			this->PageLab1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TokensTable))->BeginInit();
-			this->lab2Page->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// Tabs
@@ -135,7 +132,6 @@ namespace GUI {
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->Tabs->Controls->Add(this->PageSource);
 			this->Tabs->Controls->Add(this->PageLab1);
-			this->Tabs->Controls->Add(this->lab2Page);
 			this->Tabs->Location = System::Drawing::Point(22, 22);
 			this->Tabs->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->Tabs->Name = L"Tabs";
@@ -293,25 +289,6 @@ namespace GUI {
 			this->TokenType->ReadOnly = true;
 			this->TokenType->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
 			// 
-			// lab2Page
-			// 
-			this->lab2Page->Controls->Add(this->SyntaxTreeView);
-			this->lab2Page->Location = System::Drawing::Point(4, 34);
-			this->lab2Page->Name = L"lab2Page";
-			this->lab2Page->Padding = System::Windows::Forms::Padding(3);
-			this->lab2Page->Size = System::Drawing::Size(646, 552);
-			this->lab2Page->TabIndex = 2;
-			this->lab2Page->Text = L"Синтаксическое дерево";
-			this->lab2Page->UseVisualStyleBackColor = true;
-			// 
-			// SyntaxTreeView
-			// 
-			this->SyntaxTreeView->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->SyntaxTreeView->Location = System::Drawing::Point(3, 3);
-			this->SyntaxTreeView->Name = L"SyntaxTreeView";
-			this->SyntaxTreeView->Size = System::Drawing::Size(640, 546);
-			this->SyntaxTreeView->TabIndex = 0;
-			// 
 			// OpersTreeView
 			// 
 			this->OpersTreeView->LineColor = System::Drawing::Color::Empty;
@@ -331,13 +308,12 @@ namespace GUI {
 				static_cast<System::Byte>(0)));
 			this->Margin = System::Windows::Forms::Padding(6, 7, 6, 7);
 			this->Name = L"MainForm";
-			this->Text = L"Бутузов А.Е. Вариант №3";
+			this->Text = L"Макарова А.С. Вариант №3";
 			this->Tabs->ResumeLayout(false);
 			this->PageSource->ResumeLayout(false);
 			this->PageSource->PerformLayout();
 			this->PageLab1->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TokensTable))->EndInit();
-			this->lab2Page->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}
@@ -364,7 +340,7 @@ namespace GUI {
 		SourceFileTxt->Clear();
 		SourceCodeTxt->Clear();
 		TokensTable->Rows->Clear();
-		SyntaxTreeView->Nodes->Clear();
+		//SyntaxTreeView->Nodes->Clear();
 	}
 
 	private: System::Void ExecuteBtn_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -409,8 +385,8 @@ namespace GUI {
 						<< it->syntaxRule.buildRule.ruleString << "\n";
 				}
 
-				SyntaxTreeViewBuilder(SyntaxTreeView)
-					.build(ruleNodes, command.getValueTokens());
+				//SyntaxTreeViewBuilder(SyntaxTreeView)
+				//	.build(ruleNodes, command.getValueTokens());
 			}
 		}
 
