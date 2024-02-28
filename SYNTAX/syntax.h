@@ -202,7 +202,7 @@ public:
                 int a = 1;
                 int b = 2;
 
-                -- -a;
+                
 
                 end = true;
                 break;
